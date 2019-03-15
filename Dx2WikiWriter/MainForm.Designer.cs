@@ -33,34 +33,34 @@
             this.exportDemonAllBtn = new System.Windows.Forms.Button();
             this.exportIndividualDemonBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.exportAllLiberatorsBtn = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.skillGroup = new System.Windows.Forms.GroupBox();
+            this.exportIndividualSkillBtn = new System.Windows.Forms.Button();
+            this.exportSkillAllBtn = new System.Windows.Forms.Button();
+            this.demonGroupBox = new System.Windows.Forms.GroupBox();
             this.tabPages = new System.Windows.Forms.TabControl();
             this.demonTab = new System.Windows.Forms.TabPage();
             this.demonGrid = new System.Windows.Forms.DataGridView();
+            this.allContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skillTab = new System.Windows.Forms.TabPage();
             this.skillGrid = new System.Windows.Forms.DataGridView();
             this.liberatorTab = new System.Windows.Forms.TabPage();
             this.liberatorGrid = new System.Windows.Forms.DataGridView();
-            this.demonGroupBox = new System.Windows.Forms.GroupBox();
-            this.skillGroup = new System.Windows.Forms.GroupBox();
-            this.exportIndividualSkillBtn = new System.Windows.Forms.Button();
-            this.exportSkillAllBtn = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.exportAllLiberatorsBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.allContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topPanel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.skillGroup.SuspendLayout();
+            this.demonGroupBox.SuspendLayout();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
+            this.allContextMenu.SuspendLayout();
             this.skillTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).BeginInit();
             this.liberatorTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.liberatorGrid)).BeginInit();
-            this.demonGroupBox.SuspendLayout();
-            this.skillGroup.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.allContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // loadBtn
@@ -81,6 +81,7 @@
             this.exportDemonAllBtn.TabIndex = 4;
             this.exportDemonAllBtn.Text = "Export All Demons";
             this.exportDemonAllBtn.UseVisualStyleBackColor = true;
+            this.exportDemonAllBtn.Click += new System.EventHandler(this.exportDemonAllBtn_Click);
             // 
             // exportIndividualDemonBtn
             // 
@@ -90,6 +91,7 @@
             this.exportIndividualDemonBtn.TabIndex = 5;
             this.exportIndividualDemonBtn.Text = "Export Checked Demons Individually";
             this.exportIndividualDemonBtn.UseVisualStyleBackColor = true;
+            this.exportIndividualDemonBtn.Click += new System.EventHandler(this.exportIndividualDemonBtn_Click);
             // 
             // topPanel
             // 
@@ -102,6 +104,77 @@
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(1357, 79);
             this.topPanel.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.exportAllLiberatorsBtn);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Location = new System.Drawing.Point(909, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(345, 52);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Liberator Export";
+            this.groupBox1.Visible = false;
+            // 
+            // exportAllLiberatorsBtn
+            // 
+            this.exportAllLiberatorsBtn.Location = new System.Drawing.Point(6, 19);
+            this.exportAllLiberatorsBtn.Name = "exportAllLiberatorsBtn";
+            this.exportAllLiberatorsBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportAllLiberatorsBtn.TabIndex = 5;
+            this.exportAllLiberatorsBtn.Text = "Export All Liberators";
+            this.exportAllLiberatorsBtn.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(160, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(179, 23);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "Export Checked Liberators Individually";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // skillGroup
+            // 
+            this.skillGroup.Controls.Add(this.exportIndividualSkillBtn);
+            this.skillGroup.Controls.Add(this.exportSkillAllBtn);
+            this.skillGroup.Location = new System.Drawing.Point(558, 12);
+            this.skillGroup.Name = "skillGroup";
+            this.skillGroup.Size = new System.Drawing.Size(345, 52);
+            this.skillGroup.TabIndex = 7;
+            this.skillGroup.TabStop = false;
+            this.skillGroup.Text = "Skill Export";
+            this.skillGroup.Visible = false;
+            // 
+            // exportIndividualSkillBtn
+            // 
+            this.exportIndividualSkillBtn.Location = new System.Drawing.Point(6, 19);
+            this.exportIndividualSkillBtn.Name = "exportIndividualSkillBtn";
+            this.exportIndividualSkillBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportIndividualSkillBtn.TabIndex = 5;
+            this.exportIndividualSkillBtn.Text = "Export All Skills";
+            this.exportIndividualSkillBtn.UseVisualStyleBackColor = true;
+            // 
+            // exportSkillAllBtn
+            // 
+            this.exportSkillAllBtn.Location = new System.Drawing.Point(160, 19);
+            this.exportSkillAllBtn.Name = "exportSkillAllBtn";
+            this.exportSkillAllBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportSkillAllBtn.TabIndex = 4;
+            this.exportSkillAllBtn.Text = "Export Checked Skills Individually";
+            this.exportSkillAllBtn.UseVisualStyleBackColor = true;
+            // 
+            // demonGroupBox
+            // 
+            this.demonGroupBox.Controls.Add(this.exportIndividualDemonBtn);
+            this.demonGroupBox.Controls.Add(this.exportDemonAllBtn);
+            this.demonGroupBox.Location = new System.Drawing.Point(202, 12);
+            this.demonGroupBox.Name = "demonGroupBox";
+            this.demonGroupBox.Size = new System.Drawing.Size(345, 52);
+            this.demonGroupBox.TabIndex = 6;
+            this.demonGroupBox.TabStop = false;
+            this.demonGroupBox.Text = "Demon Export";
             // 
             // tabPages
             // 
@@ -134,7 +207,21 @@
             this.demonGrid.Location = new System.Drawing.Point(3, 3);
             this.demonGrid.Name = "demonGrid";
             this.demonGrid.Size = new System.Drawing.Size(1343, 553);
-            this.demonGrid.TabIndex = 4;
+            this.demonGrid.TabIndex = 4;            
+            // 
+            // allContextMenu
+            // 
+            this.allContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectAllToolStripMenuItem});
+            this.allContextMenu.Name = "allContextMenu";
+            this.allContextMenu.Size = new System.Drawing.Size(123, 26);
+            // 
+            // selectAllToolStripMenuItem
+            // 
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.selectAllToolStripMenuItem.Text = "Select All";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
             // skillTab
             // 
@@ -175,89 +262,6 @@
             this.liberatorGrid.Size = new System.Drawing.Size(1349, 559);
             this.liberatorGrid.TabIndex = 6;
             // 
-            // demonGroupBox
-            // 
-            this.demonGroupBox.Controls.Add(this.exportIndividualDemonBtn);
-            this.demonGroupBox.Controls.Add(this.exportDemonAllBtn);
-            this.demonGroupBox.Location = new System.Drawing.Point(202, 12);
-            this.demonGroupBox.Name = "demonGroupBox";
-            this.demonGroupBox.Size = new System.Drawing.Size(345, 52);
-            this.demonGroupBox.TabIndex = 6;
-            this.demonGroupBox.TabStop = false;
-            this.demonGroupBox.Text = "Demon Export";
-            // 
-            // skillGroup
-            // 
-            this.skillGroup.Controls.Add(this.exportIndividualSkillBtn);
-            this.skillGroup.Controls.Add(this.exportSkillAllBtn);
-            this.skillGroup.Location = new System.Drawing.Point(558, 12);
-            this.skillGroup.Name = "skillGroup";
-            this.skillGroup.Size = new System.Drawing.Size(345, 52);
-            this.skillGroup.TabIndex = 7;
-            this.skillGroup.TabStop = false;
-            this.skillGroup.Text = "Skill Export";
-            // 
-            // exportIndividualSkillBtn
-            // 
-            this.exportIndividualSkillBtn.Location = new System.Drawing.Point(6, 19);
-            this.exportIndividualSkillBtn.Name = "exportIndividualSkillBtn";
-            this.exportIndividualSkillBtn.Size = new System.Drawing.Size(148, 23);
-            this.exportIndividualSkillBtn.TabIndex = 5;
-            this.exportIndividualSkillBtn.Text = "Export All Skills";
-            this.exportIndividualSkillBtn.UseVisualStyleBackColor = true;
-            // 
-            // exportSkillAllBtn
-            // 
-            this.exportSkillAllBtn.Location = new System.Drawing.Point(160, 19);
-            this.exportSkillAllBtn.Name = "exportSkillAllBtn";
-            this.exportSkillAllBtn.Size = new System.Drawing.Size(179, 23);
-            this.exportSkillAllBtn.TabIndex = 4;
-            this.exportSkillAllBtn.Text = "Export Checked Skills Individually";
-            this.exportSkillAllBtn.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.exportAllLiberatorsBtn);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Location = new System.Drawing.Point(909, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(345, 52);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Liberator Export";
-            // 
-            // exportAllLiberatorsBtn
-            // 
-            this.exportAllLiberatorsBtn.Location = new System.Drawing.Point(6, 19);
-            this.exportAllLiberatorsBtn.Name = "exportAllLiberatorsBtn";
-            this.exportAllLiberatorsBtn.Size = new System.Drawing.Size(148, 23);
-            this.exportAllLiberatorsBtn.TabIndex = 5;
-            this.exportAllLiberatorsBtn.Text = "Export All Liberators";
-            this.exportAllLiberatorsBtn.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(160, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(179, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Export Checked Liberators Individually";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // allContextMenu
-            // 
-            this.allContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectAllToolStripMenuItem});
-            this.allContextMenu.Name = "allContextMenu";
-            this.allContextMenu.Size = new System.Drawing.Size(181, 48);
-            // 
-            // selectAllToolStripMenuItem
-            // 
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.selectAllToolStripMenuItem.Text = "Select All";
-            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,17 +272,17 @@
             this.Name = "MainForm";
             this.Text = "Dx2 Wiki Writer";
             this.topPanel.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.skillGroup.ResumeLayout(false);
+            this.demonGroupBox.ResumeLayout(false);
             this.tabPages.ResumeLayout(false);
             this.demonTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).EndInit();
+            this.allContextMenu.ResumeLayout(false);
             this.skillTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).EndInit();
             this.liberatorTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.liberatorGrid)).EndInit();
-            this.demonGroupBox.ResumeLayout(false);
-            this.skillGroup.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.allContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

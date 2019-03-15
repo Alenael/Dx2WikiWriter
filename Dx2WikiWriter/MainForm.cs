@@ -1,13 +1,9 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Dx2WikiWriter
@@ -15,10 +11,7 @@ namespace Dx2WikiWriter
     public partial class MainForm : Form
     {
         public DBManager DBManager = new DBManager();
-
-        private bool _demonsLoaded;
-        private bool _skillsLoaded;
-        private bool _liberatorsLoaded;
+        public string LoadedPath;
 
         public MainForm()
         {
@@ -28,8 +21,9 @@ namespace Dx2WikiWriter
         //Adds a Check Box column to the first slot of a datagridview
         private void AddCheckBox(DataGridView dgv)
         {
-            var checkBoxCol = new DataGridViewCheckBoxColumn() { Name = "Export", DisplayIndex = 0, AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells };
-            dgv.Columns.Add(checkBoxCol);            
+            var checkBoxCol = new DataGridViewCheckBoxColumn()
+                { Name = "Export", DisplayIndex = 0, AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells };
+            dgv.Columns.Add(checkBoxCol);
         }
 
         //Load our DB
@@ -41,28 +35,21 @@ namespace Dx2WikiWriter
 
             if (result == CommonFileDialogResult.Ok && Directory.Exists(folderDir.FileName))
             {
+                //Save folder path for later
+                LoadedPath = folderDir.FileName;
+
                 //Load Demons
                 var demonDbPath = Path.Combine(folderDir.FileName, "SMT Dx2 Database - Demons.csv");
                 if (File.Exists(demonDbPath))
                 {
                     demonGrid.DataSource = DBManager.LoadDB(demonDbPath);
                     AddCheckBox(demonGrid);
-                    _demonsLoaded = true;
                 }
-
-                //Load Skills
-
-                //Load Liberators
-
+                else                
+                    MessageBox.Show(demonDbPath + ": Could not find file to open.");                
             }
         }
-
-        //Save our Db
-        private void saveBtn_Click(object sender, EventArgs e)
-        {
-            DBManager.SaveDB(demonGrid.DataSource);
-        }
-
+        
         //Selects all from a grid
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,6 +63,18 @@ namespace Dx2WikiWriter
                     }
                 }
             }
+        }
+
+        private void exportDemonAllBtn_Click(object sender, EventArgs e)
+        {
+            DBManager.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+        }
+
+        private void exportIndividualDemonBtn_Click(object sender, EventArgs e)
+        {
+            var selectedDemons = demonGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
+
+            DBManager.ExportDemons(selectedDemons, false, LoadedPath);
         }
     }
 }
