@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Dx2WikiWriter
@@ -13,6 +14,33 @@ namespace Dx2WikiWriter
         public DataTable LoadDB(string path)
         {
             return ReadCSV(path);
+        }
+
+        public void SaveDB(DataTable dataTable, string path)
+        {
+            var fileContent = new StringBuilder();
+
+            foreach (var col in dataTable.Columns)
+            {
+                //Skips our Export Column
+                if (col == dataTable.Columns["Export"])
+                    continue;
+
+                fileContent.Append(col.ToString() + ",");
+            }
+
+            fileContent.Replace(",", Environment.NewLine, fileContent.Length - 1, 1);
+
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                foreach (var column in dr.ItemArray)
+                    fileContent.Append("\"" + column.ToString() + "\",");
+                
+
+                fileContent.Replace(",", System.Environment.NewLine, fileContent.Length - 1, 1);
+            }
+
+            File.WriteAllText(path, fileContent.ToString());
         }
         
         public DataTable ReadCSV(string filePath)
@@ -29,7 +57,7 @@ namespace Dx2WikiWriter
 
                 // Adding the rows
                 File.ReadLines(filePath).Skip(1)
-                    .Select(x => x.Split(','))
+                    .Select(x => x.Replace("\"", "").Split(','))
                     .ToList()
                     .ForEach(line => dt.Rows.Add(line));
 
@@ -81,8 +109,6 @@ namespace Dx2WikiWriter
                 GachaP = (string)row.Cells["Purple Gacha"].Value,
                 GachaY = (string)row.Cells["Yellow Gacha"].Value,
                 GachaT = (string)row.Cells["Teal Gacha"].Value,
-
-
             };
         }
 
@@ -119,8 +145,9 @@ namespace Dx2WikiWriter
         }
 
         //Exports a list of demons as files
-        public void ExportDemons(IEnumerable<DataGridViewRow> selectedDemons, bool oneFile, string path)
+        public void ExportDemons(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
         {
+            var ranks = GetRanks(selectedDemons, allDemons);
             var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
 
             var filePath = Path.Combine(path, "DemonData");
@@ -144,9 +171,9 @@ namespace Dx2WikiWriter
                 }
                 else
                 {
-                    demonData = d.CreateWikiStringIndividual();
+                    demonData = d.CreateWikiStringIndividual(ranks);
 
-                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", demonData);
+                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", demonData, System.Text.Encoding.UTF8);
                 }
             }
 
@@ -165,9 +192,64 @@ namespace Dx2WikiWriter
                             "|- style = \"vertical-align:middle;\"\r\n" +
                             demonData + "}";
 
-                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData);                
+                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData, System.Text.Encoding.UTF8);                
             }
         }
+
+        //Gets ranks for selected demons
+        public List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
+        {
+            var ranks = new List<Rank>();            
+
+            if (selectedDemons.Count() > 0)
+            {
+                var sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
+
+                for (var i = 0; i < selectedDemons.Count(); i++)
+                {
+                    var demon = LoadDemon(selectedDemons.ToList()[i]);
+
+                    var r = new Rank() { Name = demon.Name };
+                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+
+                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
+                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+
+                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
+                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+
+                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
+                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+
+                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
+                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+
+                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
+                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    
+                    ranks.Add(r);
+                }
+            }
+
+            return ranks;
+        }
+
+        //Cheat to allow Linq in struct
+        public static Rank GetMyRank(List<Rank> ranks, string name)
+        {
+            return ranks.Find(r => r.Name == name);
+        }
+    }
+
+    public struct Rank
+    {
+        public string Name;
+        public int Str;
+        public int Mag;
+        public int Vit;
+        public int Luck;
+        public int Agility;
+        public int HP;
     }
 
     public struct Demon
@@ -231,8 +313,10 @@ namespace Dx2WikiWriter
                      "|- style=\"vertical-align:middle;\"";
         }
 
-        public string CreateWikiStringIndividual()
+        public string CreateWikiStringIndividual(List<Rank> ranks)
         {
+            var total = ranks.Count-1;
+
             return "{{DemonTabs|base{{BASENAME}} }}\r\n" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
@@ -252,12 +336,12 @@ namespace Dx2WikiWriter
                 "|grade= " + Grade + "\r\n" +
                 "|rarity= " + Rarity + "\r\n" +
                 "|ai= " + Ai + "\r\n" +
-                "|max_hp= " + HP + "\r\n" +
-                "|max_str= " + Str + "\r\n" +
-                "|max_mag= " + Mag + "\r\n" +
-                "|max_vit= " + Vit + "\r\n" +
-                "|max_agi= " + Agi + "\r\n" +
-                "|max_luck= " + Luck + "\r\n" +
+                "|max_hp= " + HP + " (" + DBManager.GetMyRank(ranks, Name).HP + "/" + total + ")\r\n" +
+                "|max_str= " + Str + " (" + DBManager.GetMyRank(ranks, Name).Str + "/" + total + ")\r\n" +
+                "|max_mag= " + Mag + " (" + DBManager.GetMyRank(ranks, Name).Mag + "/" + total + ")\r\n" +
+                "|max_vit= " + Vit + " (" + DBManager.GetMyRank(ranks, Name).Vit + "/" + total + ")\r\n" +
+                "|max_agi= " + Agi + " (" + DBManager.GetMyRank(ranks, Name).Agility + "/" + total + ")\r\n" +
+                "|max_luck= " + Luck + " (" + DBManager.GetMyRank(ranks, Name).Luck + "/" + total + ")\r\n" +
                 "|patk= " + PAtk + "\r\n" +
                 "|pdef= " + PDef + "\r\n" +
                 "|matk= " + MAtk + "\r\n" +
@@ -265,7 +349,7 @@ namespace Dx2WikiWriter
                 "|transfer_skill= " + Skill1 + "\r\n" +
                 "|innate_skill1= " + Skill2 + "\r\n" +
                 "|innate_skill2= " + Skill3 + "\r\n" +
-                "|a_clear= " + AwakenC + "\r\n" +
+                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + "\r\n" +
                 "|a_red= " + AwakenR + "\r\n" +
                 "|a_yellow= " + AwakenY + "\r\n" +
                 "|a_purple= " + AwakenP + "\r\n" +
