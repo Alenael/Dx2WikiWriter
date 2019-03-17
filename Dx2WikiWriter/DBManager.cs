@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,421 +12,81 @@ namespace Dx2WikiWriter
 {
     public class DBManager
     {
+        #region Properties
+
         //Loads our DB from the path into a data grid view
-        public DataTable LoadDB(string path)
+        public DataTable LoadDB(string path) => ReadCSV(path);
+        
+        //Saves our DB to the loaded Path
+        public void SaveDB(DataTable dataTable, string path) => SaveCSV(dataTable, path);
+
+        #endregion
+
+        #region Methods
+
+        //Method that Saves our Data Table to our CSV
+        public bool SaveCSV(DataTable dataTable, string path)
         {
-            return ReadCSV(path);
-        }
-
-        public void SaveDB(DataTable dataTable, string path)
-        {
-            var fileContent = new StringBuilder();
-
-            foreach (var col in dataTable.Columns)
-            {
-                //Skips our Export Column
-                if (col == dataTable.Columns["Export"])
-                    continue;
-
-                fileContent.Append(col.ToString() + ",");
-            }
-
-            fileContent.Replace(",", Environment.NewLine, fileContent.Length - 1, 1);
-
-            foreach (DataRow dr in dataTable.Rows)
-            {
-                foreach (var column in dr.ItemArray)
-                    fileContent.Append("\"" + column.ToString() + "\",");
-
-
-                fileContent.Replace(",", System.Environment.NewLine, fileContent.Length - 1, 1);
-            }
-
-            File.WriteAllText(path, fileContent.ToString());
-        }
-
-        public DataTable ReadCSV(string filePath)
-        {
-            var dt = new DataTable();
-
             try
             {
-                // Creating the columns
-                File.ReadLines(filePath).Take(1)
-                    .SelectMany(x => x.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    .ToList()
-                    .ForEach(x => dt.Columns.Add(x.Trim()));
+                var fileContent = new StringBuilder();
 
-                // Adding the rows
-                File.ReadLines(filePath).Skip(1)
-                    .Select(x => x.Replace("\"", "").Split(','))
-                    .ToList()
-                    .ForEach(line => dt.Rows.Add(line));
+                foreach (var col in dataTable.Columns)
+                {
+                    //Skips our Export Column
+                    if (col == dataTable.Columns["Export"])
+                        continue;
+
+                    fileContent.Append(col.ToString() + ",");
+                }
+                
+                //Replace last , from previous step with a new line identifier
+                fileContent.Replace(",", Environment.NewLine, fileContent.Length - 1, 1);
+
+                foreach (DataRow dr in dataTable.Rows)
+                {
+                    foreach (var column in dr.ItemArray)
+                        fileContent.Append("\"" + column.ToString() + "\",");
+
+                    //Same as before replace our last , with a new line identifier
+                    fileContent.Replace(",", System.Environment.NewLine, fileContent.Length - 1, 1);
+                }
+
+                File.WriteAllText(path, fileContent.ToString());
+                return true;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(path + "\r\nCould not save file.\r\n\r\n" + e.Message, "Error");
+                return false;
+            }
+        }
+
+        //Method that loads our CSV Data into our Data Table
+        public DataTable ReadCSV(string filePath)
+        {
+            try
+            {
+                var dt = new DataTable();
+
+                using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.Jet.OleDb.4.0; Data Source = " + Path.GetDirectoryName(filePath) + ";Extended Properties=\"Text;HDR=YES;FMT=Delimited;CharacterSet=65001\""))
+
+                {
+                    conn.Open();
+                    string strQuery = "SELECT * FROM [" + Path.GetFileName(filePath) + "]";
+                    OleDbDataAdapter adapter = new OleDbDataAdapter(strQuery, conn);
+                    adapter.Fill(dt);
+                }
 
                 return dt;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Something is wrong with the input file. Contact Alenael with the message below if required.\r\n\r\n" + e.Message, "Error");
+                MessageBox.Show("Something is wrong with. " + filePath + "\r\nLook into the error below.\r\n\r\n" + e.Message, "Error");
                 return null;
             }
         }
 
-        //Creates a demon object from a data grid view row
-        public Demon LoadDemon(DataGridViewRow row)
-        {
-            return new Demon
-            {
-                Name = (string)row.Cells["Name"].Value,
-                Rarity = (string)row.Cells["Rarity"].Value,
-                Race = (string)row.Cells["Race"].Value,
-                Ai = (string)row.Cells["Type"].Value,
-                Grade = (string)row.Cells["Grade"].Value,
-
-                Str = Convert.ToInt32(row.Cells["6★ Strength"].Value),
-                Mag = Convert.ToInt32(row.Cells["6★ Magic"].Value),
-                Vit = Convert.ToInt32(row.Cells["6★ Vitality"].Value),
-                Agi = Convert.ToInt32(row.Cells["6★ Agility"].Value),
-                Luck = Convert.ToInt32(row.Cells["6★ Luck"].Value),
-
-                Fire = LoadResist((string)row.Cells["Fire"].Value),
-                Dark = LoadResist((string)row.Cells["Dark"].Value),
-                Light = LoadResist((string)row.Cells["Light"].Value),
-                Elec = LoadResist((string)row.Cells["Elec"].Value),
-                Ice = LoadResist((string)row.Cells["Ice"].Value),
-                Force = LoadResist((string)row.Cells["Force"].Value),
-                Phys = LoadResist((string)row.Cells["Phys"].Value),
-
-                Skill1 = (string)row.Cells["Skill 1"].Value,
-                Skill2 = (string)row.Cells["Skill 2"].Value,
-                Skill3 = (string)row.Cells["Skill 3"].Value,
-
-                AwakenC = (string)row.Cells["Clear Awaken"].Value,
-                AwakenR = (string)row.Cells["Red Awaken"].Value,
-                AwakenP = (string)row.Cells["Purple Awaken"].Value,
-                AwakenY = (string)row.Cells["Yellow Awaken"].Value,
-                AwakenT = (string)row.Cells["Teal Awaken"].Value,
-
-                GachaR = (string)row.Cells["Red Gacha"].Value,
-                GachaP = (string)row.Cells["Purple Gacha"].Value,
-                GachaY = (string)row.Cells["Yellow Gacha"].Value,
-                GachaT = (string)row.Cells["Teal Gacha"].Value,
-            };
-        }
-
-        //Returns a value based on what its passed
-        public string LoadResist(string value)
-        {
-            if (value == "" || value == null)
-                return "<nowiki>-</nowiki>";
-            else
-            {
-                var type = "";
-
-                switch (value)
-                {
-                    case "rs":
-                        type = "Resist";
-                        break;
-                    case "rp":
-                        type = "Repel";
-                        break;
-                    case "wk":
-                        type = "Weak";
-                        break;
-                    case "nu":
-                        type = "Null";
-                        break;
-                    case "ab":
-                        type = "Drain";
-                        break;
-                }
-
-                return "{{ResistColor|1=" + type + "}}";
-            }
-        }
-
-        //Exports a list of demons as files
-        public void ExportDemons(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
-        {
-            var ranks = GetRanks(selectedDemons, allDemons);
-
-            var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
-
-            var filePath = Path.Combine(path, "DemonData");
-            Directory.CreateDirectory(filePath);
-
-            var demonData = "";
-
-            foreach (var demon in sortedDemons)
-            {
-                var d = LoadDemon(demon);
-                var aether = GetAetherCosts(d, demon);
-                d.SetAetherCosts(aether);
-
-                if (d.Name == null)
-                    continue;
-
-                if (oneFile)
-                {
-                    if (sortedDemons.ElementAt(0) != demon)
-                        demonData = demonData + "\r\n";
-
-                    demonData = demonData + d.CreateWikiStringComp();
-                }
-                else
-                {
-                    demonData = d.CreateWikiStringIndividual(ranks);
-
-                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", demonData, System.Text.Encoding.UTF8);
-                }
-            }
-
-            if (oneFile)
-            {
-                demonData = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"\r\n" +
-                            "|- \r\n" +
-                            "\r\n" +
-                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" +
-                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" +
-                            "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]\r\n" +
-                            "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]\r\n" +
-                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" +
-                            "![[File: Dark.png | 20px | link =]] !!6★ PATK\r\n" +
-                            "!6★ PDEF !!6★ MATK !!6★ MDEF\r\n" +
-                            "|- style = \"vertical-align:middle;\"\r\n" +
-                            demonData + "}";
-
-                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData, Encoding.UTF8);
-            }
-        }
-
-        //Gets ranks for selected demons
-        public List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
-        {
-            var ranks = new List<Rank>();
-
-            if (selectedDemons.Count() > 0)
-            {
-                var sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
-
-                for (var i = 0; i < selectedDemons.Count(); i++)
-                {
-                    var demon = LoadDemon(selectedDemons.ToList()[i]);
-
-                    var r = new Rank() { Name = demon.Name };
-                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
-                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
-                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
-                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
-                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
-                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-
-                    ranks.Add(r);
-                }
-            }
-
-            return ranks;
-        }
-
-        //Gets all Ather Costs for a demon
-        public string[][] GetAetherCosts(Demon demon, DataGridViewRow row)
-        {
-            var aetherAmount = new string[4];
-            var aetherType = new string[4];
-            var found = 0;
-
-            GetAether("Light", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Light", "M", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Light", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Lawful", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Lawful", "M", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Lawful", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Neutral", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Neutral", "M", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Neutral", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Dark", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Dark", "M", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Dark", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Chaotic", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Chaotic", "M", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Chaotic", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Witch", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Witch", "L", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Soul", "S", row, ref aetherType, ref aetherAmount, ref found);
-            GetAether("Soul", "L", row, ref aetherType, ref aetherAmount, ref found);
-
-            return new[] { aetherType, aetherAmount };
-        }
-
-        //Shortcut that allows us to add different Aethers dynanimcally
-        private void GetAether(string aetherType, string aetherSize, DataGridViewRow row, ref string[] aetherTypeCol, ref string[] aetherAmountCol, ref int found)
-        {
-            //Return if we have all 4 Aether already
-            if (found >= 4) return;
-
-            if ((string)row.Cells[aetherSize + " " + aetherType].Value != "")
-            {
-                aetherTypeCol[found] = aetherType;
-                aetherAmountCol[found] = (string)row.Cells[aetherSize + " " + aetherType].Value;
-                found = found + 1;
-            }
-        }
-
-
-        //Cheat to allow Linq in struct
-        public static Rank GetMyRank(List<Rank> ranks, string name)
-        {
-            return ranks.Find(r => r.Name == name);
-        }
-    }
-
-    public struct Rank
-    {
-        public string Name;
-        public int Str;
-        public int Mag;
-        public int Vit;
-        public int Luck;
-        public int Agility;
-        public int HP;
-    }
-
-    public struct Demon
-    {
-        public string Name;
-        public string Race;
-        public string Grade;
-        public string Rarity;
-        public string Ai;
-        public int Str;
-        public int Mag;
-        public int Vit;
-        public int Agi;
-        public int Luck;
-        public string Phys;
-        public string Fire;
-        public string Ice;
-        public string Elec;
-        public string Force;
-        public string Light;
-        public string Dark;
-        public int HP { get { return (int)(Vit * 4.7 + 50 * 7.4); } }
-        public int PAtk { get { return (int)(Str * 2.1 + 50 * 5.6 + 50); } }
-        public int MAtk { get { return (int)(Mag * 2.1 + 50 * 5.6 + 50); } }        
-        public int PDef { get { return (int)(Vit * 1.1 + Str * 0.5 + 50 * 5.6 + 50); } }
-        public int MDef { get { return (int)(Vit * 1.1 + Mag * 0.5 + 50 * 5.6 + 50); } }
-
-        public string Skill1;
-        public string Skill2;
-        public string Skill3;
-
-        public string AwakenC;
-        public string AwakenR;
-        public string AwakenT;
-        public string AwakenP;
-        public string AwakenY;
-
-        public string GachaR;
-        public string GachaP;
-        public string GachaT;
-        public string GachaY;
-
-        public string Awaken1;
-        public string Awaken2;
-        public string Awaken3;
-        public string Awaken4;
-
-        public string Awaken1Amount;
-        public string Awaken2Amount;
-        public string Awaken3Amount;
-        public string Awaken4Amount;
-        
-        public void SetAetherCosts(string[][] aether)
-        {
-            Awaken1 = aether[0][0];
-            Awaken2 = aether[0][1];
-            Awaken3 = aether[0][2];
-            Awaken4 = aether[0][3];
-
-            Awaken1Amount = aether[1][0];
-            Awaken2Amount = aether[1][1];
-            Awaken3Amount = aether[1][2];
-            Awaken4Amount = aether[1][3];
-        }
-
-        //Creates a Wiki String based on the info in this object and returns it
-        public string CreateWikiStringComp()
-        {
-            return "|{{ListDemon|demon=" + Name + "|race= " + Race + "|grade= " + Grade + "|rarity= " + Rarity + "|ai= " + Ai + "|" +
-                     "hp= " + HP + "|str= " + Str + "|mag= " + Mag + "|vit= " + Vit + "|agi= " + Agi + "|luck= " + Luck + "" +
-                     "|phys= " + Phys + "|fire= " + Fire + "|ice= " + Ice + "|elec= " + Elec + "" +
-                     "|force= " + Force + "|light= " + Light + "|dark= " + Dark +
-                     "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + "}}\r\n" +
-                     "|- style=\"vertical-align:middle;\"";
-        }
-
-        public string CreateWikiStringIndividual(List<Rank> ranks)
-        {
-            var total = ranks.Count-1;
-
-            return "{{DemonTabs|base{{BASENAME}} }}\r\n" +
-                "{{Demon\r\n" +
-                "|id=\r\n" +
-                "|jpname=\r\n" +
-                "|name= " + Name + "\r\n" +
-                "|release_version= 1.0\r\n" +
-                "|link_altema=\r\n" +
-                "|art= {{PAGENAME}}.jpg\r\n" +
-                "|phys= " + Phys + "\r\n" +
-                "|fire= " + Fire + "\r\n" +
-                "|ice= " + Ice + "\r\n" +
-                "|elec= " + Elec + "\r\n" +
-                "|force= " + Force + "\r\n" +
-                "|light= " + Light + "\r\n" +
-                "|dark= " + Dark + "\r\n" +
-                "|race= " + Race + "\r\n" +
-                "|grade= " + Grade + "\r\n" +
-                "|rarity= " + Rarity + "\r\n" +
-                "|ai= " + Ai + "\r\n" +
-                "|max_hp= " + HP + " (" + DBManager.GetMyRank(ranks, Name).HP + "/" + total + ")\r\n" +
-                "|max_str= " + Str + " (" + DBManager.GetMyRank(ranks, Name).Str + "/" + total + ")\r\n" +
-                "|max_mag= " + Mag + " (" + DBManager.GetMyRank(ranks, Name).Mag + "/" + total + ")\r\n" +
-                "|max_vit= " + Vit + " (" + DBManager.GetMyRank(ranks, Name).Vit + "/" + total + ")\r\n" +
-                "|max_agi= " + Agi + " (" + DBManager.GetMyRank(ranks, Name).Agility + "/" + total + ")\r\n" +
-                "|max_luck= " + Luck + " (" + DBManager.GetMyRank(ranks, Name).Luck + "/" + total + ")\r\n" +
-                "|patk= " + PAtk + "\r\n" +
-                "|pdef= " + PDef + "\r\n" +
-                "|matk= " + MAtk + "\r\n" +
-                "|mdef= " + MDef + "\r\n" +
-                "|transfer_skill= " + Skill1 + "\r\n" +
-                "|innate_skill1= " + Skill2 + "\r\n" +
-                "|innate_skill2= " + Skill3 + "\r\n" +
-                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + "\r\n" +
-                "|a_red= " + AwakenR + "\r\n" +
-                "|a_yellow= " + AwakenY + "\r\n" +
-                "|a_purple= " + AwakenP + "\r\n" +
-                "|a_teal= " + AwakenT + "\r\n" +
-                "|g_red= " + GachaR + "\r\n" +
-                "|g_yellow= " + GachaY + "\r\n" +
-                "|g_purple= " + GachaP + "\r\n" +
-                "|g_teal= " + GachaT + "\r\n" +
-                "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + "\r\n" +
-                "|}}\r\n" +
-                "[[Category: Demons]]\r\n" +
-                "[[Category: " + Race + "]]\r\n" +
-                "[[Category: " + Rarity + " Star Demons]]\r\n" +
-                "[[Category: " + Ai + " AI]]\r\n";
-        }
+        #endregion
     }
 }

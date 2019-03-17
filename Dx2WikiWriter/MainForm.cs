@@ -9,13 +9,21 @@ namespace Dx2WikiWriter
 {
     public partial class MainForm : Form
     {
+        #region Properties
+
         public DBManager DBManager = new DBManager();
         public string LoadedPath;
 
-        public MainForm()
-        {
-            InitializeComponent();            
-        }
+        #endregion
+
+        #region Constructor
+
+        //Entry way
+        public MainForm() => InitializeComponent();
+
+        #endregion
+
+        #region Methods
 
         //Adds a Check Box column to the first slot of a datagridview
         private void AddCheckBox(DataGridView dgv)
@@ -23,10 +31,14 @@ namespace Dx2WikiWriter
             if (dgv.Columns["Export"] != null) return;
 
             var checkBoxCol = new DataGridViewCheckBoxColumn()
-                { Name = "Export", DisplayIndex = 0, AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells };
+            { Name = "Export", DisplayIndex = 0, AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells };
             dgv.Columns.Add(checkBoxCol);
         }
 
+        #endregion
+
+        #region Events
+        
         //Load our DB
         private void loadBtn_Click(object sender, EventArgs e)
         {
@@ -44,21 +56,41 @@ namespace Dx2WikiWriter
                 {
                     demonGrid.DataSource = DBManager.LoadDB(demonDbPath);
                     AddCheckBox(demonGrid);
-                    demonGrid.Sort(demonGrid.Columns["Name"], System.ComponentModel.ListSortDirection.Ascending);
-                    demonGrid.Columns["Name"].Frozen = true;
-                    demonGroupBox.Visible = true;
-                    searchGroupBox.Visible = true;
-                    loadBtn.Enabled = false;
-                    saveAllBtn.Visible = true;
+                    demonGrid.Sort(demonGrid.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
+                    demonGrid.Columns[0].Frozen = true;
                 }
                 else                
-                    MessageBox.Show(demonDbPath + ": Could not find file to open.");                
+                    MessageBox.Show(demonDbPath + ": Could not find file to open.");
+
+                //Load Skills
+                var skillDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv");
+                if (File.Exists(skillDbPath))
+                {
+                    skillGrid.DataSource = DBManager.LoadDB(skillDbPath);
+                    AddCheckBox(skillGrid);
+                    skillGrid.Sort(skillGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
+                    skillGrid.Columns[1].Frozen = true;
+                }
+                else
+                    MessageBox.Show(skillDbPath + ": Could not find file to open.");
+
+
+                #region Change To Loaded State
+
+                demonGroupBox.Visible = true;
+                searchGroupBox.Visible = true;
+                loadBtn.Enabled = false;
+                saveAllBtn.Visible = true;
+
+                #endregion
             }
         }
 
+        //Saves All DB's
         private void saveAllBtn_Click(object sender, EventArgs e)
         {
             DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
+            DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
         }
 
         //Selects all from a grid
@@ -70,6 +102,7 @@ namespace Dx2WikiWriter
                         row.Cells["Export"].Value = true;
         }
 
+        //Deselects all from a grid
         private void selectNoneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (sender is ToolStripItem menuItem)
@@ -78,18 +111,21 @@ namespace Dx2WikiWriter
                         row.Cells["Export"].Value = false;
         }
 
+        //Exports all Demons
         private void exportDemonAllBtn_Click(object sender, EventArgs e)
         {
-            DBManager.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
+        //Exports Selected Demons
         private void exportIndividualDemonBtn_Click(object sender, EventArgs e)
         {
             var selectedDemons = demonGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
 
-            DBManager.ExportDemons(selectedDemons, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            DemonHelper.ExportDemons(selectedDemons, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
+        //Show only demons in Search Txt
         private void searchBoxTxt_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(searchBoxTxt.Text))            
@@ -100,9 +136,12 @@ namespace Dx2WikiWriter
                 (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
         }
 
+        //Clears the Search Txt
         private void clearSearchBtn_Click(object sender, EventArgs e)
         {
             searchBoxTxt.Text = "";
         }
+
+        #endregion
     }
 }
