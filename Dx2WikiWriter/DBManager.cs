@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -35,14 +36,14 @@ namespace Dx2WikiWriter
             {
                 foreach (var column in dr.ItemArray)
                     fileContent.Append("\"" + column.ToString() + "\",");
-                
+
 
                 fileContent.Replace(",", System.Environment.NewLine, fileContent.Length - 1, 1);
             }
 
             File.WriteAllText(path, fileContent.ToString());
         }
-        
+
         public DataTable ReadCSV(string filePath)
         {
             var dt = new DataTable();
@@ -67,7 +68,7 @@ namespace Dx2WikiWriter
             {
                 MessageBox.Show("Something is wrong with the input file. Contact Alenael with the message below if required.\r\n\r\n" + e.Message, "Error");
                 return null;
-            }            
+            }
         }
 
         //Creates a demon object from a data grid view row
@@ -121,7 +122,7 @@ namespace Dx2WikiWriter
             {
                 var type = "";
 
-                switch(value)
+                switch (value)
                 {
                     case "rs":
                         type = "Resist";
@@ -148,6 +149,7 @@ namespace Dx2WikiWriter
         public void ExportDemons(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
         {
             var ranks = GetRanks(selectedDemons, allDemons);
+
             var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
 
             var filePath = Path.Combine(path, "DemonData");
@@ -158,6 +160,8 @@ namespace Dx2WikiWriter
             foreach (var demon in sortedDemons)
             {
                 var d = LoadDemon(demon);
+                var aether = GetAetherCosts(d, demon);
+                d.SetAetherCosts(aether);
 
                 if (d.Name == null)
                     continue;
@@ -180,26 +184,26 @@ namespace Dx2WikiWriter
             if (oneFile)
             {
                 demonData = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"\r\n" +
-                            "|- \r\n" + 
+                            "|- \r\n" +
                             "\r\n" +
-                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" + 
-                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" + 
+                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" +
+                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" +
                             "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]\r\n" +
                             "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]\r\n" +
-                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" + 
+                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" +
                             "![[File: Dark.png | 20px | link =]] !!6★ PATK\r\n" +
                             "!6★ PDEF !!6★ MATK !!6★ MDEF\r\n" +
                             "|- style = \"vertical-align:middle;\"\r\n" +
                             demonData + "}";
 
-                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData, System.Text.Encoding.UTF8);                
+                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData, Encoding.UTF8);
             }
         }
 
         //Gets ranks for selected demons
         public List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
         {
-            var ranks = new List<Rank>();            
+            var ranks = new List<Rank>();
 
             if (selectedDemons.Count() > 0)
             {
@@ -226,13 +230,58 @@ namespace Dx2WikiWriter
 
                     sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
                     r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
-                    
+
                     ranks.Add(r);
                 }
             }
 
             return ranks;
         }
+
+        //Gets all Ather Costs for a demon
+        public string[][] GetAetherCosts(Demon demon, DataGridViewRow row)
+        {
+            var aetherAmount = new string[4];
+            var aetherType = new string[4];
+            var found = 0;
+
+            GetAether("Light", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Light", "M", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Light", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Lawful", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Lawful", "M", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Lawful", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Neutral", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Neutral", "M", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Neutral", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Dark", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Dark", "M", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Dark", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Chaotic", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Chaotic", "M", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Chaotic", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Witch", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Witch", "L", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Soul", "S", row, ref aetherType, ref aetherAmount, ref found);
+            GetAether("Soul", "L", row, ref aetherType, ref aetherAmount, ref found);
+
+            return new[] { aetherType, aetherAmount };
+        }
+
+        //Shortcut that allows us to add different Aethers dynanimcally
+        private void GetAether(string aetherType, string aetherSize, DataGridViewRow row, ref string[] aetherTypeCol, ref string[] aetherAmountCol, ref int found)
+        {
+            //Return if we have all 4 Aether already
+            if (found >= 4) return;
+
+            if ((string)row.Cells[aetherSize + " " + aetherType].Value != "")
+            {
+                aetherTypeCol[found] = aetherType;
+                aetherAmountCol[found] = (string)row.Cells[aetherSize + " " + aetherType].Value;
+                found = found + 1;
+            }
+        }
+
 
         //Cheat to allow Linq in struct
         public static Rank GetMyRank(List<Rank> ranks, string name)
@@ -302,6 +351,19 @@ namespace Dx2WikiWriter
         public string Awaken3Amount;
         public string Awaken4Amount;
         
+        public void SetAetherCosts(string[][] aether)
+        {
+            Awaken1 = aether[0][0];
+            Awaken2 = aether[0][1];
+            Awaken3 = aether[0][2];
+            Awaken4 = aether[0][3];
+
+            Awaken1Amount = aether[1][0];
+            Awaken2Amount = aether[1][1];
+            Awaken3Amount = aether[1][2];
+            Awaken4Amount = aether[1][3];
+        }
+
         //Creates a Wiki String based on the info in this object and returns it
         public string CreateWikiStringComp()
         {
