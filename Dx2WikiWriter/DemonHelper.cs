@@ -10,24 +10,79 @@ namespace Dx2WikiWriter
 {
     public static class DemonHelper
     {
-        #region Methods
+        #region Public Methods
+
+        //Exports a list of demons as files
+        public static void ExportDemons(IEnumerable<DataGridViewRow> selected, IEnumerable<DataGridViewRow> all, bool oneFile, string path)
+        {
+            var ranks = GetRanks(selected, all);
+
+            var sortedDemons = selected.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
+
+            var filePath = Path.Combine(path, "DemonData");
+            Directory.CreateDirectory(filePath);
+
+            var data = "";
+
+            foreach (var s in sortedDemons)
+            {
+                var d = LoadDemon(s);
+                var aether = GetAetherCosts(d, s);
+                d.SetAetherCosts(aether);
+
+                if (d.Name == null)
+                    continue;
+
+                if (oneFile)
+                {
+                    if (sortedDemons.ElementAt(0) != s)
+                        data = data + "\r\n";
+
+                    data = data + d.CreateWikiStringComp();
+                }
+                else
+                {
+                    data = d.CreateWikiStringIndividual(ranks);
+
+                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", data, System.Text.Encoding.UTF8);
+                }
+            }
+
+            if (oneFile)
+            {
+                data = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"\r\n" +
+                            "|- \r\n" +
+                            "\r\n" +
+                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" +
+                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" +
+                            "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]\r\n" +
+                            "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]\r\n" +
+                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" +
+                            "![[File: Dark.png | 20px | link =]] !!6★ PATK\r\n" +
+                            "!6★ PDEF !!6★ MATK !!6★ MDEF\r\n" +
+                            "|- style = \"vertical-align:middle;\"\r\n" +
+                            data + "}";
+
+                File.WriteAllText(filePath + "\\Demon Comp.txt", data, Encoding.UTF8);
+            }
+        }
 
         //Creates a demon object from a data grid view row
         public static Demon LoadDemon(DataGridViewRow row)
         {
             return new Demon
             {
-                Name = (string)row.Cells["Name"].Value,
-                Rarity = (string)row.Cells["Rarity"].Value,
-                Race = (string)row.Cells["Race"].Value,
-                Ai = (string)row.Cells["Type"].Value,
-                Grade = (string)row.Cells["Grade"].Value,
+                Name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value,
+                Rarity = row.Cells["Rarity"].Value is DBNull ? "" : (string)row.Cells["Rarity"].Value,
+                Race = row.Cells["Race"].Value is DBNull ? "" : (string)row.Cells["Race"].Value,
+                Ai = row.Cells["Type"].Value is DBNull ? "" : (string)row.Cells["Type"].Value,
+                Grade = row.Cells["Grade"].Value is DBNull ? "" : (string)row.Cells["Grade"].Value,
 
-                Str = Convert.ToInt32(row.Cells["6★ Strength"].Value),
-                Mag = Convert.ToInt32(row.Cells["6★ Magic"].Value),
-                Vit = Convert.ToInt32(row.Cells["6★ Vitality"].Value),
-                Agi = Convert.ToInt32(row.Cells["6★ Agility"].Value),
-                Luck = Convert.ToInt32(row.Cells["6★ Luck"].Value),
+                Str = row.Cells["6★ Strength"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Strength"].Value),
+                Mag = row.Cells["6★ Magic"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Magic"].Value),
+                Vit = row.Cells["6★ Vitality"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Vitality"].Value),
+                Agi = row.Cells["6★ Agility"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Agility"].Value),
+                Luck = row.Cells["6★ Luck"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Luck"].Value),
 
                 Fire = LoadResist(row.Cells["Fire"].Value is DBNull ? "" : (string)row.Cells["Fire"].Value),
                 Dark = LoadResist(row.Cells["Dark"].Value is DBNull ? "" : (string)row.Cells["Dark"].Value),
@@ -54,8 +109,18 @@ namespace Dx2WikiWriter
             };
         }
 
+        //Cheat to allow Linq in struct
+        public static Rank GetMyRank(List<Rank> ranks, string name)
+        {
+            return ranks.Find(r => r.Name == name);
+        }
+
+        #endregion
+
+        #region Private Methods
+               
         //Returns a value based on what its passed
-        public static string LoadResist(string value)
+        private static string LoadResist(string value)
         {
             if (value == "" || value == null)
                 return "<nowiki>-</nowiki>";
@@ -86,63 +151,8 @@ namespace Dx2WikiWriter
             }
         }
 
-        //Exports a list of demons as files
-        public static void ExportDemons(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
-        {
-            var ranks = GetRanks(selectedDemons, allDemons);
-
-            var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
-
-            var filePath = Path.Combine(path, "DemonData");
-            Directory.CreateDirectory(filePath);
-
-            var demonData = "";
-
-            foreach (var demon in sortedDemons)
-            {
-                var d = LoadDemon(demon);
-                var aether = GetAetherCosts(d, demon);
-                d.SetAetherCosts(aether);
-
-                if (d.Name == null)
-                    continue;
-
-                if (oneFile)
-                {
-                    if (sortedDemons.ElementAt(0) != demon)
-                        demonData = demonData + "\r\n";
-
-                    demonData = demonData + d.CreateWikiStringComp();
-                }
-                else
-                {
-                    demonData = d.CreateWikiStringIndividual(ranks);
-
-                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", demonData, System.Text.Encoding.UTF8);
-                }
-            }
-
-            if (oneFile)
-            {
-                demonData = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"\r\n" +
-                            "|- \r\n" +
-                            "\r\n" +
-                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" +
-                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" +
-                            "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]\r\n" +
-                            "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]\r\n" +
-                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" +
-                            "![[File: Dark.png | 20px | link =]] !!6★ PATK\r\n" +
-                            "!6★ PDEF !!6★ MATK !!6★ MDEF\r\n" +
-                            "|- style = \"vertical-align:middle;\"\r\n" +
-                            demonData + "}";
-
-                File.WriteAllText(filePath + "\\Demon Comp.txt", demonData, Encoding.UTF8);
-            }
-        }
-
         //Gets ranks for selected demons
-        public static List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
+        private static List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
         {
             var ranks = new List<Rank>();
 
@@ -180,7 +190,7 @@ namespace Dx2WikiWriter
         }
 
         //Gets all Ather Costs for a demon
-        public static string[][] GetAetherCosts(Demon demon, DataGridViewRow row)
+        private static string[][] GetAetherCosts(Demon demon, DataGridViewRow row)
         {
             var aetherAmount = new string[4];
             var aetherType = new string[4];
@@ -221,12 +231,6 @@ namespace Dx2WikiWriter
                 aetherAmountCol[found] = (string)row.Cells[aetherSize + " " + aetherType].Value + aetherSize;
                 found = found + 1;
             }
-        }
-
-        //Cheat to allow Linq in struct
-        public static Rank GetMyRank(List<Rank> ranks, string name)
-        {
-            return ranks.Find(r => r.Name == name);
         }
 
         #endregion
@@ -310,7 +314,7 @@ namespace Dx2WikiWriter
             Awaken4Amount = aether[1][3];
         }
 
-        //Creates a Wiki String based on the info in this object and returns it
+        //Creates a Wiki String for Individuals in a Comp
         public string CreateWikiStringComp()
         {
             return "|{{ListDemon|demon=" + Name + "|race= " + Race + "|grade= " + Grade + "|rarity= " + Rarity + "|ai= " + Ai + "|" +
@@ -321,6 +325,7 @@ namespace Dx2WikiWriter
                      "|- style=\"vertical-align:middle;\"";
         }
 
+        //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual(List<Rank> ranks)
         {
             var total = ranks.Count - 1;

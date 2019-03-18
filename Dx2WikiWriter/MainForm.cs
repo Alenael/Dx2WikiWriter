@@ -78,6 +78,7 @@ namespace Dx2WikiWriter
                 #region Change To Loaded State
 
                 demonGroupBox.Visible = true;
+                skillGroupBox.Visible = true;
                 searchGroupBox.Visible = true;
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
@@ -124,24 +125,54 @@ namespace Dx2WikiWriter
 
             DemonHelper.ExportDemons(selectedDemons, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
+        
+        //Exports all Skills
+        private void exportSkillAllBtn_Click(object sender, EventArgs e)
+        {
+            SkillHelper.ExportSkills(skillGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+        }
+
+        //Exports Selected Skills
+        private void exportIndividualSkillBtn_Click(object sender, EventArgs e)
+        {
+            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
+
+            SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+        }        
 
         //Show only demons in Search Txt
         private void searchBoxTxt_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(searchBoxTxt.Text))            
-                (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;            
-            else if (searchBoxTxt.Text.StartsWith(".."))
-                (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
-            else
-                (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+            switch(tabPages.SelectedIndex)
+            {
+                case 0:
+                    if (string.IsNullOrEmpty(searchBoxTxt.Text))
+                        (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+                    else if (searchBoxTxt.Text.StartsWith(".."))
+                        (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
+                    else
+                        (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+                    break;
+                case 1:
+                    if (string.IsNullOrEmpty(searchBoxTxt.Text))
+                        (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+                    else if (searchBoxTxt.Text.StartsWith(".."))
+                        (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
+                    else
+                        (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+                    break;
+            }            
         }
 
         //Clears the Search Txt
         private void clearSearchBtn_Click(object sender, EventArgs e)
         {
             searchBoxTxt.Text = "";
+            (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
         }
 
         #endregion
+
     }
 }
