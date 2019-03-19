@@ -37,8 +37,6 @@
             this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skillTab = new System.Windows.Forms.TabPage();
             this.skillGrid = new System.Windows.Forms.DataGridView();
-            this.liberatorTab = new System.Windows.Forms.TabPage();
-            this.liberatorGrid = new System.Windows.Forms.DataGridView();
             this.loadBtn = new System.Windows.Forms.Button();
             this.demonGroupBox = new System.Windows.Forms.GroupBox();
             this.exportIndividualDemonBtn = new System.Windows.Forms.Button();
@@ -54,14 +52,13 @@
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
+            this.exportAllBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
             this.allContextMenu.SuspendLayout();
             this.skillTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).BeginInit();
-            this.liberatorTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.liberatorGrid)).BeginInit();
             this.demonGroupBox.SuspendLayout();
             this.skillGroupBox.SuspendLayout();
             this.liberatorGroupBox.SuspendLayout();
@@ -73,7 +70,6 @@
             // 
             this.tabPages.Controls.Add(this.demonTab);
             this.tabPages.Controls.Add(this.skillTab);
-            this.tabPages.Controls.Add(this.liberatorTab);
             this.tabPages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPages.Location = new System.Drawing.Point(0, 107);
             this.tabPages.Name = "tabPages";
@@ -146,25 +142,6 @@
             this.skillGrid.Size = new System.Drawing.Size(1343, 525);
             this.skillGrid.TabIndex = 5;
             // 
-            // liberatorTab
-            // 
-            this.liberatorTab.Controls.Add(this.liberatorGrid);
-            this.liberatorTab.Location = new System.Drawing.Point(4, 22);
-            this.liberatorTab.Name = "liberatorTab";
-            this.liberatorTab.Size = new System.Drawing.Size(1349, 531);
-            this.liberatorTab.TabIndex = 2;
-            this.liberatorTab.Text = "Liberators";
-            this.liberatorTab.UseVisualStyleBackColor = true;
-            // 
-            // liberatorGrid
-            // 
-            this.liberatorGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.liberatorGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.liberatorGrid.Location = new System.Drawing.Point(0, 0);
-            this.liberatorGrid.Name = "liberatorGrid";
-            this.liberatorGrid.Size = new System.Drawing.Size(1349, 531);
-            this.liberatorGrid.TabIndex = 6;
-            // 
             // loadBtn
             // 
             this.loadBtn.Location = new System.Drawing.Point(12, 12);
@@ -179,7 +156,7 @@
             // 
             this.demonGroupBox.Controls.Add(this.exportIndividualDemonBtn);
             this.demonGroupBox.Controls.Add(this.exportDemonAllBtn);
-            this.demonGroupBox.Location = new System.Drawing.Point(174, 12);
+            this.demonGroupBox.Location = new System.Drawing.Point(255, 12);
             this.demonGroupBox.Name = "demonGroupBox";
             this.demonGroupBox.Size = new System.Drawing.Size(345, 42);
             this.demonGroupBox.TabIndex = 6;
@@ -211,7 +188,7 @@
             // 
             this.skillGroupBox.Controls.Add(this.exportIndividualSkillBtn);
             this.skillGroupBox.Controls.Add(this.exportSkillAllBtn);
-            this.skillGroupBox.Location = new System.Drawing.Point(525, 12);
+            this.skillGroupBox.Location = new System.Drawing.Point(606, 12);
             this.skillGroupBox.Name = "skillGroupBox";
             this.skillGroupBox.Size = new System.Drawing.Size(345, 42);
             this.skillGroupBox.TabIndex = 7;
@@ -243,7 +220,7 @@
             // 
             this.liberatorGroupBox.Controls.Add(this.exportAllLiberatorsBtn);
             this.liberatorGroupBox.Controls.Add(this.button2);
-            this.liberatorGroupBox.Location = new System.Drawing.Point(876, 12);
+            this.liberatorGroupBox.Location = new System.Drawing.Point(255, 60);
             this.liberatorGroupBox.Name = "liberatorGroupBox";
             this.liberatorGroupBox.Size = new System.Drawing.Size(345, 42);
             this.liberatorGroupBox.TabIndex = 8;
@@ -300,6 +277,7 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.exportAllBtn);
             this.topPanel.Controls.Add(this.searchGroupBox);
             this.topPanel.Controls.Add(this.saveAllBtn);
             this.topPanel.Controls.Add(this.liberatorGroupBox);
@@ -324,6 +302,17 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
+            // exportAllBtn
+            // 
+            this.exportAllBtn.Location = new System.Drawing.Point(174, 12);
+            this.exportAllBtn.Name = "exportAllBtn";
+            this.exportAllBtn.Size = new System.Drawing.Size(75, 42);
+            this.exportAllBtn.TabIndex = 14;
+            this.exportAllBtn.Text = "Export All";
+            this.exportAllBtn.UseVisualStyleBackColor = true;
+            this.exportAllBtn.Visible = false;
+            this.exportAllBtn.Click += new System.EventHandler(this.exportAllBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -339,8 +328,6 @@
             this.allContextMenu.ResumeLayout(false);
             this.skillTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).EndInit();
-            this.liberatorTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.liberatorGrid)).EndInit();
             this.demonGroupBox.ResumeLayout(false);
             this.skillGroupBox.ResumeLayout(false);
             this.liberatorGroupBox.ResumeLayout(false);
@@ -357,8 +344,6 @@
         private System.Windows.Forms.DataGridView demonGrid;
         private System.Windows.Forms.TabPage skillTab;
         private System.Windows.Forms.DataGridView skillGrid;
-        private System.Windows.Forms.TabPage liberatorTab;
-        private System.Windows.Forms.DataGridView liberatorGrid;
         private System.Windows.Forms.ContextMenuStrip allContextMenu;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectNoneToolStripMenuItem;
@@ -377,6 +362,7 @@
         private System.Windows.Forms.Button clearSearchBtn;
         private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.GroupBox searchGroupBox;
+        private System.Windows.Forms.Button exportAllBtn;
     }
 }
 

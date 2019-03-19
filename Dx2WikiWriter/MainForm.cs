@@ -82,6 +82,7 @@ namespace Dx2WikiWriter
                 searchGroupBox.Visible = true;
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
+                exportAllBtn.Visible = true;
 
                 #endregion
             }
@@ -138,7 +139,16 @@ namespace Dx2WikiWriter
             var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
 
             SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
-        }        
+        }
+
+        //Exports Everything
+        private void exportAllBtn_Click(object sender, EventArgs e)
+        {
+            exportDemonAllBtn.PerformClick();
+            exportIndividualDemonBtn.PerformClick();
+            exportSkillAllBtn.PerformClick();
+            exportIndividualSkillBtn.PerformClick();
+        }
 
         //Show only demons in Search Txt
         private void searchBoxTxt_TextChanged(object sender, EventArgs e)
@@ -173,6 +183,5 @@ namespace Dx2WikiWriter
         }
 
         #endregion
-
     }
 }

@@ -23,31 +23,38 @@ namespace Dx2WikiWriter
 
             var data = "";
 
-            foreach (var s in skills)
+            if (oneFile)
             {
-                var d = LoadSkill(s, learnedBy, transferableFrom);
-
-                if (d.Name == null)
-                    continue;
-
-                if (oneFile)
+                data += GetSkillDataByElement("phys", "Physical", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("fire", "Fire", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("ice", "Ice", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("elec", "Electricity", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("force", "Force", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("light", "Light", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("dark", "Dark", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("almighty", "Almighty", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("ailment", "Status Ailment", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("support", "Support", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("passive", "Passive", skills, learnedBy, transferableFrom);
+            }
+            else
+            {
+                foreach (var skillRow in skills)
                 {
-                    if (skills.ElementAt(0) != s)
-                        data = data + "\r\n";
+                    var skill = LoadSkill(skillRow, learnedBy, transferableFrom);
 
-                    data = data + d.CreateWikiStringComp();
-                }
-                else
-                {
-                    data = d.CreateWikiStringIndividual();
+                    if (skill.Name == null)
+                        continue;
 
-                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", data, System.Text.Encoding.UTF8);
-                }
+                    data = skill.CreateWikiStringIndividual();
 
-                if (oneFile)
-                {
-                    File.WriteAllText(filePath + "\\Skill Comp.txt", data, Encoding.UTF8);
+                    File.WriteAllText(filePath + "\\" + skill.Name + ".txt", data, Encoding.UTF8);
                 }
+            }
+
+            if (oneFile)
+            {
+                File.WriteAllText(filePath + "\\Skill Comp.txt", data, Encoding.UTF8);
             }
         }
 
@@ -55,6 +62,26 @@ namespace Dx2WikiWriter
 
         #region Private Methods
 
+        //Creates and returns a set of Skill Data based on Element Type passed
+        private static string GetSkillDataByElement(string elementType, string elementName, IEnumerable<DataGridViewRow> skills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom)
+        {
+            var selectedSkills = skills.Where(s => (string)s.Cells["Element"].Value == elementType);
+
+            var skillData = "";
+
+            foreach (var skillRow in selectedSkills)
+            {
+                var skill = LoadSkill(skillRow, learnedBy, transferableFrom);
+
+                if (skill.Name == null)
+                    continue;
+
+                skillData += skill.CreateWikiStringComp();
+            }
+
+            return SkillCompSections(skillData, elementName);
+        }
+        
         //Gets list of skills and what can transfer each of them
         private static Dictionary<string, string> GetTransferableFrom(IEnumerable<DataGridViewRow> skills, IEnumerable<DataGridViewRow> demons)
         {
@@ -93,12 +120,15 @@ namespace Dx2WikiWriter
 
                     if (!(d.Cells["Purple Gacha"].Value is DBNull) && (string)d.Cells["Purple Gacha"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]] (Purple Archetype), ";
+                }
+            }
 
-                    if (trans[skillName].EndsWith(", "))
-                    {
-                        trans[skillName].Remove(trans[skillName].Length - 2, 2);
-                        trans[skillName] += " ";
-                    }
+            foreach (var t in trans.Keys.ToList())
+            {
+                if (trans[t].EndsWith(", "))
+                {
+                    trans[t] = trans[t].Remove(trans[t].Length - 2, 2);
+                    trans[t] += " ";
                 }
             }
 
@@ -161,12 +191,15 @@ namespace Dx2WikiWriter
 
                     if (!(d.Cells["Purple Gacha"].Value is DBNull) && (string)d.Cells["Purple Gacha"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]] (Purple Archetype), ";
+                }
+            }
 
-                    if (trans[skillName].EndsWith(", "))
-                    {
-                        trans[skillName].Remove(trans[skillName].Length - 2, 2);
-                        trans[skillName] += " ";
-                    }
+            foreach (var t in trans.Keys.ToList())
+            {
+                if (trans[t].EndsWith(", "))
+                {
+                    trans[t] = trans[t].Remove(trans[t].Length - 2, 2);
+                    trans[t] += " ";
                 }
             }
 
@@ -198,6 +231,21 @@ namespace Dx2WikiWriter
             };
         }
 
+        //Adds the beganning and ending sections to a Skill Comp
+        private static string SkillCompSections(string data, string type)
+        {
+            return "===" + type + " Skills===" + Environment.NewLine +
+                   "{| class=\"wikitable sortable\" style=\"width: 100%;\"" + Environment.NewLine +
+                   "|-" + Environment.NewLine + 
+                   Environment.NewLine +
+                   "!Name !!MP Cost !!Effect !!Target !!Skill Points !!Learned By !!Transferable From" + Environment.NewLine +
+                   "|- style=\"vertical-align:middle;\"" + Environment.NewLine +
+                   data +
+                   "|}" + Environment.NewLine +
+                   "<br>" + Environment.NewLine +
+                   Environment.NewLine;
+        }
+
         #endregion
     }
 
@@ -218,26 +266,26 @@ namespace Dx2WikiWriter
         //Creates a Wiki String for Individuals in a Comp
         public string CreateWikiStringComp()
         {
-            return "|-" + "\r\n" +
-                   "|[[" + Name + "]]" + "\r\n" +
-                   "|" + Cost + "\r\n" +
-                   "|" + Description + "\r\n" +
-                   "|" + Target + "\r\n" +
-                   "|" + Sp + "\r\n" +
-                   "|" + LearnedBy + "\r\n" +
-                   "|" + TransferableFrom + "\r\n";
+            return "|-" + Environment.NewLine +
+                   "|[[" + Name + "]]" + Environment.NewLine +
+                   "|" + Cost + Environment.NewLine +
+                   "|<nowiki></nowiki>" + Description.Replace("\\n", Environment.NewLine) + Environment.NewLine +
+                   "|" + Target + Environment.NewLine +
+                   "|" + Sp + Environment.NewLine +
+                   "|" + LearnedBy + Environment.NewLine +
+                   "|" + TransferableFrom + Environment.NewLine;
         }
 
         //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual()
         {
             return "{{SkillTable\r\n" +
-                    "|skill=" + Name + "\r\n" +
-                    "|type=" + Element + "\r\n" +
-                    "|cost=" + Cost + "\r\n" +
-                    "|sp=" + Sp + "\r\n" +
-                    "|target=" + Target + "\r\n" +
-                    "|description" + Description + "\r\n" +
+                    "|skill=" + Name + Environment.NewLine +
+                    "|type=" + Element + Environment.NewLine +
+                    "|cost=" + Cost + Environment.NewLine +
+                    "|sp=" + Sp + Environment.NewLine +
+                    "|target=" + Target + Environment.NewLine +
+                    "|description=" + Description.Replace("\\n", Environment.NewLine) + Environment.NewLine +
                     "}}";
         }
     }

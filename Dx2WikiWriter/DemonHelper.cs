@@ -36,7 +36,7 @@ namespace Dx2WikiWriter
                 if (oneFile)
                 {
                     if (sortedDemons.ElementAt(0) != s)
-                        data = data + "\r\n";
+                        data = data + Environment.NewLine;
 
                     data = data + d.CreateWikiStringComp();
                 }
@@ -44,23 +44,23 @@ namespace Dx2WikiWriter
                 {
                     data = d.CreateWikiStringIndividual(ranks);
 
-                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", data, System.Text.Encoding.UTF8);
+                    File.WriteAllText(filePath + "\\" + d.Name + ".txt", data, Encoding.UTF8);
                 }
             }
 
             if (oneFile)
             {
-                data = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"\r\n" +
-                            "|- \r\n" +
-                            "\r\n" +
-                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic\r\n" +
-                            "!6★ Vitality !!6★ Agility !!6★ Luck\r\n" +
-                            "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]\r\n" +
-                            "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]\r\n" +
-                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]\r\n" +
-                            "![[File: Dark.png | 20px | link =]] !!6★ PATK\r\n" +
-                            "!6★ PDEF !!6★ MATK !!6★ MDEF\r\n" +
-                            "|- style = \"vertical-align:middle;\"\r\n" +
+                data = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"" + Environment.NewLine +
+                            "|-" +
+                            Environment.NewLine +
+                            "! Name !!Race !!Grade !!Rarity !!AI !!6★ HP !!6★ Strength !!6★ Magic" + Environment.NewLine +
+                            "!6★ Vitality !!6★ Agility !!6★ Luck" + Environment.NewLine +
+                            "![[File: Physical.png | 20px | link =]] !![[File: Fire.png | 20px | link =]]" + Environment.NewLine +
+                            "![[File: Ice.png | 20px | link =]] !![[File: Electricity.png | 20px | link =]]" + Environment.NewLine +
+                            "![[File: Force.png | 20px | link =]] !![[File: Light.png | 20px | link =]]" + Environment.NewLine + 
+                            "![[File: Dark.png | 20px | link =]] !!6★ PATK" + Environment.NewLine +
+                            "!6★ PDEF !!6★ MATK !!6★ MDEF" + Environment.NewLine +
+                            "|- style = \"vertical-align:middle;\"" + Environment.NewLine +
                             data + "}";
 
                 File.WriteAllText(filePath + "\\Demon Comp.txt", data, Encoding.UTF8);
@@ -330,48 +330,48 @@ namespace Dx2WikiWriter
         {
             var total = ranks.Count - 1;
 
-            return "{{DemonTabs|base{{BASENAME}} }}\r\n" +
+            return "{{DemonTabs|base{{BASENAME}} }}" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +
-                "|name= " + Name + "\r\n" +
+                "|name= " + Name + Environment.NewLine +
                 "|release_version= 1.0\r\n" +
                 "|link_altema=\r\n" +
                 "|art= {{PAGENAME}}.jpg\r\n" +
-                "|phys= " + Phys + "\r\n" +
-                "|fire= " + Fire + "\r\n" +
-                "|ice= " + Ice + "\r\n" +
-                "|elec= " + Elec + "\r\n" +
-                "|force= " + Force + "\r\n" +
-                "|light= " + Light + "\r\n" +
-                "|dark= " + Dark + "\r\n" +
-                "|race= " + Race + "\r\n" +
-                "|grade= " + Grade + "\r\n" +
-                "|rarity= " + Rarity + "\r\n" +
-                "|ai= " + Ai + "\r\n" +
+                "|phys= " + Phys + Environment.NewLine +
+                "|fire= " + Fire + Environment.NewLine +
+                "|ice= " + Ice + Environment.NewLine +
+                "|elec= " + Elec + Environment.NewLine +
+                "|force= " + Force + Environment.NewLine +
+                "|light= " + Light + Environment.NewLine +
+                "|dark= " + Dark + Environment.NewLine +
+                "|race= " + Race + Environment.NewLine +
+                "|grade= " + Grade + Environment.NewLine +
+                "|rarity= " + Rarity + Environment.NewLine +
+                "|ai= " + Ai + Environment.NewLine +
                 "|max_hp= " + HP + " (" + DemonHelper.GetMyRank(ranks, Name).HP + "/" + total + ")\r\n" +
                 "|max_str= " + Str + " (" + DemonHelper.GetMyRank(ranks, Name).Str + "/" + total + ")\r\n" +
                 "|max_mag= " + Mag + " (" + DemonHelper.GetMyRank(ranks, Name).Mag + "/" + total + ")\r\n" +
                 "|max_vit= " + Vit + " (" + DemonHelper.GetMyRank(ranks, Name).Vit + "/" + total + ")\r\n" +
                 "|max_agi= " + Agi + " (" + DemonHelper.GetMyRank(ranks, Name).Agility + "/" + total + ")\r\n" +
                 "|max_luck= " + Luck + " (" + DemonHelper.GetMyRank(ranks, Name).Luck + "/" + total + ")\r\n" +
-                "|patk= " + PAtk + "\r\n" +
-                "|pdef= " + PDef + "\r\n" +
-                "|matk= " + MAtk + "\r\n" +
-                "|mdef= " + MDef + "\r\n" +
-                "|transfer_skill= " + Skill1 + "\r\n" +
-                "|innate_skill1= " + Skill2 + "\r\n" +
-                "|innate_skill2= " + Skill3 + "\r\n" +
-                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + "\r\n" +
-                "|a_red= " + AwakenR + "\r\n" +
-                "|a_yellow= " + AwakenY + "\r\n" +
-                "|a_purple= " + AwakenP + "\r\n" +
-                "|a_teal= " + AwakenT + "\r\n" +
-                "|g_red= " + GachaR + "\r\n" +
-                "|g_yellow= " + GachaY + "\r\n" +
-                "|g_purple= " + GachaP + "\r\n" +
-                "|g_teal= " + GachaT + "\r\n" +
-                "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + "\r\n" +
+                "|patk= " + PAtk + Environment.NewLine +
+                "|pdef= " + PDef + Environment.NewLine +
+                "|matk= " + MAtk + Environment.NewLine +
+                "|mdef= " + MDef + Environment.NewLine +
+                "|transfer_skill= " + Skill1 + Environment.NewLine +
+                "|innate_skill1= " + Skill2 + Environment.NewLine +
+                "|innate_skill2= " + Skill3 + Environment.NewLine +
+                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + Environment.NewLine +
+                "|a_red= " + AwakenR + Environment.NewLine +
+                "|a_yellow= " + AwakenY + Environment.NewLine +
+                "|a_purple= " + AwakenP + Environment.NewLine +
+                "|a_teal= " + AwakenT + Environment.NewLine +
+                "|g_red= " + GachaR + Environment.NewLine +
+                "|g_yellow= " + GachaY + Environment.NewLine +
+                "|g_purple= " + GachaP + Environment.NewLine +
+                "|g_teal= " + GachaT + Environment.NewLine +
+                "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
                 "|}}\r\n" +
                 "[[Category: Demons]]\r\n" +
                 "[[Category: " + Race + "]]\r\n" +
