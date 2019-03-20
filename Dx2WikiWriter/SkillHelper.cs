@@ -49,6 +49,11 @@ namespace Dx2WikiWriter
                     data = skill.CreateWikiStringIndividual();
 
                     File.WriteAllText(filePath + "\\" + skill.Name + ".txt", data, Encoding.UTF8);
+
+
+                    var data2 = skill.CreateWikiStringDemons();
+
+                    File.WriteAllText(filePath + "\\" + skill.Name + "-Demons.txt", data2, Encoding.UTF8);
                 }
             }
 
@@ -235,8 +240,8 @@ namespace Dx2WikiWriter
                 Description = row.Cells["Description"].Value is DBNull ? "" : (string)row.Cells["Description"].Value,
                 Target = row.Cells["Target"].Value is DBNull ? "" : (string)row.Cells["Target"].Value,
                 Sp = row.Cells["Skill Points"].Value is DBNull ? "" : (string)row.Cells["Skill Points"].Value,
-                LearnedBy = lb,
-                TransferableFrom = tf
+                LearnedBy = lb.Trim(),
+                TransferableFrom = tf.Trim()
             };
         }
 
@@ -296,6 +301,77 @@ namespace Dx2WikiWriter
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine + 
                     "}}";
+        }
+
+        //Converts a string array into a string
+        private static string ConvertStringArrayToString(string[] array)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (string value in array)
+            {
+                builder.Append(value.Trim());
+                builder.Append(", ");
+            }
+
+            //Remove ', ' from end
+            if (array.Length >= 1)
+                builder = builder.Remove(builder.Length - 2, 2);
+
+            return builder.ToString();
+        }
+
+        //Returns a list of demons who have learned or have skills as transfers
+        private static string GetDemonsWithSkill(string data, string type)
+        {
+            return ConvertStringArrayToString(data.Split(',').Where(s => s.Contains(type)).ToArray()).Replace(" " + type, "");
+        }
+
+        //Creates a Wiki string for Individual skills and what demons can transfer/learn them
+        public string CreateWikiStringDemons()
+        {
+            var clearTransfer = "";
+            var redTransfer = "";
+            var yellowTransfer = "";
+            var tealTransfer = "";
+            var purpleTransfer = "";
+
+            var clearLearnedBy = "";
+            var redLearnedBy = "";
+            var yellowLearnedBy = "";
+            var tealLearnedBy = "";
+            var purpleLearnedBy = "";
+
+            clearTransfer = GetDemonsWithSkill(TransferableFrom, "(Clear Archetype)");
+            redTransfer = GetDemonsWithSkill(TransferableFrom, "(Red Archetype)");
+            yellowTransfer = GetDemonsWithSkill(TransferableFrom, "(Yellow Archetype)");
+            purpleTransfer = GetDemonsWithSkill(TransferableFrom, "(Purple Archetype)");
+            tealTransfer = GetDemonsWithSkill(TransferableFrom, "(Teal Archetype)");
+
+            clearLearnedBy = GetDemonsWithSkill(LearnedBy, "(Clear Archetype)");
+            redLearnedBy = GetDemonsWithSkill(LearnedBy, "(Red Archetype)");
+            yellowLearnedBy = GetDemonsWithSkill(LearnedBy, "(Yellow Archetype)");
+            purpleLearnedBy = GetDemonsWithSkill(LearnedBy, "(Purple Archetype)");
+            tealLearnedBy = GetDemonsWithSkill(LearnedBy, "(Teal Archetype)");
+            
+            return "{{TransferTable\r\n" +
+                   "|title=Demons to transfer skill from\r\n" +
+                   "|type=Default / Gacha Archetype\r\n" +
+                   "|d0c=" + clearTransfer + "\r\n" +
+                   "|d0r=" + redTransfer + "\r\n" +
+                   "|d0y=" + yellowTransfer + "\r\n" +
+                   "|d0p=" + purpleTransfer + "\r\n" +
+                   "|d0t=" + tealTransfer + "\r\n" +
+                   "|}}" + "\r\n" +
+                   "\r\n" +
+                   "{{OwnedTable\r\n" +
+                   "|title=Demons with skill\r\n" +
+                   "|type=Awakened Archetype\r\n" +
+                   "|d0c=" + clearLearnedBy + "\r\n" +
+                   "|d0r=" + redLearnedBy + "\r\n" +
+                   "|d0y=" + yellowLearnedBy + "\r\n" +
+                   "|d0p=" + purpleLearnedBy + "\r\n" +
+                   "|d0t=" + tealLearnedBy + "\r\n" +
+                   "|}}";
         }
     }
 
