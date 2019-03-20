@@ -69,7 +69,18 @@ namespace Dx2WikiWriter
 
             var skillData = "";
 
-            foreach (var skillRow in selectedSkills)
+            GetSkillDataByTarget(ref skillData, "Single Enemy", selectedSkills, learnedBy, transferableFrom);
+            GetSkillDataByTarget(ref skillData, "All Enemies", selectedSkills, learnedBy, transferableFrom);
+            GetSkillDataByTarget(ref skillData, "Random Enemies", selectedSkills, learnedBy, transferableFrom);
+            GetSkillDataByTarget(ref skillData, "Self", selectedSkills, learnedBy, transferableFrom);
+
+            return SkillCompSections(skillData, elementName);
+        }
+
+        //Loops through list of skills and extracts data for the specific target type
+        private static void GetSkillDataByTarget(ref string skillData, string targetType, IEnumerable<DataGridViewRow> selectedSkills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom)
+        {
+            foreach (var skillRow in selectedSkills.Where(s => !(s.Cells["Target"].Value is DBNull) && (string)s.Cells["Target"].Value == targetType).OrderBy(o => (string)o.Cells["Cost"].Value))
             {
                 var skill = LoadSkill(skillRow, learnedBy, transferableFrom);
 
@@ -78,8 +89,6 @@ namespace Dx2WikiWriter
 
                 skillData += skill.CreateWikiStringComp();
             }
-
-            return SkillCompSections(skillData, elementName);
         }
         
         //Gets list of skills and what can transfer each of them
@@ -267,25 +276,25 @@ namespace Dx2WikiWriter
         public string CreateWikiStringComp()
         {
             return "|-" + Environment.NewLine +
-                   "|[[" + Name + "]]" + Environment.NewLine +
+                   "|[[" + Name.Replace("[", "(").Replace("]", ")") + "]]" + Environment.NewLine +
                    "|" + Cost + Environment.NewLine +
-                   "|<nowiki></nowiki>" + Description.Replace("\\n", Environment.NewLine) + Environment.NewLine +
+                   "|" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine +
                    "|" + Target + Environment.NewLine +
                    "|" + Sp + Environment.NewLine +
-                   "|" + LearnedBy + Environment.NewLine +
-                   "|" + TransferableFrom + Environment.NewLine;
+                   "|style=\"width:15%\"|" + LearnedBy + Environment.NewLine +
+                   "|style=\"width:15%\"|" + TransferableFrom + Environment.NewLine;
         }
 
         //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual()
         {
             return "{{SkillTable\r\n" +
-                    "|skill=" + Name + Environment.NewLine +
+                    "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
                     "|cost=" + Cost + Environment.NewLine +
                     "|sp=" + Sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
-                    "|description=" + Description.Replace("\\n", Environment.NewLine) + Environment.NewLine +
+                    "|description=" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine + 
                     "}}";
         }
     }
