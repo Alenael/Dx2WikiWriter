@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Dx2WikiWriter
 
         public DBManager DBManager = new DBManager();
         public string LoadedPath;
+        public WikiManager WikiManager;
 
         #endregion
 
@@ -35,6 +37,14 @@ namespace Dx2WikiWriter
             dgv.Columns.Add(checkBoxCol);
         }
 
+        //Clears all files out of a directory
+        private void ClearDirectory(string path)
+        {
+            if (Directory.Exists(path))
+                foreach (var file in new DirectoryInfo(path).GetFiles())
+                    file.Delete();
+        }
+
         #endregion
 
         #region Events
@@ -44,6 +54,7 @@ namespace Dx2WikiWriter
         {
             var folderDir = new CommonOpenFileDialog { IsFolderPicker = true };
             var result = folderDir.ShowDialog();
+            var dbStatus = true;
 
             if (result == CommonFileDialogResult.Ok && Directory.Exists(folderDir.FileName))
             {
@@ -58,9 +69,13 @@ namespace Dx2WikiWriter
                     AddCheckBox(demonGrid);
                     demonGrid.Sort(demonGrid.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
                     demonGrid.Columns[0].Frozen = true;
+                    ClearDirectory(Path.Combine(LoadedPath, "DemonData"));
                 }
-                else                
-                    MessageBox.Show(demonDbPath + ": Could not find file to open.");
+                else
+                {
+                    logRTB.AppendText(demonDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
 
                 //Load Skills
                 var skillDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv");
@@ -70,9 +85,13 @@ namespace Dx2WikiWriter
                     AddCheckBox(skillGrid);
                     skillGrid.Sort(skillGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
                     skillGrid.Columns[1].Frozen = true;
+                    ClearDirectory(Path.Combine(LoadedPath, "SkillData"));
                 }
                 else
-                    MessageBox.Show(skillDbPath + ": Could not find file to open.");
+                {
+                    logRTB.AppendText(skillDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
 
 
                 #region Change To Loaded State
@@ -83,7 +102,8 @@ namespace Dx2WikiWriter
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
                 exportAllBtn.Visible = true;
-
+                uploadToWikiBtn.Enabled = dbStatus;
+                
                 #endregion
             }
         }
@@ -91,8 +111,10 @@ namespace Dx2WikiWriter
         //Saves All DB's
         private void saveAllBtn_Click(object sender, EventArgs e)
         {
-            DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
-            DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
+            if (demonGrid.DataSource != null)
+                DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
+            if (skillGrid.DataSource != null)
+                DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
         }
 
         //Selects all from a grid
@@ -178,8 +200,35 @@ namespace Dx2WikiWriter
         private void clearSearchBtn_Click(object sender, EventArgs e)
         {
             searchBoxTxt.Text = "";
-            (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
-            (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            if (demonGrid.DataSource != null)
+                (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            if (skillGrid.DataSource != null)
+                (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+        }
+
+        //Pushes all files up to the Wiki
+        private void uploadToWiki_Click(object sender, EventArgs e)
+        { 
+            WikiManager.UploadAllFilesAsync(LoadedPath, demonGrid.Rows.Cast<DataGridViewRow>());
+        }
+
+        //On Form Load
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            WikiManager = new WikiManager(uploadToWikiBtn, logRTB, retryWikiLoginBtn);
+        }
+
+        //Create new instance of our Wiki Object
+        private void retryWikiLoginBtn_Click(object sender, EventArgs e)
+        {
+            WikiManager = new WikiManager(uploadToWikiBtn, logRTB, retryWikiLoginBtn);
+            retryWikiLoginBtn.Visible = false;
+        }
+
+        //Allows easy access to visit site
+        private void logRTB_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
         }
 
         #endregion

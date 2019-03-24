@@ -25,23 +25,25 @@ namespace Dx2WikiWriter
 
             if (oneFile)
             {
-                data += GetSkillDataByElement("phys", "Physical", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("fire", "Fire", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("ice", "Ice", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("elec", "Electricity", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("force", "Force", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("light", "Light", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("dark", "Dark", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("almighty", "Almighty", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("ailment", "Status Ailment", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("support", "Support", skills, learnedBy, transferableFrom);
-                data += GetSkillDataByElement("passive", "Passive", skills, learnedBy, transferableFrom);
+                data += GetSkillDataByElement("physical", "Physical", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("fire", "Fire", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("ice", "Ice", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("elec", "Electricity", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("force", "Force", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("light", "Light", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("dark", "Dark", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("almighty", "Almighty", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("ailment", "Status Ailment", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("recovery", "Recovery", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("support", "Support", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("passive", "Passive", skills, learnedBy, transferableFrom, demons);
+
             }
             else
             {
                 foreach (var skillRow in skills)
                 {
-                    var skill = LoadSkill(skillRow, learnedBy, transferableFrom);
+                    var skill = LoadSkill(skillRow, learnedBy, transferableFrom, demons);
 
                     if (skill.Name == null)
                         continue;
@@ -59,7 +61,7 @@ namespace Dx2WikiWriter
 
             if (oneFile)
             {
-                File.WriteAllText(filePath + "\\Skill Comp.txt", data, Encoding.UTF8);
+                File.WriteAllText(filePath + "\\Skill List (Bot).txt", data, Encoding.UTF8);
             }
         }
 
@@ -68,26 +70,29 @@ namespace Dx2WikiWriter
         #region Private Methods
 
         //Creates and returns a set of Skill Data based on Element Type passed
-        private static string GetSkillDataByElement(string elementType, string elementName, IEnumerable<DataGridViewRow> skills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom)
+        private static string GetSkillDataByElement(string elementType, string elementName, IEnumerable<DataGridViewRow> skills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom, IEnumerable<DataGridViewRow> demons)
         {
             var selectedSkills = skills.Where(s => (string)s.Cells["Element"].Value == elementType);
 
             var skillData = "";
 
-            GetSkillDataByTarget(ref skillData, "Single Enemy", selectedSkills, learnedBy, transferableFrom);
-            GetSkillDataByTarget(ref skillData, "All Enemies", selectedSkills, learnedBy, transferableFrom);
-            GetSkillDataByTarget(ref skillData, "Random Enemies", selectedSkills, learnedBy, transferableFrom);
-            GetSkillDataByTarget(ref skillData, "Self", selectedSkills, learnedBy, transferableFrom);
+            GetSkillDataByTarget(ref skillData, "Single Party Member", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "All Party Members", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Single Enemy", selectedSkills, learnedBy, transferableFrom, demons);            
+            GetSkillDataByTarget(ref skillData, "All Enemies", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Random Enemies", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Self", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Universal", selectedSkills, learnedBy, transferableFrom, demons);            
 
             return SkillCompSections(skillData, elementName);
         }
 
         //Loops through list of skills and extracts data for the specific target type
-        private static void GetSkillDataByTarget(ref string skillData, string targetType, IEnumerable<DataGridViewRow> selectedSkills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom)
+        private static void GetSkillDataByTarget(ref string skillData, string targetType, IEnumerable<DataGridViewRow> selectedSkills, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom, IEnumerable<DataGridViewRow> demons)
         {
             foreach (var skillRow in selectedSkills.Where(s => !(s.Cells["Target"].Value is DBNull) && (string)s.Cells["Target"].Value == targetType).OrderBy(o => (string)o.Cells["Cost"].Value))
             {
-                var skill = LoadSkill(skillRow, learnedBy, transferableFrom);
+                var skill = LoadSkill(skillRow, learnedBy, transferableFrom, demons);
 
                 if (skill.Name == null)
                     continue;
@@ -221,7 +226,7 @@ namespace Dx2WikiWriter
         }
 
         //Loads our Skill from a DataGridRow
-        private static Skill LoadSkill(DataGridViewRow row, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom)
+        private static Skill LoadSkill(DataGridViewRow row, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom, IEnumerable<DataGridViewRow> demons)
         {
             var lb = "";
             var tf = "";
@@ -232,9 +237,14 @@ namespace Dx2WikiWriter
                 tf = transferableFrom[(string)row.Cells["Name"].Value];
             }
 
+            var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
+
+            if (demons.Any(d => (string)d.Cells["Name"].Value == name))            
+                name = name + " (Skill)";            
+
             return new Skill
             {
-                Name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value,
+                Name = name,
                 Element = row.Cells["Element"].Value is DBNull ? "" : (string)row.Cells["Element"].Value,
                 Cost = row.Cells["Cost"].Value is DBNull ? "" : (string)row.Cells["Cost"].Value,
                 Description = row.Cells["Description"].Value is DBNull ? "" : (string)row.Cells["Description"].Value,
@@ -280,12 +290,14 @@ namespace Dx2WikiWriter
         //Creates a Wiki String for Individuals in a Comp
         public string CreateWikiStringComp()
         {
+            var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
+
             return "|-" + Environment.NewLine +
                    "|[[" + Name.Replace("[", "(").Replace("]", ")") + "]]" + Environment.NewLine +
                    "|" + Cost + Environment.NewLine +
                    "|" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine +
                    "|" + Target + Environment.NewLine +
-                   "|" + Sp + Environment.NewLine +
+                   "|" + sp + Environment.NewLine +
                    "|style=\"width:15%\"|" + LearnedBy + Environment.NewLine +
                    "|style=\"width:15%\"|" + TransferableFrom + Environment.NewLine;
         }
@@ -293,11 +305,13 @@ namespace Dx2WikiWriter
         //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual()
         {
+            var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
+
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
                     "|cost=" + Cost + Environment.NewLine +
-                    "|sp=" + Sp + Environment.NewLine +
+                    "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine + 
                     "}}";

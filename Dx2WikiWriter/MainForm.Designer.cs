@@ -51,8 +51,12 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
-            this.searchGroupBox = new System.Windows.Forms.GroupBox();
             this.exportAllBtn = new System.Windows.Forms.Button();
+            this.searchGroupBox = new System.Windows.Forms.GroupBox();
+            this.uploadToWikiBtn = new System.Windows.Forms.Button();
+            this.retryWikiLoginBtn = new System.Windows.Forms.Button();
+            this.logTab = new System.Windows.Forms.TabPage();
+            this.logRTB = new System.Windows.Forms.RichTextBox();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -64,12 +68,14 @@
             this.liberatorGroupBox.SuspendLayout();
             this.topPanel.SuspendLayout();
             this.searchGroupBox.SuspendLayout();
+            this.logTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPages
             // 
             this.tabPages.Controls.Add(this.demonTab);
             this.tabPages.Controls.Add(this.skillTab);
+            this.tabPages.Controls.Add(this.logTab);
             this.tabPages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPages.Location = new System.Drawing.Point(0, 107);
             this.tabPages.Name = "tabPages";
@@ -277,6 +283,8 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.retryWikiLoginBtn);
+            this.topPanel.Controls.Add(this.uploadToWikiBtn);
             this.topPanel.Controls.Add(this.exportAllBtn);
             this.topPanel.Controls.Add(this.searchGroupBox);
             this.topPanel.Controls.Add(this.saveAllBtn);
@@ -290,6 +298,17 @@
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
             // 
+            // exportAllBtn
+            // 
+            this.exportAllBtn.Location = new System.Drawing.Point(174, 12);
+            this.exportAllBtn.Name = "exportAllBtn";
+            this.exportAllBtn.Size = new System.Drawing.Size(75, 42);
+            this.exportAllBtn.TabIndex = 14;
+            this.exportAllBtn.Text = "Export All";
+            this.exportAllBtn.UseVisualStyleBackColor = true;
+            this.exportAllBtn.Visible = false;
+            this.exportAllBtn.Click += new System.EventHandler(this.exportAllBtn_Click);
+            // 
             // searchGroupBox
             // 
             this.searchGroupBox.Controls.Add(this.clearSearchBtn);
@@ -302,16 +321,50 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // exportAllBtn
+            // uploadToWikiBtn
             // 
-            this.exportAllBtn.Location = new System.Drawing.Point(174, 12);
-            this.exportAllBtn.Name = "exportAllBtn";
-            this.exportAllBtn.Size = new System.Drawing.Size(75, 42);
-            this.exportAllBtn.TabIndex = 14;
-            this.exportAllBtn.Text = "Export All";
-            this.exportAllBtn.UseVisualStyleBackColor = true;
-            this.exportAllBtn.Visible = false;
-            this.exportAllBtn.Click += new System.EventHandler(this.exportAllBtn_Click);
+            this.uploadToWikiBtn.Enabled = false;
+            this.uploadToWikiBtn.Location = new System.Drawing.Point(1152, 6);
+            this.uploadToWikiBtn.Name = "uploadToWikiBtn";
+            this.uploadToWikiBtn.Size = new System.Drawing.Size(75, 42);
+            this.uploadToWikiBtn.TabIndex = 15;
+            this.uploadToWikiBtn.Text = "Upload To Wiki";
+            this.uploadToWikiBtn.UseVisualStyleBackColor = true;
+            this.uploadToWikiBtn.Visible = false;
+            this.uploadToWikiBtn.Click += new System.EventHandler(this.uploadToWiki_Click);
+            // 
+            // retryWikiLoginBtn
+            // 
+            this.retryWikiLoginBtn.Location = new System.Drawing.Point(1233, 6);
+            this.retryWikiLoginBtn.Name = "retryWikiLoginBtn";
+            this.retryWikiLoginBtn.Size = new System.Drawing.Size(75, 42);
+            this.retryWikiLoginBtn.TabIndex = 17;
+            this.retryWikiLoginBtn.Text = "Retry";
+            this.retryWikiLoginBtn.UseVisualStyleBackColor = true;
+            this.retryWikiLoginBtn.Visible = false;
+            this.retryWikiLoginBtn.Click += new System.EventHandler(this.retryWikiLoginBtn_Click);
+            // 
+            // logTab
+            // 
+            this.logTab.Controls.Add(this.logRTB);
+            this.logTab.Location = new System.Drawing.Point(4, 22);
+            this.logTab.Name = "logTab";
+            this.logTab.Padding = new System.Windows.Forms.Padding(3);
+            this.logTab.Size = new System.Drawing.Size(1349, 531);
+            this.logTab.TabIndex = 2;
+            this.logTab.Text = "Logger";
+            this.logTab.UseVisualStyleBackColor = true;
+            // 
+            // logRTB
+            // 
+            this.logRTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logRTB.Location = new System.Drawing.Point(3, 3);
+            this.logRTB.Name = "logRTB";
+            this.logRTB.ReadOnly = true;
+            this.logRTB.Size = new System.Drawing.Size(1343, 525);
+            this.logRTB.TabIndex = 0;
+            this.logRTB.Text = "";
+            this.logRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.logRTB_LinkClicked);
             // 
             // MainForm
             // 
@@ -322,6 +375,7 @@
             this.Controls.Add(this.topPanel);
             this.Name = "MainForm";
             this.Text = "Dx2 Wiki Writer";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabPages.ResumeLayout(false);
             this.demonTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).EndInit();
@@ -334,6 +388,7 @@
             this.topPanel.ResumeLayout(false);
             this.searchGroupBox.ResumeLayout(false);
             this.searchGroupBox.PerformLayout();
+            this.logTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -363,6 +418,10 @@
         private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.GroupBox searchGroupBox;
         private System.Windows.Forms.Button exportAllBtn;
+        private System.Windows.Forms.Button uploadToWikiBtn;
+        private System.Windows.Forms.Button retryWikiLoginBtn;
+        private System.Windows.Forms.TabPage logTab;
+        private System.Windows.Forms.RichTextBox logRTB;
     }
 }
 

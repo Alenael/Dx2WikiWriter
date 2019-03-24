@@ -63,7 +63,7 @@ namespace Dx2WikiWriter
                             "|- style = \"vertical-align:middle;\"" + Environment.NewLine +
                             data + "}";
 
-                File.WriteAllText(filePath + "\\Demon Comp.txt", data, Encoding.UTF8);
+                File.WriteAllText(filePath + "\\Demon List.txt", data, Encoding.UTF8);
             }
         }
 
