@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,10 +14,11 @@ namespace Dx2WikiWriter
         #region public Methods
 
         //Exports a list of skills as files
-        public static void ExportSkills(IEnumerable<DataGridViewRow> skills, IEnumerable<DataGridViewRow> demons, bool oneFile, string path)
+        public static void ExportSkills(IEnumerable<DataGridViewRow> skills, IEnumerable<DataGridViewRow> demons, IEnumerable<DataGridViewRow> enumerable, bool oneFile, string path)
         {
-            var learnedBy = GetLearnedBy(skills, demons);
             var transferableFrom = GetTransferableFrom(skills, demons);
+            var learnedBy = GetLearnedBy(skills, demons);
+            
 
             var filePath = Path.Combine(path, "SkillData");
             Directory.CreateDirectory(filePath);
@@ -37,18 +39,25 @@ namespace Dx2WikiWriter
                 data += GetSkillDataByElement("recovery", "Recovery", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("support", "Support", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("passive", "Passive", skills, learnedBy, transferableFrom, demons);
-
             }
             else
             {
                 foreach (var skillRow in skills)
                 {
-                    var skill = LoadSkill(skillRow, learnedBy, transferableFrom, demons);
-
-                    if (skill.Name == null)
+                    if (skillRow.Cells["Name"].Value == null)
                         continue;
 
+                    var skill = LoadSkill(skillRow, learnedBy, transferableFrom, demons);
+
                     data = skill.CreateWikiStringIndividual();
+
+                    foreach(var s in skills)
+                    {
+                        var skillName = (string)s.Cells["Name"].Value;
+                        if (skillName == null)
+                            continue;
+                        data.Replace(skillName, "[[" + skillName + "]]");
+                    }
 
                     File.WriteAllText(filePath + "\\" + skill.Name + ".txt", data, Encoding.UTF8);
 
@@ -61,7 +70,7 @@ namespace Dx2WikiWriter
 
             if (oneFile)
             {
-                File.WriteAllText(filePath + "\\Skill List (Bot).txt", data, Encoding.UTF8);
+                File.WriteAllText(filePath + "\\" + ConfigurationManager.AppSettings["skillWikiPageName"] + ".txt", data, Encoding.UTF8);
             }
         }
 
@@ -107,7 +116,7 @@ namespace Dx2WikiWriter
             var trans = new Dictionary<string, string>();
 
             foreach (var s in skills)
-            {
+            {                
                 if (s.Cells["Name"].Value == null)
                     continue;
 
@@ -127,18 +136,18 @@ namespace Dx2WikiWriter
 
                     if (!(d.Cells["Skill 1"].Value is DBNull) && (string)d.Cells["Skill 1"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]], ";
-
+                    
                     if (!(d.Cells["Red Gacha"].Value is DBNull) && (string)d.Cells["Red Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Red Archetype), ";
+                        trans[skillName] += "[[" + demonName + "]] (Red Gacha), ";
 
                     if (!(d.Cells["Teal Gacha"].Value is DBNull) && (string)d.Cells["Teal Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Teal Archetype), ";
+                        trans[skillName] += "[[" + demonName + "]] (Teal Gacha), ";
 
                     if (!(d.Cells["Yellow Gacha"].Value is DBNull) && (string)d.Cells["Yellow Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Yellow Archetype), ";
+                        trans[skillName] += "[[" + demonName + "]] (Yellow Gacha), ";
 
                     if (!(d.Cells["Purple Gacha"].Value is DBNull) && (string)d.Cells["Purple Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Purple Archetype), ";
+                        trans[skillName] += "[[" + demonName + "]] (Purple Gacha), ";
                 }
             }
 
@@ -177,15 +186,15 @@ namespace Dx2WikiWriter
 
                     if (skillName == null)
                         continue;
-
-                    if (!(d.Cells["Skill 1"].Value is DBNull) && (string)d.Cells["Skill 1"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]], ";
                     
                     if (!(d.Cells["Skill 2"].Value is DBNull) && (string)d.Cells["Skill 2"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]], ";
+                        trans[skillName] += "[[" + demonName + "]] (Innate), ";
                     
                     if (!(d.Cells["Skill 3"].Value is DBNull) && (string)d.Cells["Skill 3"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]], ";
+                        trans[skillName] += "[[" + demonName + "]] (Innate), ";
+
+                    if (!(d.Cells["Clear Awaken"].Value is DBNull) && (string)d.Cells["Clear Awaken"].Value == skillName)
+                        trans[skillName] += "[[" + demonName + "]] (Clear Archetype), ";
 
                     if (!(d.Cells["Red Awaken"].Value is DBNull) && (string)d.Cells["Red Awaken"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]] (Red Archetype), ";
@@ -197,18 +206,6 @@ namespace Dx2WikiWriter
                         trans[skillName] += "[[" + demonName + "]] (Yellow Archetype), ";
 
                     if (!(d.Cells["Purple Awaken"].Value is DBNull) && (string)d.Cells["Purple Awaken"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Purple Archetype), ";
-
-                    if (!(d.Cells["Red Gacha"].Value is DBNull) && (string)d.Cells["Red Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Red Archetype), ";
-
-                    if (!(d.Cells["Teal Gacha"].Value is DBNull) && (string)d.Cells["Teal Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Teal Archetype), ";
-
-                    if (!(d.Cells["Yellow Gacha"].Value is DBNull) && (string)d.Cells["Yellow Gacha"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]] (Yellow Archetype), ";
-
-                    if (!(d.Cells["Purple Gacha"].Value is DBNull) && (string)d.Cells["Purple Gacha"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]] (Purple Archetype), ";
                 }
             }
@@ -251,7 +248,10 @@ namespace Dx2WikiWriter
                 Target = row.Cells["Target"].Value is DBNull ? "" : (string)row.Cells["Target"].Value,
                 Sp = row.Cells["Skill Points"].Value is DBNull ? "" : (string)row.Cells["Skill Points"].Value,
                 LearnedBy = lb.Trim(),
-                TransferableFrom = tf.Trim()
+                TransferableFrom = tf.Trim(),
+                ExtractExclusive = row.Cells["ExtractExclusive"].Value != null ? false : (bool)row.Cells["ExtractExclusive"].Value,
+                DuelExclusive = row.Cells["DuelExclusive"].Value != null ? false : (bool)row.Cells["DuelExclusive"].Value,
+                ExtractTransfer = row.Cells["ExtractTransfer"].Value != null ? false : (bool)row.Cells["ExtractTransfer"].Value,
             };
         }
 
@@ -286,19 +286,22 @@ namespace Dx2WikiWriter
         public string Sp;
         public string LearnedBy;
         public string TransferableFrom;
+        public bool ExtractExclusive;
+        public bool DuelExclusive;
+        public bool ExtractTransfer;
 
         //Creates a Wiki String for Individuals in a Comp
         public string CreateWikiStringComp()
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
-
+            var description = Description.Replace("\\n\\n", "\\n").Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
             return "|-" + Environment.NewLine +
                    "|[[" + Name.Replace("[", "(").Replace("]", ")") + "]]" + Environment.NewLine +
                    "|" + Cost + Environment.NewLine +
-                   "|" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine +
+                   "|" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine +
                    "|" + Target + Environment.NewLine +
                    "|" + sp + Environment.NewLine +
-                   "|style=\"width:15%\"|" + LearnedBy + Environment.NewLine +
+                   "|style=\"width:15%\"|" + LearnedBy.Replace(" (Innate)", "") + Environment.NewLine +
                    "|style=\"width:15%\"|" + TransferableFrom + Environment.NewLine;
         }
 
@@ -306,14 +309,15 @@ namespace Dx2WikiWriter
         public string CreateWikiStringIndividual()
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
-
+            var description = Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
+            
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
                     "|cost=" + Cost + Environment.NewLine +
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
-                    "|description=" + "<nowiki>" + Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>") + "</nowiki>" + Environment.NewLine + 
+                    "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine + 
                     "}}";
         }
 
@@ -355,11 +359,13 @@ namespace Dx2WikiWriter
             var tealLearnedBy = "";
             var purpleLearnedBy = "";
 
-            clearTransfer = GetDemonsWithSkill(TransferableFrom, "(Clear Archetype)");
-            redTransfer = GetDemonsWithSkill(TransferableFrom, "(Red Archetype)");
-            yellowTransfer = GetDemonsWithSkill(TransferableFrom, "(Yellow Archetype)");
-            purpleTransfer = GetDemonsWithSkill(TransferableFrom, "(Purple Archetype)");
-            tealTransfer = GetDemonsWithSkill(TransferableFrom, "(Teal Archetype)");
+            var inateSkills = GetDemonsWithSkill(LearnedBy, "(Innate)");
+
+            clearTransfer = GetDemonsWithSkill(TransferableFrom, "(Clear Gacha)");
+            redTransfer = GetDemonsWithSkill(TransferableFrom, "(Red Gacha)");
+            yellowTransfer = GetDemonsWithSkill(TransferableFrom, "(Yellow Gacha)");
+            purpleTransfer = GetDemonsWithSkill(TransferableFrom, "(Purple Gacha)");
+            tealTransfer = GetDemonsWithSkill(TransferableFrom, "(Teal Gacha)");
 
             clearLearnedBy = GetDemonsWithSkill(LearnedBy, "(Clear Archetype)");
             redLearnedBy = GetDemonsWithSkill(LearnedBy, "(Red Archetype)");
@@ -370,7 +376,7 @@ namespace Dx2WikiWriter
             return "{{TransferTable\r\n" +
                    "|title=Demons to transfer skill from\r\n" +
                    "|type=Default / Gacha Archetype\r\n" +
-                   "|d0c=" + clearTransfer + "\r\n" +
+                   "|d0=" + clearTransfer + "\r\n" +
                    "|d0r=" + redTransfer + "\r\n" +
                    "|d0y=" + yellowTransfer + "\r\n" +
                    "|d0p=" + purpleTransfer + "\r\n" +
@@ -380,7 +386,8 @@ namespace Dx2WikiWriter
                    "{{OwnedTable\r\n" +
                    "|title=Demons with skill\r\n" +
                    "|type=Awakened Archetype\r\n" +
-                   "|d0c=" + clearLearnedBy + "\r\n" +
+                   "|d0i=" + inateSkills.Replace(" (Innate)", "") + "\r\n" + 
+                   "|d0=" + clearLearnedBy + "\r\n" +
                    "|d0r=" + redLearnedBy + "\r\n" +
                    "|d0y=" + yellowLearnedBy + "\r\n" +
                    "|d0p=" + purpleLearnedBy + "\r\n" +

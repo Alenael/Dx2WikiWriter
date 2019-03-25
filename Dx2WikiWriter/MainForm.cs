@@ -138,6 +138,7 @@ namespace Dx2WikiWriter
         //Exports all Demons
         private void exportDemonAllBtn_Click(object sender, EventArgs e)
         {
+            clearSearchBtn.PerformClick();
             DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
@@ -152,24 +153,25 @@ namespace Dx2WikiWriter
         //Exports all Skills
         private void exportSkillAllBtn_Click(object sender, EventArgs e)
         {
-            SkillHelper.ExportSkills(skillGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            clearSearchBtn.PerformClick();
+            SkillHelper.ExportSkills(skillGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Skills
         private void exportIndividualSkillBtn_Click(object sender, EventArgs e)
         {
-            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
-
-            SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true).ToList();
+            
+            SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
         //Exports Everything
         private void exportAllBtn_Click(object sender, EventArgs e)
         {
-            exportDemonAllBtn.PerformClick();
             exportIndividualDemonBtn.PerformClick();
-            exportSkillAllBtn.PerformClick();
             exportIndividualSkillBtn.PerformClick();
+            exportDemonAllBtn.PerformClick();            
+            exportSkillAllBtn.PerformClick();            
         }
 
         //Show only demons in Search Txt
@@ -208,8 +210,10 @@ namespace Dx2WikiWriter
 
         //Pushes all files up to the Wiki
         private void uploadToWiki_Click(object sender, EventArgs e)
-        { 
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             WikiManager.UploadAllFilesAsync(LoadedPath, demonGrid.Rows.Cast<DataGridViewRow>());
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         //On Form Load

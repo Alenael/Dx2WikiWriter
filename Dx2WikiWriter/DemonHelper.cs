@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Dx2WikiWriter
@@ -13,9 +13,9 @@ namespace Dx2WikiWriter
         #region Public Methods
 
         //Exports a list of demons as files
-        public static void ExportDemons(IEnumerable<DataGridViewRow> selected, IEnumerable<DataGridViewRow> all, bool oneFile, string path)
+        public static void ExportDemons(IEnumerable<DataGridViewRow> selected, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
         {
-            var ranks = GetRanks(selected, all);
+            var ranks = GetRanks(selected, allDemons);
 
             var sortedDemons = selected.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
 
@@ -63,7 +63,7 @@ namespace Dx2WikiWriter
                             "|- style = \"vertical-align:middle;\"" + Environment.NewLine +
                             data + "}";
 
-                File.WriteAllText(filePath + "\\Demon List.txt", data, Encoding.UTF8);
+                File.WriteAllText(filePath + "\\" + ConfigurationManager.AppSettings["demonWikiPageName"] + ".txt", data, Encoding.UTF8);
             }
         }
 
