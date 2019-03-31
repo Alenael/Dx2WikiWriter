@@ -30,7 +30,7 @@ namespace Dx2WikiWriter
                 data += GetSkillDataByElement("physical", "Physical", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("fire", "Fire", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("ice", "Ice", skills, learnedBy, transferableFrom, demons);
-                data += GetSkillDataByElement("elec", "Electricity", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("electricity", "Electricity", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("force", "Force", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("light", "Light", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("dark", "Dark", skills, learnedBy, transferableFrom, demons);
@@ -314,7 +314,7 @@ namespace Dx2WikiWriter
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
-                    "|cost=" + Cost + Environment.NewLine +
+                    "|cost=" + Cost.Replace(" MP", "") + Environment.NewLine +
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine + 

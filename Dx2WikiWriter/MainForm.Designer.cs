@@ -37,6 +37,8 @@
             this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skillTab = new System.Windows.Forms.TabPage();
             this.skillGrid = new System.Windows.Forms.DataGridView();
+            this.logTab = new System.Windows.Forms.TabPage();
+            this.logRTB = new System.Windows.Forms.RichTextBox();
             this.loadBtn = new System.Windows.Forms.Button();
             this.demonGroupBox = new System.Windows.Forms.GroupBox();
             this.exportIndividualDemonBtn = new System.Windows.Forms.Button();
@@ -51,24 +53,22 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.retryWikiLoginBtn = new System.Windows.Forms.Button();
+            this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.uploadToWikiBtn = new System.Windows.Forms.Button();
-            this.retryWikiLoginBtn = new System.Windows.Forms.Button();
-            this.logTab = new System.Windows.Forms.TabPage();
-            this.logRTB = new System.Windows.Forms.RichTextBox();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
             this.allContextMenu.SuspendLayout();
             this.skillTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).BeginInit();
+            this.logTab.SuspendLayout();
             this.demonGroupBox.SuspendLayout();
             this.skillGroupBox.SuspendLayout();
             this.liberatorGroupBox.SuspendLayout();
             this.topPanel.SuspendLayout();
             this.searchGroupBox.SuspendLayout();
-            this.logTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPages
@@ -147,6 +147,29 @@
             this.skillGrid.Name = "skillGrid";
             this.skillGrid.Size = new System.Drawing.Size(1343, 525);
             this.skillGrid.TabIndex = 5;
+            // 
+            // logTab
+            // 
+            this.logTab.Controls.Add(this.logRTB);
+            this.logTab.Location = new System.Drawing.Point(4, 22);
+            this.logTab.Name = "logTab";
+            this.logTab.Padding = new System.Windows.Forms.Padding(3);
+            this.logTab.Size = new System.Drawing.Size(1349, 531);
+            this.logTab.TabIndex = 2;
+            this.logTab.Text = "Logger";
+            this.logTab.UseVisualStyleBackColor = true;
+            // 
+            // logRTB
+            // 
+            this.logRTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logRTB.Location = new System.Drawing.Point(3, 3);
+            this.logRTB.Name = "logRTB";
+            this.logRTB.ReadOnly = true;
+            this.logRTB.Size = new System.Drawing.Size(1343, 525);
+            this.logRTB.TabIndex = 0;
+            this.logRTB.Text = "";
+            this.logRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.logRTB_LinkClicked);
+            this.logRTB.TextChanged += new System.EventHandler(this.logRTB_TextChanged);
             // 
             // loadBtn
             // 
@@ -298,6 +321,29 @@
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
             // 
+            // retryWikiLoginBtn
+            // 
+            this.retryWikiLoginBtn.Location = new System.Drawing.Point(1233, 6);
+            this.retryWikiLoginBtn.Name = "retryWikiLoginBtn";
+            this.retryWikiLoginBtn.Size = new System.Drawing.Size(75, 42);
+            this.retryWikiLoginBtn.TabIndex = 17;
+            this.retryWikiLoginBtn.Text = "Retry";
+            this.retryWikiLoginBtn.UseVisualStyleBackColor = true;
+            this.retryWikiLoginBtn.Visible = false;
+            this.retryWikiLoginBtn.Click += new System.EventHandler(this.retryWikiLoginBtn_Click);
+            // 
+            // uploadToWikiBtn
+            // 
+            this.uploadToWikiBtn.Enabled = false;
+            this.uploadToWikiBtn.Location = new System.Drawing.Point(1152, 6);
+            this.uploadToWikiBtn.Name = "uploadToWikiBtn";
+            this.uploadToWikiBtn.Size = new System.Drawing.Size(75, 42);
+            this.uploadToWikiBtn.TabIndex = 15;
+            this.uploadToWikiBtn.Text = "Upload To Wiki";
+            this.uploadToWikiBtn.UseVisualStyleBackColor = true;
+            this.uploadToWikiBtn.Visible = false;
+            this.uploadToWikiBtn.Click += new System.EventHandler(this.uploadToWiki_Click);
+            // 
             // exportAllBtn
             // 
             this.exportAllBtn.Location = new System.Drawing.Point(174, 12);
@@ -321,51 +367,6 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // uploadToWikiBtn
-            // 
-            this.uploadToWikiBtn.Enabled = false;
-            this.uploadToWikiBtn.Location = new System.Drawing.Point(1152, 6);
-            this.uploadToWikiBtn.Name = "uploadToWikiBtn";
-            this.uploadToWikiBtn.Size = new System.Drawing.Size(75, 42);
-            this.uploadToWikiBtn.TabIndex = 15;
-            this.uploadToWikiBtn.Text = "Upload To Wiki";
-            this.uploadToWikiBtn.UseVisualStyleBackColor = true;
-            this.uploadToWikiBtn.Visible = false;
-            this.uploadToWikiBtn.Click += new System.EventHandler(this.uploadToWiki_Click);
-            // 
-            // retryWikiLoginBtn
-            // 
-            this.retryWikiLoginBtn.Location = new System.Drawing.Point(1233, 6);
-            this.retryWikiLoginBtn.Name = "retryWikiLoginBtn";
-            this.retryWikiLoginBtn.Size = new System.Drawing.Size(75, 42);
-            this.retryWikiLoginBtn.TabIndex = 17;
-            this.retryWikiLoginBtn.Text = "Retry";
-            this.retryWikiLoginBtn.UseVisualStyleBackColor = true;
-            this.retryWikiLoginBtn.Visible = false;
-            this.retryWikiLoginBtn.Click += new System.EventHandler(this.retryWikiLoginBtn_Click);
-            // 
-            // logTab
-            // 
-            this.logTab.Controls.Add(this.logRTB);
-            this.logTab.Location = new System.Drawing.Point(4, 22);
-            this.logTab.Name = "logTab";
-            this.logTab.Padding = new System.Windows.Forms.Padding(3);
-            this.logTab.Size = new System.Drawing.Size(1349, 531);
-            this.logTab.TabIndex = 2;
-            this.logTab.Text = "Logger";
-            this.logTab.UseVisualStyleBackColor = true;
-            // 
-            // logRTB
-            // 
-            this.logRTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logRTB.Location = new System.Drawing.Point(3, 3);
-            this.logRTB.Name = "logRTB";
-            this.logRTB.ReadOnly = true;
-            this.logRTB.Size = new System.Drawing.Size(1343, 525);
-            this.logRTB.TabIndex = 0;
-            this.logRTB.Text = "";
-            this.logRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.logRTB_LinkClicked);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -382,13 +383,13 @@
             this.allContextMenu.ResumeLayout(false);
             this.skillTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).EndInit();
+            this.logTab.ResumeLayout(false);
             this.demonGroupBox.ResumeLayout(false);
             this.skillGroupBox.ResumeLayout(false);
             this.liberatorGroupBox.ResumeLayout(false);
             this.topPanel.ResumeLayout(false);
             this.searchGroupBox.ResumeLayout(false);
             this.searchGroupBox.PerformLayout();
-            this.logTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

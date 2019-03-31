@@ -154,13 +154,14 @@ namespace Dx2WikiWriter
         private void exportSkillAllBtn_Click(object sender, EventArgs e)
         {
             clearSearchBtn.PerformClick();
-            SkillHelper.ExportSkills(skillGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value != null);
+            SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Skills
         private void exportIndividualSkillBtn_Click(object sender, EventArgs e)
         {
-            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true).ToList();
+            var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList();
             
             SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
@@ -233,6 +234,13 @@ namespace Dx2WikiWriter
         private void logRTB_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
+        }
+
+        //Scroll automatically
+        private void logRTB_TextChanged(object sender, EventArgs e)
+        {
+            logRTB.SelectionStart = logRTB.Text.Length;
+            logRTB.ScrollToCaret();
         }
 
         #endregion

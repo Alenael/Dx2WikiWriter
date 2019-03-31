@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using WikiClientLibrary;
 using WikiClientLibrary.Client;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
@@ -25,7 +24,7 @@ namespace Dx2WikiWriter
         #region Constructor
 
         //Entry way to class
-        public WikiManager(System.Windows.Forms.Button uploadToWikiBtn, System.Windows.Forms.RichTextBox logRTB, System.Windows.Forms.Button retryWikiLoginBtn)
+        public WikiManager(Button uploadToWikiBtn, RichTextBox logRTB, Button retryWikiLoginBtn)
         {
             Callback = logRTB;
             Connect(uploadToWikiBtn, retryWikiLoginBtn);

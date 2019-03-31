@@ -359,18 +359,18 @@ namespace Dx2WikiWriter
                 "|pdef= " + PDef + Environment.NewLine +
                 "|matk= " + MAtk + Environment.NewLine +
                 "|mdef= " + MDef + Environment.NewLine +
-                "|transfer_skill= " + Skill1 + Environment.NewLine +
-                "|innate_skill1= " + Skill2 + Environment.NewLine +
-                "|innate_skill2= " + Skill3 + Environment.NewLine +
+                "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1) + Environment.NewLine +
+                "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2) + Environment.NewLine +
+                "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3) + Environment.NewLine +
                 "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + Environment.NewLine +
-                "|a_red= " + AwakenR + Environment.NewLine +
-                "|a_yellow= " + AwakenY + Environment.NewLine +
-                "|a_purple= " + AwakenP + Environment.NewLine +
-                "|a_teal= " + AwakenT + Environment.NewLine +
-                "|g_red= " + GachaR + Environment.NewLine +
-                "|g_yellow= " + GachaY + Environment.NewLine +
-                "|g_purple= " + GachaP + Environment.NewLine +
-                "|g_teal= " + GachaT + Environment.NewLine +
+                "|a_red= " + (AwakenR == "" ? "N/A" : AwakenR) + Environment.NewLine +
+                "|a_yellow= " + (AwakenY == "" ? "N/A" : AwakenY) + Environment.NewLine +
+                "|a_purple= " + (AwakenP == "" ? "N/A" : AwakenP) + Environment.NewLine +
+                "|a_teal= " + (AwakenT == "" ? "N/A" : AwakenT) + Environment.NewLine +
+                "|g_red= " + (GachaR == "" ? "N/A" : GachaR) + Environment.NewLine +
+                "|g_yellow= " + (GachaY == "" ? "N/A" : GachaY) + Environment.NewLine +
+                "|g_purple= " + (GachaP == "" ? "N/A" : GachaP) + Environment.NewLine +
+                "|g_teal= " + (GachaT == "" ? "N/A" : GachaT) + Environment.NewLine +
                 "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
                 "|}}\r\n" +
                 "[[Category: Demons]]\r\n" +
