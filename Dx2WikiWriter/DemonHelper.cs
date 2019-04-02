@@ -13,10 +13,8 @@ namespace Dx2WikiWriter
         #region Public Methods
 
         //Exports a list of demons as files
-        public static void ExportDemons(IEnumerable<DataGridViewRow> selected, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
+        public static void ExportDemons(IEnumerable<DataGridViewRow> selected, List<Rank> ranks, IEnumerable<DataGridViewRow> allDemons, bool oneFile, string path)
         {
-            var ranks = GetRanks(selected, allDemons);
-
             var sortedDemons = selected.OrderByDescending(c => Convert.ToInt32(c.Cells["Grade"].Value));
 
             var filePath = Path.Combine(path, "DemonData");
@@ -26,7 +24,7 @@ namespace Dx2WikiWriter
 
             foreach (var s in sortedDemons)
             {
-                var d = LoadDemon(s);
+                var d = LoadDemon(s, allDemons);
                 var aether = GetAetherCosts(d, s);
                 d.SetAetherCosts(aether);
 
@@ -68,11 +66,20 @@ namespace Dx2WikiWriter
         }
 
         //Creates a demon object from a data grid view row
-        public static Demon LoadDemon(DataGridViewRow row)
+        public static Demon LoadDemon(DataGridViewRow row, IEnumerable<DataGridViewRow> demons)
         {
+            var demonVersions = "";
+            var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
+
+            if (!(row.Cells["Alternate Name"].Value is DBNull))
+            {
+                var alternateDemon = (string)row.Cells["Alternate Name"].Value;
+                demonVersions = "{{DemonVersions|" + name + "|" + alternateDemon + "}}\r\n";
+            }
+
             return new Demon
             {
-                Name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value,
+                Name = name,
                 Rarity = row.Cells["Rarity"].Value is DBNull ? "" : (string)row.Cells["Rarity"].Value,
                 Race = row.Cells["Race"].Value is DBNull ? "" : (string)row.Cells["Race"].Value,
                 Ai = row.Cells["Type"].Value is DBNull ? "" : (string)row.Cells["Type"].Value,
@@ -83,6 +90,8 @@ namespace Dx2WikiWriter
                 Vit = row.Cells["6★ Vitality"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Vitality"].Value),
                 Agi = row.Cells["6★ Agility"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Agility"].Value),
                 Luck = row.Cells["6★ Luck"].Value is DBNull ? 0 : Convert.ToInt32(row.Cells["6★ Luck"].Value),
+                
+                DemonVersions = demonVersions,
 
                 Fire = LoadResist(row.Cells["Fire"].Value is DBNull ? "" : (string)row.Cells["Fire"].Value),
                 Dark = LoadResist(row.Cells["Dark"].Value is DBNull ? "" : (string)row.Cells["Dark"].Value),
@@ -92,20 +101,20 @@ namespace Dx2WikiWriter
                 Force = LoadResist(row.Cells["Force"].Value is DBNull ? "" : (string)row.Cells["Force"].Value),
                 Phys = LoadResist(row.Cells["Phys"].Value is DBNull ? "" : (string)row.Cells["Phys"].Value),
 
-                Skill1 = row.Cells["Skill 1"].Value is DBNull ? "" : (string)row.Cells["Skill 1"].Value,
-                Skill2 = row.Cells["Skill 2"].Value is DBNull ? "" : (string)row.Cells["Skill 2"].Value,
-                Skill3 = row.Cells["Skill 3"].Value is DBNull ? "" : (string)row.Cells["Skill 3"].Value,
+                Skill1 = FixSkillsNamedAsDemons(row.Cells["Skill 1"].Value is DBNull ? "" : (string)row.Cells["Skill 1"].Value, demons),
+                Skill2 = FixSkillsNamedAsDemons(row.Cells["Skill 2"].Value is DBNull ? "" : (string)row.Cells["Skill 2"].Value, demons),
+                Skill3 = FixSkillsNamedAsDemons(row.Cells["Skill 3"].Value is DBNull ? "" : (string)row.Cells["Skill 3"].Value, demons),
 
-                AwakenC = row.Cells["Clear Awaken"].Value is DBNull ? "" : (string)row.Cells["Clear Awaken"].Value,
-                AwakenR = row.Cells["Red Awaken"].Value is DBNull ? "" : (string)row.Cells["Red Awaken"].Value,
-                AwakenP = row.Cells["Purple Awaken"].Value is DBNull ? "" : (string)row.Cells["Purple Awaken"].Value,
-                AwakenY = row.Cells["Yellow Awaken"].Value is DBNull ? "" : (string)row.Cells["Yellow Awaken"].Value,
-                AwakenT = row.Cells["Teal Awaken"].Value is DBNull ? "" : (string)row.Cells["Teal Awaken"].Value,
+                AwakenC = FixSkillsNamedAsDemons(row.Cells["Clear Awaken"].Value is DBNull ? "" : (string)row.Cells["Clear Awaken"].Value, demons),
+                AwakenR = FixSkillsNamedAsDemons(row.Cells["Red Awaken"].Value is DBNull ? "" : (string)row.Cells["Red Awaken"].Value, demons),
+                AwakenP = FixSkillsNamedAsDemons(row.Cells["Purple Awaken"].Value is DBNull ? "" : (string)row.Cells["Purple Awaken"].Value, demons),
+                AwakenY = FixSkillsNamedAsDemons(row.Cells["Yellow Awaken"].Value is DBNull ? "" : (string)row.Cells["Yellow Awaken"].Value, demons),
+                AwakenT = FixSkillsNamedAsDemons(row.Cells["Teal Awaken"].Value is DBNull ? "" : (string)row.Cells["Teal Awaken"].Value, demons),
 
-                GachaR = row.Cells["Red Gacha"].Value is DBNull ? "" : (string)row.Cells["Red Gacha"].Value,
-                GachaP = row.Cells["Purple Gacha"].Value is DBNull ? "" : (string)row.Cells["Purple Gacha"].Value,
-                GachaY = row.Cells["Yellow Gacha"].Value is DBNull ? "" : (string)row.Cells["Yellow Gacha"].Value,
-                GachaT = row.Cells["Teal Gacha"].Value is DBNull ? "" : (string)row.Cells["Teal Gacha"].Value,
+                GachaR = FixSkillsNamedAsDemons(row.Cells["Red Gacha"].Value is DBNull ? "" : (string)row.Cells["Red Gacha"].Value, demons),
+                GachaP = FixSkillsNamedAsDemons(row.Cells["Purple Gacha"].Value is DBNull ? "" : (string)row.Cells["Purple Gacha"].Value, demons),
+                GachaY = FixSkillsNamedAsDemons(row.Cells["Yellow Gacha"].Value is DBNull ? "" : (string)row.Cells["Yellow Gacha"].Value, demons),
+                GachaT = FixSkillsNamedAsDemons(row.Cells["Teal Gacha"].Value is DBNull ? "" : (string)row.Cells["Teal Gacha"].Value, demons),
             };
         }
 
@@ -118,7 +127,20 @@ namespace Dx2WikiWriter
         #endregion
 
         #region Private Methods
-               
+            
+        //Fixes an issue where skills can be the same name of a demon at times
+        private static string FixSkillsNamedAsDemons(string name, IEnumerable<DataGridViewRow> demons)
+        {
+            //row.Cells["Skill 3"].Value is DBNull ? "" : (string)row.Cells["Skill 3"].Value;
+            var newName = name;
+
+            if (newName != "")
+                if (demons.Any(d => (string)d.Cells["Name"].Value == newName))
+                    newName = newName + " (Skill)";
+
+            return newName;
+        }
+
         //Returns a value based on what its passed
         private static string LoadResist(string value)
         {
@@ -152,34 +174,34 @@ namespace Dx2WikiWriter
         }
 
         //Gets ranks for selected demons
-        private static List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons, IEnumerable<DataGridViewRow> allDemons)
+        public static List<Rank> GetRanks(IEnumerable<DataGridViewRow> selectedDemons)
         {
             var ranks = new List<Rank>();
 
             if (selectedDemons.Count() > 0)
             {
-                var sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
+                var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
 
                 for (var i = 0; i < selectedDemons.Count(); i++)
                 {
-                    var demon = LoadDemon(selectedDemons.ToList()[i]);
+                    var demon = LoadDemon(selectedDemons.ToList()[i], sortedDemons);
 
                     var r = new Rank() { Name = demon.Name };
                     r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
+                    sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
                     r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
+                    sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
                     r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
+                    sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
                     r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
+                    sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
                     r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
-                    sortedDemons = allDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
+                    sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
                     r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
 
                     ranks.Add(r);
@@ -275,6 +297,7 @@ namespace Dx2WikiWriter
         public int MAtk { get { return (int)(Mag * 2.1 + 50 * 5.6 + 50); } }
         public int PDef { get { return (int)(Vit * 1.1 + Str * 0.5 + 50 * 5.6 + 50); } }
         public int MDef { get { return (int)(Vit * 1.1 + Mag * 0.5 + 50 * 5.6 + 50); } }
+        public string DemonVersions;
 
         public string Skill1;
         public string Skill2;
@@ -330,7 +353,8 @@ namespace Dx2WikiWriter
         {
             var total = ranks.Count - 1;
 
-            return "{{DemonTabs|base{{BASENAME}} }}" +
+            return DemonVersions + 
+                "{{DemonTabs|base{{BASENAME}} }}" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +

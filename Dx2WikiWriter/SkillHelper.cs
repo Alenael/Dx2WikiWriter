@@ -135,7 +135,7 @@ namespace Dx2WikiWriter
                         continue;
 
                     if (!(d.Cells["Skill 1"].Value is DBNull) && (string)d.Cells["Skill 1"].Value == skillName)
-                        trans[skillName] += "[[" + demonName + "]], ";
+                        trans[skillName] += "[[" + demonName + "]] (Clear Gacha),";
                     
                     if (!(d.Cells["Red Gacha"].Value is DBNull) && (string)d.Cells["Red Gacha"].Value == skillName)
                         trans[skillName] += "[[" + demonName + "]] (Red Gacha), ";

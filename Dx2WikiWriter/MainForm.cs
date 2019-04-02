@@ -139,15 +139,18 @@ namespace Dx2WikiWriter
         private void exportDemonAllBtn_Click(object sender, EventArgs e)
         {
             clearSearchBtn.PerformClick();
-            DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+
+            var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+            DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Demons
         private void exportIndividualDemonBtn_Click(object sender, EventArgs e)
         {
+            var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
             var selectedDemons = demonGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
 
-            DemonHelper.ExportDemons(selectedDemons, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
         
         //Exports all Skills
