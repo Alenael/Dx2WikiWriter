@@ -182,27 +182,27 @@ namespace Dx2WikiWriter
             {
                 var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
 
-                for (var i = 0; i < selectedDemons.Count(); i++)
+                for (var i = 1; i < selectedDemons.Count(); i++)
                 {
                     var demon = LoadDemon(selectedDemons.ToList()[i], sortedDemons);
 
                     var r = new Rank() { Name = demon.Name };
-                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name)+1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
-                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name)+1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
-                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
-                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
-                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
-                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name);
+                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     ranks.Add(r);
                 }
