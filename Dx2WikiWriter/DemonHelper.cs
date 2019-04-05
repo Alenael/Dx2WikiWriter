@@ -351,7 +351,7 @@ namespace Dx2WikiWriter
         //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual(List<Rank> ranks)
         {
-            var total = ranks.Count - 1;
+            var total = ranks.Count;
 
             return DemonVersions + 
                 "{{DemonTabs|base{{BASENAME}} }}" +
