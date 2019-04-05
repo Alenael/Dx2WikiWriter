@@ -302,7 +302,7 @@ namespace Dx2WikiWriter
                    "|" + Target + Environment.NewLine +
                    "|" + sp + Environment.NewLine +
                    "|style=\"width:15%\"|" + LearnedBy.Replace(" (Innate)", "") + Environment.NewLine +
-                   "|style=\"width:15%\"|" + TransferableFrom + Environment.NewLine;
+                   "|style=\"width:15%\"|" + TransferableFrom.Replace(" (Clear Gacha)", "") + Environment.NewLine;
         }
 
         //Creates a Wiki string for Individual by themselves

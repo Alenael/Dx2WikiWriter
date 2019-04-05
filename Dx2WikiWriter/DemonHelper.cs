@@ -180,17 +180,17 @@ namespace Dx2WikiWriter
 
             if (selectedDemons.Count() > 0)
             {
-                var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
-
                 for (var i = 1; i < selectedDemons.Count(); i++)
                 {
-                    var demon = LoadDemon(selectedDemons.ToList()[i], sortedDemons);
-
+                    var demon = LoadDemon(selectedDemons.ToList()[i], selectedDemons);
+                    
                     var r = new Rank() { Name = demon.Name };
-                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name)+1;
+
+                    var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
+                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
-                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name)+1;
+                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
                     r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
