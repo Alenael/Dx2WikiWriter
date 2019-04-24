@@ -180,7 +180,7 @@ namespace Dx2WikiWriter
 
             if (selectedDemons.Count() > 0)
             {
-                for (var i = 1; i < selectedDemons.Count(); i++)
+                for (var i = 0; i < selectedDemons.Count(); i++)
                 {
                     var demon = LoadDemon(selectedDemons.ToList()[i], selectedDemons);
                     
