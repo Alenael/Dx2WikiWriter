@@ -35,7 +35,7 @@ namespace Dx2WikiWriter
         #region Methods
 
         //Creates our initial connection and login to the Wiki
-        private async void Connect(System.Windows.Forms.Button uploadToWikiBtn, System.Windows.Forms.Button retryWikiLoginBtn)
+        private async void Connect(Button uploadToWikiBtn, Button retryWikiLoginBtn)
         {
             Callback.Text = "Attempting to Login to Wiki..\n";
 
@@ -45,7 +45,7 @@ namespace Dx2WikiWriter
                 Site = new WikiSite(client, await WikiSite.SearchApiEndpointAsync(client, "dx2wiki.com"));
                 await Site.Initialization;
 
-                await Site.LoginAsync(ConfigurationManager.AppSettings["username"], Environment.GetEnvironmentVariable("password", EnvironmentVariableTarget.User));
+                await Site.LoginAsync(ConfigurationManager.AppSettings["username"], Environment.GetEnvironmentVariable("dx2WikiPassword", EnvironmentVariableTarget.User));
                 Connected = true;
                 uploadToWikiBtn.Visible = true;
                 Callback.AppendText( "Succesfully Logged Into Wiki!\n");

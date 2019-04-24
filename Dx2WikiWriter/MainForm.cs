@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace Dx2WikiWriter
 {
@@ -246,6 +247,14 @@ namespace Dx2WikiWriter
             logRTB.ScrollToCaret();
         }
 
+        private void loginBtn_Click(object sender, EventArgs e)
+        {
+            var password = Interaction.InputBox("Enter Your Password. Remember this is stored in plain text in your Environment Variables.", "Enter Your Password", "Enter Your Password");
+            Environment.SetEnvironmentVariable("dx2WikiPassword", password, EnvironmentVariableTarget.User);
+            logRTB.AppendText("Password has been changed succesfully.\n");
+        }
+
         #endregion
+
     }
 }

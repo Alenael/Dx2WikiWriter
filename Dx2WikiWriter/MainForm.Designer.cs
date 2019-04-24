@@ -57,6 +57,7 @@
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
+            this.loginBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -306,6 +307,7 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.loginBtn);
             this.topPanel.Controls.Add(this.retryWikiLoginBtn);
             this.topPanel.Controls.Add(this.uploadToWikiBtn);
             this.topPanel.Controls.Add(this.exportAllBtn);
@@ -367,6 +369,16 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
+            // loginBtn
+            // 
+            this.loginBtn.Location = new System.Drawing.Point(1071, 6);
+            this.loginBtn.Name = "loginBtn";
+            this.loginBtn.Size = new System.Drawing.Size(75, 42);
+            this.loginBtn.TabIndex = 18;
+            this.loginBtn.Text = "Change Password";
+            this.loginBtn.UseVisualStyleBackColor = true;
+            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,6 +435,7 @@
         private System.Windows.Forms.Button retryWikiLoginBtn;
         private System.Windows.Forms.TabPage logTab;
         private System.Windows.Forms.RichTextBox logRTB;
+        private System.Windows.Forms.Button loginBtn;
     }
 }
 
