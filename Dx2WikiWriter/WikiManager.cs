@@ -111,7 +111,7 @@ namespace Dx2WikiWriter
                 if (page.Content != content.Replace("\r", ""))
                 {
                     page.Content = content;
-                    await page.UpdateContentAsync("Updated by Alenael(bot).", false, true);                    
+                    await page.UpdateContentAsync("Updated by " + ConfigurationManager.AppSettings["username"] + ". This was done by a bot.", false, true);                    
                     Callback.AppendText("Updated: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
                     Callback.AppendText("File Removed: " + fileName + "\n");
                     File.Delete(fileName);
