@@ -53,11 +53,12 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.loginBtn = new System.Windows.Forms.Button();
             this.retryWikiLoginBtn = new System.Windows.Forms.Button();
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.loginBtn = new System.Windows.Forms.Button();
+            this.migratorBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -307,6 +308,7 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.migratorBtn);
             this.topPanel.Controls.Add(this.loginBtn);
             this.topPanel.Controls.Add(this.retryWikiLoginBtn);
             this.topPanel.Controls.Add(this.uploadToWikiBtn);
@@ -322,6 +324,16 @@
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
+            // 
+            // loginBtn
+            // 
+            this.loginBtn.Location = new System.Drawing.Point(1071, 6);
+            this.loginBtn.Name = "loginBtn";
+            this.loginBtn.Size = new System.Drawing.Size(75, 42);
+            this.loginBtn.TabIndex = 18;
+            this.loginBtn.Text = "Change Password";
+            this.loginBtn.UseVisualStyleBackColor = true;
+            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
             // 
             // retryWikiLoginBtn
             // 
@@ -369,15 +381,16 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // loginBtn
+            // migratorBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(1071, 6);
-            this.loginBtn.Name = "loginBtn";
-            this.loginBtn.Size = new System.Drawing.Size(75, 42);
-            this.loginBtn.TabIndex = 18;
-            this.loginBtn.Text = "Change Password";
-            this.loginBtn.UseVisualStyleBackColor = true;
-            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
+            this.migratorBtn.Location = new System.Drawing.Point(977, 62);
+            this.migratorBtn.Name = "migratorBtn";
+            this.migratorBtn.Size = new System.Drawing.Size(75, 42);
+            this.migratorBtn.TabIndex = 19;
+            this.migratorBtn.Text = "Migrator";
+            this.migratorBtn.UseVisualStyleBackColor = true;
+            this.migratorBtn.Visible = false;
+            this.migratorBtn.Click += new System.EventHandler(this.migratorBtn_Click);
             // 
             // MainForm
             // 
@@ -436,6 +449,7 @@
         private System.Windows.Forms.TabPage logTab;
         private System.Windows.Forms.RichTextBox logRTB;
         private System.Windows.Forms.Button loginBtn;
+        private System.Windows.Forms.Button migratorBtn;
     }
 }
 

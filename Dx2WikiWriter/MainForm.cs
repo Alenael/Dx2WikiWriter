@@ -94,12 +94,12 @@ namespace Dx2WikiWriter
                     dbStatus = false;
                 }
 
-
                 #region Change To Loaded State
 
                 demonGroupBox.Visible = true;
                 skillGroupBox.Visible = true;
                 searchGroupBox.Visible = true;
+                migratorBtn.Visible = true;
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
                 exportAllBtn.Visible = true;
@@ -252,6 +252,11 @@ namespace Dx2WikiWriter
             var password = Interaction.InputBox("Enter Your Password. Remember this is stored in plain text in your Environment Variables.", "Enter Your Password", "Enter Your Password");
             Environment.SetEnvironmentVariable("dx2WikiPassword", password, EnvironmentVariableTarget.User);
             logRTB.AppendText("Password has been changed succesfully.\n");
+        }
+
+        private void migratorBtn_Click(object sender, EventArgs e)
+        {            
+            DBMigrator.Migrate(LoadedPath, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>());
         }
 
         #endregion
