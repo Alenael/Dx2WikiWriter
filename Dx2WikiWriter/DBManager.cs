@@ -67,7 +67,6 @@ namespace Dx2WikiWriter
                 var dt = new DataTable();
 
                 using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.Jet.OleDb.4.0; Data Source = " + Path.GetDirectoryName(filePath) + ";Extended Properties=\"Text;HDR=YES;FMT=Delimited;CharacterSet=65001\""))
-
                 {
                     conn.Open();
                     string strQuery = "SELECT * FROM [" + Path.GetFileName(filePath) + "]";
