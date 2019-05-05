@@ -222,6 +222,11 @@ namespace Dx2WikiWriter
             return trans;
         }
 
+        public static Skill LoadSkill(DataGridViewRow row, IEnumerable<DataGridViewRow> demons)
+        {
+            return LoadSkill(row, new Dictionary<string, string>(), new Dictionary<string, string>(), demons);
+        }
+
         //Loads our Skill from a DataGridRow
         private static Skill LoadSkill(DataGridViewRow row, Dictionary<string, string> learnedBy, Dictionary<string, string> transferableFrom, IEnumerable<DataGridViewRow> demons)
         {
@@ -230,9 +235,12 @@ namespace Dx2WikiWriter
 
             if (row.Cells["Name"].Value != null)
             {
-                lb = learnedBy[(string)row.Cells["Name"].Value];
-                tf = transferableFrom[(string)row.Cells["Name"].Value];
-            }
+                if (learnedBy.Count > 0 && transferableFrom.Count > 0)
+                {
+                    lb = learnedBy[(string)row.Cells["Name"].Value];
+                    tf = transferableFrom[(string)row.Cells["Name"].Value];
+                }
+            }            
 
             var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
 
