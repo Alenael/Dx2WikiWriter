@@ -81,10 +81,9 @@ namespace Dx2WikiWriter
                         "\"" + skill.Name + "\"," +
                         " (Select skill_type_id from dx2.skill_types where skill_type_name = \"" + skill.Element.Substring(0, 1).ToUpper() + skill.Element.Substring(1, skill.Element.Length -1) + "\")," +
                         " (Select skill_target_id from dx2.skill_target where skill_target_name = \"" + skill.Target + "\")," +
-                        "null, null, " + skill.Cost.Replace(" MP", "").Replace("Passive", "null") + ", " + sp + ", " + skill.DuelExclusive + ", " + skill.ExtractExclusive + ",null, null); \n";
+                        "null, null, " + skill.Cost.Replace(" MP", "").ToLower().Replace("passive", "null") + ", " + sp + ", " + skill.DuelExclusive + ", " + skill.ExtractExclusive + ",null, null); \n";
 
                     lines += "Insert Into dx2.skill_levels Values (" +
-                        "null, " +
                         "(Select skill_id from dx2.skills where skill_name = \"" + skill.Name + "\"), \n" +
                         desc[0] + "," +
                         desc[1] + "," +
