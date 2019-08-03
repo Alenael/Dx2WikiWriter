@@ -70,13 +70,14 @@ namespace Dx2WikiWriter
         {
             var demonVersions = "";
             var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
+            
 
             if (!(row.Cells["Alternate Name"].Value is DBNull))
             {
                 var alternateDemon = (string)row.Cells["Alternate Name"].Value;
                 demonVersions = "{{DemonVersions|" + name + "|" + alternateDemon + "}}\r\n";
             }
-
+            
             return new Demon
             {
                 Name = name,
@@ -188,7 +189,7 @@ namespace Dx2WikiWriter
 
             if (selectedDemons.Count() > 0)
             {
-                for (var i = 0; i < selectedDemons.Count(); i++)
+                for (var i = 1; i < selectedDemons.Count(); i++)
                 {
                     var demon = LoadDemon(selectedDemons.ToList()[i], selectedDemons);
                     
