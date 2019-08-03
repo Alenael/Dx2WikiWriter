@@ -115,6 +115,14 @@ namespace Dx2WikiWriter
                 GachaP = FixSkillsNamedAsDemons(row.Cells["Purple Gacha"].Value is DBNull ? "" : (string)row.Cells["Purple Gacha"].Value, demons),
                 GachaY = FixSkillsNamedAsDemons(row.Cells["Yellow Gacha"].Value is DBNull ? "" : (string)row.Cells["Yellow Gacha"].Value, demons),
                 GachaT = FixSkillsNamedAsDemons(row.Cells["Teal Gacha"].Value is DBNull ? "" : (string)row.Cells["Teal Gacha"].Value, demons),
+
+                panel1completion = FixSkillsNamedAsDemons(row.Cells["Panel 1"].Value is DBNull ? "" : (string)row.Cells["Panel 1"].Value, demons),
+                panel2completion = FixSkillsNamedAsDemons(row.Cells["Panel 2"].Value is DBNull ? "" : (string)row.Cells["Panel 2"].Value, demons),
+                panel3completion = FixSkillsNamedAsDemons(row.Cells["Panel 3"].Value is DBNull ? "" : (string)row.Cells["Panel 3"].Value, demons),
+
+                panel1stats = FixSkillsNamedAsDemons(row.Cells["Panel 1 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 1 Stats"].Value, demons),
+                panel2stats = FixSkillsNamedAsDemons(row.Cells["Panel 2 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 2 Stats"].Value, demons),
+                panel3stats = FixSkillsNamedAsDemons(row.Cells["Panel 3 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 3 Stats"].Value, demons),
             };
         }
 
@@ -324,6 +332,13 @@ namespace Dx2WikiWriter
         public string Awaken3Amount;
         public string Awaken4Amount;
 
+        public string panel1completion;
+        public string panel1stats;
+        public string panel2completion;
+        public string panel2stats;
+        public string panel3completion;
+        public string panel3stats;
+
         public void SetAetherCosts(string[][] aether)
         {
             Awaken1 = aether[0][0];
@@ -344,7 +359,10 @@ namespace Dx2WikiWriter
                      "hp= " + HP + "|str= " + Str + "|mag= " + Mag + "|vit= " + Vit + "|agi= " + Agi + "|luck= " + Luck + "" +
                      "|phys= " + Phys + "|fire= " + Fire + "|ice= " + Ice + "|elec= " + Elec + "" +
                      "|force= " + Force + "|light= " + Light + "|dark= " + Dark +
-                     "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + "}}\r\n" +
+                     "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
+                     "|panel1= " + panel1completion + "|panel2= " + panel2completion + "|panel3= " + panel3completion +
+                     "|panel1stats= " + panel1stats + "|panel2stats= " + panel2stats + "|panel3stats= " + panel3stats +
+                     "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
 
@@ -383,6 +401,12 @@ namespace Dx2WikiWriter
                 "|pdef= " + PDef + Environment.NewLine +
                 "|matk= " + MAtk + Environment.NewLine +
                 "|mdef= " + MDef + Environment.NewLine +
+                "|panel1= " + panel1completion + Environment.NewLine +
+                "|panel2= " + panel2completion + Environment.NewLine +
+                "|panel3= " + panel3completion + Environment.NewLine +
+                "|panel1stats= " + panel1stats + Environment.NewLine +
+                "|panel2stats= " + panel2stats + Environment.NewLine +
+                "|panel3stats= " + panel3stats + Environment.NewLine +
                 "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1) + Environment.NewLine +
                 "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2) + Environment.NewLine +
                 "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3) + Environment.NewLine +
