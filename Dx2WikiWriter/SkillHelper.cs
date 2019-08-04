@@ -318,14 +318,15 @@ namespace Dx2WikiWriter
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
             var description = Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
-            
+
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
                     "|cost=" + Cost.Replace(" MP", "") + Environment.NewLine +
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
-                    "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine + 
+                    "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine +
+                    "|icon=" + "{{{icon}}}" + Environment.NewLine +
                     "}}";
         }
 
