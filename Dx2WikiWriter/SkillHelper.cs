@@ -253,6 +253,7 @@ namespace Dx2WikiWriter
                 Element = row.Cells["Element"].Value is DBNull ? "" : (string)row.Cells["Element"].Value,
                 Cost = row.Cells["Cost"].Value is DBNull ? "" : (string)row.Cells["Cost"].Value,
                 Description = row.Cells["Description"].Value is DBNull ? "" : (string)row.Cells["Description"].Value,
+                Levels = row.Cells["Levels"].Value is DBNull ? "" : (string)row.Cells["Levels"].Value,
                 Target = row.Cells["Target"].Value is DBNull ? "" : (string)row.Cells["Target"].Value,
                 Sp = row.Cells["Skill Points"].Value is DBNull ? "" : (string)row.Cells["Skill Points"].Value,
                 LearnedBy = lb.Trim(),
@@ -290,6 +291,7 @@ namespace Dx2WikiWriter
         public string Element;
         public string Cost;
         public string Description;
+        public string Levels;
         public string Target;
         public string Sp;
         public string LearnedBy;
@@ -303,6 +305,7 @@ namespace Dx2WikiWriter
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
             var description = Description.Replace("\\n\\n", "\\n").Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
+            var levels = Levels.Replace("\\n\\n", "\\n").Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
             return "|-" + Environment.NewLine +
                    "|[[" + Name.Replace("[", "(").Replace("]", ")") + "]]" + Environment.NewLine +
                    "|" + Cost + Environment.NewLine +
@@ -318,6 +321,7 @@ namespace Dx2WikiWriter
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
             var description = Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
+            var levels = Levels.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
 
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
@@ -326,7 +330,15 @@ namespace Dx2WikiWriter
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine +
+                    "|levels=" + "<nowiki>" + levels + "</nowiki>" + Environment.NewLine +
                     "|icon=" + "{{{icon}}}" + Environment.NewLine +
+                    "}}" + Environment.NewLine + Environment.NewLine +
+                    "{{ " +
+                    "#ifeq: {{{icon}}} " +
+                    "| yes " +
+                    "| " +
+                    "| " +
+                    "{{:" + Name.Replace("[", "(").Replace("]", ")") + "/Demons}}" +
                     "}}";
         }
 
