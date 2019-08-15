@@ -319,8 +319,22 @@ namespace Dx2WikiWriter
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
 
             //Split Levels and Description
-            var levels = Description.Substring(Description.IndexOf("\\n\\n"));
-            var description = Description.Substring(0, Description.IndexOf("\\n\\n"));
+            var description = "";
+            var levels = "";
+            var splitPoint = Description.IndexOf("\\n\\n");
+            if(splitPoint == -1)
+            {
+                description = Description;
+            }
+            else
+            {
+                levels = Description.Substring(Description.IndexOf("\\n\\n"));
+                description = Description.Substring(0, Description.IndexOf("\\n\\n"));
+            }
+
+
+            //var levels = Description.Substring(Description.IndexOf("\\n\\n"));
+            //var description = Description.Substring(0, Description.IndexOf("\\n\\n"));
             description = description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
             levels = levels.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
 
