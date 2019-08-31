@@ -317,7 +317,26 @@ namespace Dx2WikiWriter
         public string CreateWikiStringIndividual()
         {
             var sp = Sp == "" ? "<nowiki>-</nowiki>" : Sp;
-            var description = Description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
+
+            //Split Levels and Description
+            var description = "";
+            var levels = "";
+            var splitPoint = Description.IndexOf("\\n\\n");
+            if(splitPoint == -1)
+            {
+                description = Description;
+            }
+            else
+            {
+                levels = Description.Substring(Description.IndexOf("\\n\\n"));
+                description = Description.Substring(0, Description.IndexOf("\\n\\n"));
+            }
+
+
+            //var levels = Description.Substring(Description.IndexOf("\\n\\n"));
+            //var description = Description.Substring(0, Description.IndexOf("\\n\\n"));
+            description = description.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
+            levels = levels.Replace("\\n", "</nowiki><br>" + Environment.NewLine + "<nowiki>");
 
             return "{{SkillTable\r\n" +
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
@@ -326,7 +345,15 @@ namespace Dx2WikiWriter
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine +
+                    "|levels=" + "<nowiki>" + levels + "</nowiki>" + Environment.NewLine +
                     "|icon=" + "{{{icon}}}" + Environment.NewLine +
+                    "}}" + Environment.NewLine + Environment.NewLine +
+                    "{{ " +
+                    "#ifeq: {{{icon}}} " +
+                    "| yes " +
+                    "| " +
+                    "| " +
+                    "{{:" + Name.Replace("[", "(").Replace("]", ")") + "/Demons}}" +
                     "}}";
         }
 
