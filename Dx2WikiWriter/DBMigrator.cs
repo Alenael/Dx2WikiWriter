@@ -33,14 +33,14 @@ namespace Dx2WikiWriter
                         lines += "Insert Into dx2.demons Values (" +
                             "null, " +
                             "\"" + demon.Name + "\"," +
-                            " (Select race_id from dx2.demon_races where race_name = \"" + demon.Race + "\")," +
-                            " (Select ai_id from dx2.demon_ais where ai_name = \"" + demon.Ai + "\")," +
+                            " (Select id from dx2.demon_races where name_en = \"" + demon.Race + "\")," +
+                            " (Select id from dx2.demon_ais where name_en = \"" + demon.Ai + "\")," +
                             " " + demon.Grade + "," +
                             " " + demon.Rarity + "); \n";
 
                         //Insert Resistances
                         lines += "Insert Into dx2.demon_resistances Values (" +
-                            "(Select demon_id from dx2.demons where demon_name = \"" + demon.Name + "\"), ";
+                            "(Select id from dx2.demons where name_en = \"" + demon.Name + "\"), ";
                         lines += CreateInsertResist(FixResist(demon.Phys)) + ", ";
                         lines += CreateInsertResist(FixResist(demon.Fire)) + ", ";
                         lines += CreateInsertResist(FixResist(demon.Ice)) + ", ";
@@ -51,7 +51,7 @@ namespace Dx2WikiWriter
 
                         //Insert Stats
                         lines += "Insert Into dx2.demon_stats Values (" +
-                            "(Select demon_id from dx2.demons where demon_name = \"" + demon.Name + "\"), " +
+                            "(Select id from dx2.demons where name_en = \"" + demon.Name + "\"), " +
                             "50," + demon.HP + "," + demon.Str + "," + demon.Mag + "," + demon.Vit + "," + demon.Agi + "," + demon.Luck + "," + true + "); \n";
 
                         lines += "\n";
@@ -79,12 +79,12 @@ namespace Dx2WikiWriter
                     lines += "Insert Into dx2.skills Values (" +
                         "null, " +
                         "\"" + skill.Name + "\"," +
-                        " (Select skill_type_id from dx2.skill_types where skill_type_name = \"" + skill.Element.Substring(0, 1).ToUpper() + skill.Element.Substring(1, skill.Element.Length -1) + "\")," +
-                        " (Select skill_target_id from dx2.skill_target where skill_target_name = \"" + skill.Target + "\")," +
-                        "null, null, " + skill.Cost.Replace(" MP", "").ToLower().Replace("passive", "null") + ", " + sp + ", " + skill.DuelExclusive + ", " + skill.ExtractExclusive + ",null, null); \n";
+                        " (Select id from dx2.skill_types where name_en = \"" + skill.Element.Substring(0, 1).ToUpper() + skill.Element.Substring(1, skill.Element.Length -1) + "\")," +
+                        " (Select id from dx2.skill_target where name_en = \"" + skill.Target + "\")," +
+                        "null, null, " + skill.Cost.Replace(" MP", "").ToLower().Replace("passive", "null") + ", " + sp + ", " + skill.DuelExclusive + ", " + skill.ExtractExclusive + ", null, null); \n";
 
                     lines += "Insert Into dx2.skill_levels Values (" +
-                        "(Select skill_id from dx2.skills where skill_name = \"" + skill.Name + "\"), \n" +
+                        "(Select id from dx2.skills where name_en = \"" + skill.Name + "\"), \n" +
                         desc[0] + "," +
                         desc[1] + "," +
                         desc[2] + "," +
@@ -96,9 +96,66 @@ namespace Dx2WikiWriter
 
                     lines += "\n";
                 }
-            }
-                        
+            }                       
+
             File.WriteAllText(loadedPath + "/Migration.sql", lines);
+
+
+            lines = "";
+            lines += "#Demon Skills \n\n";
+
+            foreach (var row in demons)
+            {
+                if (row.Cells["Name"].Value is string)
+                {
+                    var demon = DemonHelper.LoadDemon(row, demons);
+
+                    if (demon.Name != "")
+                    {
+                        lines += "Insert Into dx2.demon_skills Values(" +
+                            "(Select id from dx2.demons where name_en = \"" + demon.Name + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.Skill1 + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.Skill2 + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.Skill3 + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.AwakenC + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.AwakenR + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.AwakenY + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.AwakenT + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.AwakenP + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.GachaR + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.GachaY + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.GachaT + "\"), " +
+                            "(Select id from dx2.skills where name_en = \"" + demon.GachaP + "\")); \n";
+                    }
+                }
+            }
+
+            File.WriteAllText(loadedPath + "/Migration2.sql", lines);
+
+            lines = "";
+            lines += "#Panel Info \n\n";
+
+            foreach (var row in demons)
+            {
+                if (row.Cells["Name"].Value is string)
+                {
+                    var demon = DemonHelper.LoadDemon(row, demons);
+
+                    if (demon.Name != "")
+                    {
+                        lines += "Insert Into dx2.demon_skills Values(" +
+                            "(Select id from dx2.demons where name_en = \"" + demon.Name + "\"), " +
+                            demon.panel1completion + ", " +
+                            demon.panel1stats + ", " +
+                            demon.panel2completion + ", " +
+                            demon.panel2stats + ", " +
+                            demon.panel3completion + ", " +
+                            demon.panel3stats + "); \n";
+                    }
+                }
+            }
+
+            File.WriteAllText(loadedPath + "/Migration3.sql", lines);
         }
 
         private static string[] ReadDescription(string desc)
@@ -148,7 +205,7 @@ namespace Dx2WikiWriter
         private static string CreateInsertResist(string resist)
         {
             if (resist != "")
-                return "(Select resist_id from dx2.demon_resistance_type where resist_type = \"" + resist + "\")";
+                return "(Select id from dx2.demon_resistance_type where name_en = \"" + resist + "\")";
 
             return "null";
         }
@@ -163,3 +220,4 @@ namespace Dx2WikiWriter
         }
     }
 }
+
