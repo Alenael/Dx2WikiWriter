@@ -372,8 +372,9 @@ namespace Dx2WikiWriter
         {
             var total = ranks.Count;
 
-            return DemonVersions + 
-                "{{DemonTabs|base{{BASENAME}} }}" +
+            return DemonVersions +
+                "{{:{{PAGENAME}}/Summary}}" +
+                "{{DemonTabs|base{{BASENAME}} }}\r\n" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +
