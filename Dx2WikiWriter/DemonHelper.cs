@@ -371,6 +371,7 @@ namespace Dx2WikiWriter
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
                      "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
                      "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +
+                     "|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion +
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
@@ -441,6 +442,9 @@ namespace Dx2WikiWriter
                 "|g_purple= " + (GachaP == "" ? "N/A" : GachaP) + Environment.NewLine +
                 "|g_teal= " + (GachaT == "" ? "N/A" : GachaT) + Environment.NewLine +
                 "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
+                "|gacha=" + Gacha + Environment.NewLine +
+                "|event=" + Event + Environment.NewLine +
+                "|multifusion=" + MultiFusion + Environment.NewLine +
                 "|}}\r\n" +
                 "[[Category: Demons]]\r\n" +
                 "[[Category: " + Race + "]]\r\n" +
