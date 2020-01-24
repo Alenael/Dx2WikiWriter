@@ -127,7 +127,8 @@ namespace Dx2WikiWriter
 
                 Gacha = row.Cells["Gacha"].Value is DBNull ? false : (string)row.Cells["Gacha"].Value == "1",
                 Event = row.Cells["Event"].Value is DBNull ? false : (string)row.Cells["Event"].Value == "1",
-                MultiFusion = row.Cells["Multi-Fusion"].Value is DBNull ? false : (string)row.Cells["Multi-Fusion"].Value == "1"
+                MultiFusion = row.Cells["Multi-Fusion"].Value is DBNull ? false : (string)row.Cells["Multi-Fusion"].Value == "1",
+                BannerRequired = row.Cells["Banner Required"].Value is DBNull ? false : (string)row.Cells["Banner Required"].Value == "1"
             };
         }
 
@@ -347,6 +348,7 @@ namespace Dx2WikiWriter
         public bool Gacha;
         public bool Event;
         public bool MultiFusion;
+        public bool BannerRequired;
 
         public void SetAetherCosts(string[][] aether)
         {
@@ -371,7 +373,7 @@ namespace Dx2WikiWriter
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
                      "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
                      "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +
-                     "|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion +
+                     //"|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion + "|bannerrequired= " + BannerRequired +
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
@@ -385,11 +387,13 @@ namespace Dx2WikiWriter
             //Lets generate a handful of useful categories to add on
             var extraCats = "";
             if (Gacha)            
-                extraCats += "[[Category: Gacha]]\r\n";   
+                extraCats += "[[Category: Gacha Demon]]\r\n";   
             if (Event)
-                extraCats += "[[Category: Event]]\r\n";
+                extraCats += "[[Category: Event Demon]]\r\n";
             if (MultiFusion)
-                extraCats += "[[Category: Multi-Fusion]]\r\n";
+                extraCats += "[[Category: Multi-Fusion Demon]]\r\n";
+            if (BannerRequired)
+                extraCats += "[[Category: Time Limited Demon]]\r\n";
 
             //Return the data
             return DemonVersions +
@@ -445,6 +449,7 @@ namespace Dx2WikiWriter
                 "|gacha=" + Gacha + Environment.NewLine +
                 "|event=" + Event + Environment.NewLine +
                 "|multifusion=" + MultiFusion + Environment.NewLine +
+                "|bannerrequired=" + BannerRequired + Environment.NewLine +
                 "|}}\r\n" +
                 "[[Category: Demons]]\r\n" +
                 "[[Category: " + Race + "]]\r\n" +
