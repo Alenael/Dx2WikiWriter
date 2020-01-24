@@ -373,7 +373,7 @@ namespace Dx2WikiWriter
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
                      "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
                      "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +
-                     //"|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion + "|bannerrequired= " + BannerRequired +
+                     //"|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion + "|bannerrequired= " + BannerRequired + //Not sure how this will look yet
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
