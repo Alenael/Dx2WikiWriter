@@ -92,12 +92,12 @@ namespace Dx2WikiWriter
                 {
                     if (pageName.Contains("/Demons"))
                     {
-                        if (demons.Any(d => (string)d.Cells["Name"].Value + "/Demons" == pageName))
+                        if (demons.Any(d => (string)d.Cells[0].Value + "/Demons" == pageName))
                             pageName = pageName.Replace("/Demons", "") + " (Skill)/Demons";
                     }
                     else
                     {
-                        if (demons.Any(d => (string)d.Cells["Name"].Value == pageName))
+                        if (demons.Any(d => (string)d.Cells[0].Value == pageName))
                             pageName = pageName + " (Skill)";
                     }
                 }

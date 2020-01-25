@@ -21,7 +21,7 @@ namespace Dx2WikiWriter
             //Migrate Demon Table
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 
@@ -63,7 +63,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in skills)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var skill = SkillHelper.LoadSkill(row, demons);
 
@@ -106,7 +106,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 
@@ -137,7 +137,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 

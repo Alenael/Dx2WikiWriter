@@ -69,7 +69,7 @@ namespace Dx2WikiWriter
         public static Demon LoadDemon(DataGridViewRow row, IEnumerable<DataGridViewRow> demons)
         {
             var demonVersions = "";
-            var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
+            var name = row.Cells[0].Value is DBNull ? "" : (string)row.Cells[0].Value;
             
 
             if (!(row.Cells["Alternate Name"].Value is DBNull))
@@ -149,7 +149,7 @@ namespace Dx2WikiWriter
             var newName = name;
 
             if (newName != "")
-                if (demons.Any(d => (string)d.Cells["Name"].Value == newName))
+                if (demons.Any(d => (string)d.Cells[0].Value == newName))
                     newName = newName + " (Skill)";
 
             return newName;
@@ -201,22 +201,23 @@ namespace Dx2WikiWriter
                     var r = new Rank() { Name = demon.Name };
 
                     var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
-                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
-                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
-                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
-                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
-                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
-                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells[0
+                        ].Value == demon.Name) + 1;
 
                     ranks.Add(r);
                 }
@@ -372,8 +373,7 @@ namespace Dx2WikiWriter
                      "|force= " + Force + "|light= " + Light + "|dark= " + Dark +
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
                      "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
-                     "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +
-                     //"|gacha= " + Gacha + "|event= " + Event + "|multifusion= " + MultiFusion + "|bannerrequired= " + BannerRequired + //Not sure how this will look yet
+                     "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +                     
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
@@ -387,18 +387,17 @@ namespace Dx2WikiWriter
             //Lets generate a handful of useful categories to add on
             var extraCats = "";
             if (Gacha)            
-                extraCats += "[[Category: Gacha Demon]]\r\n";   
+                extraCats += "[[Category: Gacha Demons]]\r\n";   
             if (Event)
-                extraCats += "[[Category: Event Demon]]\r\n";
+                extraCats += "[[Category: Event Demons]]\r\n";
             if (MultiFusion)
-                extraCats += "[[Category: Multi-Fusion Demon]]\r\n";
+                extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
             if (BannerRequired)
-                extraCats += "[[Category: Time Limited Demon]]\r\n";
+                extraCats += "[[Category: Time Limited Demons]]\r\n";
 
             //Return the data
-            return DemonVersions +
-                "{{:{{PAGENAME}}/Summary}}\r\n" +
-                "{{DemonTabs|base{{BASENAME}} }}\r\n" +
+            return
+                "__TOC__" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +
@@ -451,6 +450,8 @@ namespace Dx2WikiWriter
                 "|multifusion=" + MultiFusion + Environment.NewLine +
                 "|bannerrequired=" + BannerRequired + Environment.NewLine +
                 "|}}\r\n" +
+                "{{:{{PAGENAME}}/Builds}}\r\n" +
+                "{{:{{PAGENAME}}/Lore}}\r\n" +
                 "[[Category: Demons]]\r\n" +
                 "[[Category: " + Race + "]]\r\n" +
                 "[[Category: " + Rarity + " Star Demons]]\r\n" +
