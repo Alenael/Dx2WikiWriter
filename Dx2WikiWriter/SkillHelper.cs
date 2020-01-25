@@ -44,7 +44,7 @@ namespace Dx2WikiWriter
             {
                 foreach (var skillRow in skills)
                 {
-                    if (skillRow.Cells[0].Value == null)
+                    if (skillRow.Cells["Name"].Value == null)
                         continue;
 
                     var skill = LoadSkill(skillRow, learnedBy, transferableFrom, demons);
@@ -53,7 +53,7 @@ namespace Dx2WikiWriter
 
                     foreach(var s in skills)
                     {
-                        var skillName = (string)s.Cells[0].Value;
+                        var skillName = (string)s.Cells["Name"].Value;
                         if (skillName == null)
                             continue;
                         data.Replace(skillName, "[[" + skillName + "]]");
@@ -117,10 +117,10 @@ namespace Dx2WikiWriter
 
             foreach (var s in skills)
             {                
-                if (s.Cells[0].Value == null)
+                if (s.Cells["Name"].Value == null)
                     continue;
 
-                trans.Add((string)s.Cells[0].Value, "");
+                trans.Add((string)s.Cells["Name"].Value, "");
             }
 
             foreach (var d in demons)
@@ -129,7 +129,7 @@ namespace Dx2WikiWriter
 
                 foreach (var s in skills)
                 {
-                    var skillName = (string)s.Cells[0].Value;
+                    var skillName = (string)s.Cells["Name"].Value;
 
                     if (skillName == null)
                         continue;
@@ -170,10 +170,10 @@ namespace Dx2WikiWriter
 
             foreach (var s in skills)
             {
-                if (s.Cells[0].Value == null)
+                if (s.Cells["Name"].Value == null)
                     continue;
 
-                trans.Add((string)s.Cells[0].Value, "");
+                trans.Add((string)s.Cells["Name"].Value, "");
             }
 
             foreach (var d in demons)
@@ -182,7 +182,7 @@ namespace Dx2WikiWriter
 
                 foreach (var s in skills)
                 {
-                    var skillName = (string)s.Cells[0].Value;
+                    var skillName = (string)s.Cells["Name"].Value;
 
                     if (skillName == null)
                         continue;
@@ -233,16 +233,16 @@ namespace Dx2WikiWriter
             var lb = "";
             var tf = "";
 
-            if (row.Cells[0].Value != null)
+            if (row.Cells["Name"].Value != null)
             {
                 if (learnedBy.Count > 0 && transferableFrom.Count > 0)
                 {
-                    lb = learnedBy[(string)row.Cells[0].Value];
-                    tf = transferableFrom[(string)row.Cells[0].Value];
+                    lb = learnedBy[(string)row.Cells["Name"].Value];
+                    tf = transferableFrom[(string)row.Cells["Name"].Value];
                 }
             }            
 
-            var name = row.Cells[0].Value is DBNull ? "" : (string)row.Cells[0].Value;
+            var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
 
             if (demons.Any(d => (string)d.Cells[0].Value == name))            
                 name = name + " (Skill)";            
