@@ -394,10 +394,20 @@ namespace Dx2WikiWriter
                 extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
             if (BannerRequired)
                 extraCats += "[[Category: Time Limited Demons]]\r\n";
+            if (MultiFusion || (!Event || !BannerRequired))
+                extraCats += "[[Category: Fusible Demons]]\r\n";
+
+            //Generate Flag Info
+            var flagInfo = "";
+            flagInfo += "gacha=" + Gacha.ToString() + "|";
+            flagInfo += "multi-fusion=" + MultiFusion.ToString() + "|";
+            flagInfo += "event=" + Event.ToString() + "|";
+            flagInfo += "banner=" + BannerRequired.ToString() + "|";
+            flagInfo += "fusible=" + (MultiFusion || (!Event || !BannerRequired)).ToString();
 
             //Return the data
             return
-                "__TOC__" +
+                "__TOC__\r\n" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +
@@ -450,6 +460,7 @@ namespace Dx2WikiWriter
                 "|multifusion=" + MultiFusion + Environment.NewLine +
                 "|bannerrequired=" + BannerRequired + Environment.NewLine +
                 "|}}\r\n" +
+                "<section begin=gachaFlags/>{{#ifeq:{{PAGENAME}}| Tier List |{{GachaFlag|" + flagInfo + "}}|}}<section end=gachaFlags/>\r\n" +
                 "{{:{{PAGENAME}}/Builds}}\r\n" +
                 "{{:{{PAGENAME}}/Lore}}\r\n" +
                 "[[Category: Demons]]\r\n" +
