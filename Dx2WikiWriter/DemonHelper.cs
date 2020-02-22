@@ -69,7 +69,7 @@ namespace Dx2WikiWriter
         public static Demon LoadDemon(DataGridViewRow row, IEnumerable<DataGridViewRow> demons)
         {
             var demonVersions = "";
-            var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
+            var name = row.Cells[0].Value is DBNull ? "" : (string)row.Cells[0].Value;
             
 
             if (!(row.Cells["Alternate Name"].Value is DBNull))
@@ -117,13 +117,18 @@ namespace Dx2WikiWriter
                 GachaY = FixSkillsNamedAsDemons(row.Cells["Yellow Gacha"].Value is DBNull ? "" : (string)row.Cells["Yellow Gacha"].Value, demons),
                 GachaT = FixSkillsNamedAsDemons(row.Cells["Teal Gacha"].Value is DBNull ? "" : (string)row.Cells["Teal Gacha"].Value, demons),
 
-                panel1completion = FixSkillsNamedAsDemons(row.Cells["Panel 1"].Value is DBNull ? "" : (string)row.Cells["Panel 1"].Value, demons),
-                panel2completion = FixSkillsNamedAsDemons(row.Cells["Panel 2"].Value is DBNull ? "" : (string)row.Cells["Panel 2"].Value, demons),
-                panel3completion = FixSkillsNamedAsDemons(row.Cells["Panel 3"].Value is DBNull ? "" : (string)row.Cells["Panel 3"].Value, demons),
+                Panel1completion = FixSkillsNamedAsDemons(row.Cells["Panel 1"].Value is DBNull ? "" : (string)row.Cells["Panel 1"].Value, demons),
+                Panel2completion = FixSkillsNamedAsDemons(row.Cells["Panel 2"].Value is DBNull ? "" : (string)row.Cells["Panel 2"].Value, demons),
+                Panel3completion = FixSkillsNamedAsDemons(row.Cells["Panel 3"].Value is DBNull ? "" : (string)row.Cells["Panel 3"].Value, demons),
 
-                panel1stats = FixSkillsNamedAsDemons(row.Cells["Panel 1 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 1 Stats"].Value, demons),
-                panel2stats = FixSkillsNamedAsDemons(row.Cells["Panel 2 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 2 Stats"].Value, demons),
-                panel3stats = FixSkillsNamedAsDemons(row.Cells["Panel 3 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 3 Stats"].Value, demons),
+                Panel1stats = FixSkillsNamedAsDemons(row.Cells["Panel 1 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 1 Stats"].Value, demons),
+                Panel2stats = FixSkillsNamedAsDemons(row.Cells["Panel 2 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 2 Stats"].Value, demons),
+                Panel3stats = FixSkillsNamedAsDemons(row.Cells["Panel 3 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 3 Stats"].Value, demons),
+
+                Gacha = row.Cells["Gacha"].Value is DBNull ? false : (string)row.Cells["Gacha"].Value == "1",
+                Event = row.Cells["Event"].Value is DBNull ? false : (string)row.Cells["Event"].Value == "1",
+                MultiFusion = row.Cells["Multi-Fusion"].Value is DBNull ? false : (string)row.Cells["Multi-Fusion"].Value == "1",
+                BannerRequired = row.Cells["Banner Required"].Value is DBNull ? false : (string)row.Cells["Banner Required"].Value == "1"
             };
         }
 
@@ -144,7 +149,7 @@ namespace Dx2WikiWriter
             var newName = name;
 
             if (newName != "")
-                if (demons.Any(d => (string)d.Cells["Name"].Value == newName))
+                if (demons.Any(d => (string)d.Cells[0].Value == newName))
                     newName = newName + " (Skill)";
 
             return newName;
@@ -196,22 +201,23 @@ namespace Dx2WikiWriter
                     var r = new Rank() { Name = demon.Name };
 
                     var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();
-                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Str = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Magic"].Value)).ToList();
-                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Mag = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Vitality"].Value)).ToList();
-                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Vit = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Luck"].Value)).ToList();
-                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Luck = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ HP"].Value)).ToList();
-                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.HP = sortedDemons.FindIndex(a => (string)a.Cells[0].Value == demon.Name) + 1;
 
                     sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Agility"].Value)).ToList();
-                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells["Name"].Value == demon.Name) + 1;
+                    r.Agility = sortedDemons.FindIndex(a => (string)a.Cells[0
+                        ].Value == demon.Name) + 1;
 
                     ranks.Add(r);
                 }
@@ -333,12 +339,17 @@ namespace Dx2WikiWriter
         public string Awaken3Amount;
         public string Awaken4Amount;
 
-        public string panel1completion;
-        public string panel1stats;
-        public string panel2completion;
-        public string panel2stats;
-        public string panel3completion;
-        public string panel3stats;
+        public string Panel1completion;
+        public string Panel1stats;
+        public string Panel2completion;
+        public string Panel2stats;
+        public string Panel3completion;
+        public string Panel3stats;
+
+        public bool Gacha;
+        public bool Event;
+        public bool MultiFusion;
+        public bool BannerRequired;
 
         public void SetAetherCosts(string[][] aether)
         {
@@ -361,8 +372,8 @@ namespace Dx2WikiWriter
                      "|phys= " + Phys + "|fire= " + Fire + "|ice= " + Ice + "|elec= " + Elec + "" +
                      "|force= " + Force + "|light= " + Light + "|dark= " + Dark +
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
-                     "|panel1= " + panel1completion + "|panel2= " + panel2completion + "|panel3= " + panel3completion +
-                     "|panel1stats= " + panel1stats + "|panel2stats= " + panel2stats + "|panel3stats= " + panel3stats +
+                     "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
+                     "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +                     
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
@@ -370,10 +381,33 @@ namespace Dx2WikiWriter
         //Creates a Wiki string for Individual by themselves
         public string CreateWikiStringIndividual(List<Rank> ranks)
         {
+            //Avoid calling count multiple times?
             var total = ranks.Count;
 
-            return DemonVersions + 
-                "{{DemonTabs|base{{BASENAME}} }}" +
+            //Lets generate a handful of useful categories to add on
+            var extraCats = "";
+            if (Gacha)            
+                extraCats += "[[Category: Gacha Demons]]\r\n";   
+            if (Event)
+                extraCats += "[[Category: Event Demons]]\r\n";
+            if (MultiFusion)
+                extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
+            if (BannerRequired)
+                extraCats += "[[Category: Time Limited Demons]]\r\n";
+            if (MultiFusion || (!Event || !BannerRequired))
+                extraCats += "[[Category: Fusible Demons]]\r\n";
+
+            //Generate Flag Info
+            var flagInfo = "";
+            flagInfo += "gacha=" + Gacha.ToString() + "|";
+            flagInfo += "multi-fusion=" + MultiFusion.ToString() + "|";
+            flagInfo += "event=" + Event.ToString() + "|";
+            flagInfo += "banner=" + BannerRequired.ToString() + "|";
+            flagInfo += "fusible=" + (MultiFusion || (!Event || !BannerRequired)).ToString();
+
+            //Return the data
+            return
+                "__TOC__\r\n" +
                 "{{Demon\r\n" +
                 "|id=\r\n" +
                 "|jpname=\r\n" +
@@ -402,12 +436,12 @@ namespace Dx2WikiWriter
                 "|pdef= " + PDef + Environment.NewLine +
                 "|matk= " + MAtk + Environment.NewLine +
                 "|mdef= " + MDef + Environment.NewLine +
-                "|panel1= " + panel1completion + Environment.NewLine +
-                "|panel2= " + panel2completion + Environment.NewLine +
-                "|panel3= " + panel3completion + Environment.NewLine +
-                "|panel1stats= " + panel1stats + Environment.NewLine +
-                "|panel2stats= " + panel2stats + Environment.NewLine +
-                "|panel3stats= " + panel3stats + Environment.NewLine +
+                "|panel1= " + Panel1completion + Environment.NewLine +
+                "|panel2= " + Panel2completion + Environment.NewLine +
+                "|panel3= " + Panel3completion + Environment.NewLine +
+                "|panel1stats= " + Panel1stats + Environment.NewLine +
+                "|panel2stats= " + Panel2stats + Environment.NewLine +
+                "|panel3stats= " + Panel3stats + Environment.NewLine +
                 "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1) + Environment.NewLine +
                 "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2) + Environment.NewLine +
                 "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3) + Environment.NewLine +
@@ -421,11 +455,19 @@ namespace Dx2WikiWriter
                 "|g_purple= " + (GachaP == "" ? "N/A" : GachaP) + Environment.NewLine +
                 "|g_teal= " + (GachaT == "" ? "N/A" : GachaT) + Environment.NewLine +
                 "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
+                "|gacha=" + Gacha + Environment.NewLine +
+                "|event=" + Event + Environment.NewLine +
+                "|multifusion=" + MultiFusion + Environment.NewLine +
+                "|bannerrequired=" + BannerRequired + Environment.NewLine +
                 "|}}\r\n" +
+                "<section begin=gachaFlags/>{{#ifeq:{{PAGENAME}}| Tier List |{{GachaFlag|" + flagInfo + "}}|}}<section end=gachaFlags/>\r\n" +
+                "{{:{{PAGENAME}}/Builds}}\r\n" +
+                "{{:{{PAGENAME}}/Lore}}\r\n" +
                 "[[Category: Demons]]\r\n" +
                 "[[Category: " + Race + "]]\r\n" +
                 "[[Category: " + Rarity + " Star Demons]]\r\n" +
-                "[[Category: " + Ai + " AI]]\r\n";
+                "[[Category: " + Ai + " AI]]\r\n" +
+                extraCats;
         }
     }
     

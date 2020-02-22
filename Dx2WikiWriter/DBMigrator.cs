@@ -21,7 +21,7 @@ namespace Dx2WikiWriter
             //Migrate Demon Table
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 
@@ -63,7 +63,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in skills)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var skill = SkillHelper.LoadSkill(row, demons);
 
@@ -106,7 +106,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 
@@ -137,7 +137,7 @@ namespace Dx2WikiWriter
 
             foreach (var row in demons)
             {
-                if (row.Cells["Name"].Value is string)
+                if (row.Cells[0].Value is string)
                 {
                     var demon = DemonHelper.LoadDemon(row, demons);
 
@@ -145,12 +145,12 @@ namespace Dx2WikiWriter
                     {
                         lines += "Insert Into dx2.demon_skills Values(" +
                             "(Select id from dx2.demons where name_en = \"" + demon.Name + "\"), " +
-                            demon.panel1completion + ", " +
-                            demon.panel1stats + ", " +
-                            demon.panel2completion + ", " +
-                            demon.panel2stats + ", " +
-                            demon.panel3completion + ", " +
-                            demon.panel3stats + "); \n";
+                            demon.Panel1completion + ", " +
+                            demon.Panel1stats + ", " +
+                            demon.Panel2completion + ", " +
+                            demon.Panel2stats + ", " +
+                            demon.Panel3completion + ", " +
+                            demon.Panel3stats + "); \n";
                     }
                 }
             }

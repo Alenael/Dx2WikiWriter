@@ -125,7 +125,7 @@ namespace Dx2WikiWriter
 
             foreach (var d in demons)
             {
-                var demonName = d.Cells["Name"].Value;
+                var demonName = d.Cells[0].Value;
 
                 foreach (var s in skills)
                 {
@@ -178,7 +178,7 @@ namespace Dx2WikiWriter
 
             foreach (var d in demons)
             {
-                var demonName = d.Cells["Name"].Value;
+                var demonName = d.Cells[0].Value;
 
                 foreach (var s in skills)
                 {
@@ -244,7 +244,7 @@ namespace Dx2WikiWriter
 
             var name = row.Cells["Name"].Value is DBNull ? "" : (string)row.Cells["Name"].Value;
 
-            if (demons.Any(d => (string)d.Cells["Name"].Value == name))            
+            if (demons.Any(d => (string)d.Cells[0].Value == name))            
                 name = name + " (Skill)";            
 
             return new Skill
