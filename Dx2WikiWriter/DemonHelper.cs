@@ -403,8 +403,8 @@ namespace Dx2WikiWriter
 
             Regex regex = new Regex(@"\b A\b");
             newName = regex.Replace(newName, " %5BDimensional%5D");
-            var fissionLink = "https://oceanxdds.github.io/dx2_fusion/?route=fission&demon=" + Uri.EscapeUriString(newName) + "#en";
-            var fusionLink = "https://oceanxdds.github.io/dx2_fusion/?route=fusion&demon=" + Uri.EscapeUriString(newName) + "#en";
+            var fissionLink = "https://fusion.dx2wiki.com/dx2_fusion/?route=fission&demon=" + Uri.EscapeUriString(newName) + "#en";
+            var fusionLink = "https://fusion.dx2wiki.com/dx2_fusion/?route=fusion&demon=" + Uri.EscapeUriString(newName) + "#en";
 
             //Generate Flag Info
             var flagInfo = "";
