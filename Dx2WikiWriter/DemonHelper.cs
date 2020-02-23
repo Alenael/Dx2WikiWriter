@@ -146,7 +146,6 @@ namespace Dx2WikiWriter
         //Fixes an issue where skills can be the same name of a demon at times
         private static string FixSkillsNamedAsDemons(string name, IEnumerable<DataGridViewRow> demons)
         {
-            //row.Cells["Skill 3"].Value is DBNull ? "" : (string)row.Cells["Skill 3"].Value;
             var newName = name;
 
             if (newName != "")
