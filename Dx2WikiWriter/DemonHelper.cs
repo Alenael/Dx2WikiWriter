@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Dx2WikiWriter
@@ -394,8 +395,16 @@ namespace Dx2WikiWriter
                 extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
             if (BannerRequired)
                 extraCats += "[[Category: Time Limited Demons]]\r\n";
-            if (MultiFusion || (!Event || !BannerRequired))
+            if (MultiFusion || !Gacha)
                 extraCats += "[[Category: Fusible Demons]]\r\n";
+
+            //Generate Fusion and Fission URL
+            var newName = Name;
+
+            Regex regex = new Regex(@"\b A\b");
+            newName = regex.Replace(newName, " %5BDimensional%5D");
+            var fissionLink = "https://oceanxdds.github.io/dx2_fusion/?route=fission&demon=" + Uri.EscapeUriString(newName) + "#en";
+            var fusionLink = "https://oceanxdds.github.io/dx2_fusion/?route=fusion&demon=" + Uri.EscapeUriString(newName) + "#en";
 
             //Generate Flag Info
             var flagInfo = "";
@@ -403,7 +412,8 @@ namespace Dx2WikiWriter
             flagInfo += "multi-fusion=" + MultiFusion.ToString() + "|";
             flagInfo += "event=" + Event.ToString() + "|";
             flagInfo += "banner=" + BannerRequired.ToString() + "|";
-            flagInfo += "fusible=" + (MultiFusion || (!Event || !BannerRequired)).ToString();
+            flagInfo += "fusible=" + (MultiFusion || !Gacha).ToString() + "|";
+            flagInfo += "fissionLink=" + fissionLink;
 
             //Return the data
             return
@@ -454,11 +464,13 @@ namespace Dx2WikiWriter
                 "|g_yellow= " + (GachaY == "" ? "N/A" : GachaY) + Environment.NewLine +
                 "|g_purple= " + (GachaP == "" ? "N/A" : GachaP) + Environment.NewLine +
                 "|g_teal= " + (GachaT == "" ? "N/A" : GachaT) + Environment.NewLine +
-                "|awaken1=" + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
-                "|gacha=" + Gacha + Environment.NewLine +
-                "|event=" + Event + Environment.NewLine +
-                "|multifusion=" + MultiFusion + Environment.NewLine +
-                "|bannerrequired=" + BannerRequired + Environment.NewLine +
+                "|awaken1= " + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
+                "|gacha= " + Gacha + Environment.NewLine +
+                "|event= " + Event + Environment.NewLine +
+                "|multifusion= " + MultiFusion + Environment.NewLine +
+                "|bannerrequired= " + BannerRequired + Environment.NewLine +
+                "|fissionlink= " + fissionLink + Environment.NewLine +
+                "|fusionlink= " + fusionLink + Environment.NewLine +
                 "|}}\r\n" +
                 "<section begin=gachaFlags/>{{#ifeq:{{PAGENAME}}| Tier List |{{GachaFlag|" + flagInfo + "}}|}}<section end=gachaFlags/>\r\n" +
                 "{{:{{PAGENAME}}/Builds}}\r\n" +
