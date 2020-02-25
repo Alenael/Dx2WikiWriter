@@ -139,8 +139,6 @@ namespace Dx2WikiWriter
         //Exports all Demons
         private void exportDemonAllBtn_Click(object sender, EventArgs e)
         {
-            clearSearchBtn.PerformClick();
-
             var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
             DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
@@ -148,7 +146,8 @@ namespace Dx2WikiWriter
         //Exports Selected Demons
         private void exportIndividualDemonBtn_Click(object sender, EventArgs e)
         {
-            var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+            var ranks = getRanks();
+            
             var selectedDemons = demonGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
 
             DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
@@ -157,7 +156,6 @@ namespace Dx2WikiWriter
         //Exports all Skills
         private void exportSkillAllBtn_Click(object sender, EventArgs e)
         {
-            clearSearchBtn.PerformClick();
             var selectedSkills = skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value != null);
             SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
@@ -173,10 +171,48 @@ namespace Dx2WikiWriter
         //Exports Everything
         private void exportAllBtn_Click(object sender, EventArgs e)
         {
+            clearSearchBtn.PerformClick();
             exportIndividualDemonBtn.PerformClick();
             exportIndividualSkillBtn.PerformClick();
             exportDemonAllBtn.PerformClick();            
             exportSkillAllBtn.PerformClick();            
+        }
+
+        List<string> demonState;
+        List<string> skillState;
+
+        private List<Rank> getRanks()
+        {
+            saveExportState();
+            clearSearchBtn.PerformClick();
+            restoreExportState();
+            return DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+        }
+
+        private void saveExportState()
+        {
+            demonState = new List<string>();
+            foreach (var d in demonGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true).ToList())
+                demonState.Add((string)d.Cells[0].Value);
+
+            skillState = new List<string>();
+            foreach (var s in skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
+                skillState.Add((string)s.Cells[0].Value);
+        }
+
+        private void restoreExportState()
+        {
+            foreach(var dgr in demonGrid.Rows.Cast<DataGridViewRow>().ToList())            
+                foreach(var demon in demonState)                
+                    if (dgr.Cells[0].Value != null && demon != null)                    
+                        if ((string)dgr.Cells[0].Value == demon)                        
+                            dgr.Cells["Export"].Value = true;
+
+            foreach (var dgr in skillGrid.Rows.Cast<DataGridViewRow>().ToList())
+                foreach (var skill in skillState)
+                    if (dgr.Cells[0].Value != null && skill != null)
+                        if ((string)dgr.Cells[0].Value == skill)
+                            dgr.Cells["Export"].Value = true;
         }
 
         //Show only demons in Search Txt
@@ -207,10 +243,13 @@ namespace Dx2WikiWriter
         private void clearSearchBtn_Click(object sender, EventArgs e)
         {
             searchBoxTxt.Text = "";
+            searchBoxTxt.TextChanged -= searchBoxTxt_TextChanged;
             if (demonGrid.DataSource != null)
                 (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
             if (skillGrid.DataSource != null)
                 (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            demonGrid.Refresh();
+            searchBoxTxt.TextChanged += searchBoxTxt_TextChanged;
         }
 
         //Pushes all files up to the Wiki
