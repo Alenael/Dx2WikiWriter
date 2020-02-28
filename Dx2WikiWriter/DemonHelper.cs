@@ -394,7 +394,7 @@ namespace Dx2WikiWriter
                 extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
             if (BannerRequired)
                 extraCats += "[[Category: Time Limited Demons]]\r\n";
-            if (MultiFusion || !Gacha)
+            if (MultiFusion || (!Gacha && !Event))
                 extraCats += "[[Category: Fusible Demons]]\r\n";
 
             //Generate Fusion and Fission URL
@@ -411,7 +411,7 @@ namespace Dx2WikiWriter
             flagInfo += "multi-fusion=" + MultiFusion.ToString() + "|";
             flagInfo += "event=" + Event.ToString() + "|";
             flagInfo += "banner=" + BannerRequired.ToString() + "|";
-            flagInfo += "fusible=" + (MultiFusion || !Gacha).ToString() + "|";
+            flagInfo += "fusible=" + (MultiFusion || (!Gacha && !Event)).ToString() + "|";
             flagInfo += "fissionLink=" + fissionLink;
 
             //Return the data
