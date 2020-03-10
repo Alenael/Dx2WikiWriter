@@ -17,6 +17,9 @@ namespace Dx2WikiWriter
         public string LoadedPath;
         public WikiManager WikiManager;
 
+        public bool isDirty = false;
+        private string beginValue;
+
         #endregion
 
         #region Constructor
@@ -116,6 +119,9 @@ namespace Dx2WikiWriter
                 DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
             if (skillGrid.DataSource != null)
                 DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
+
+            Text = "Dx2 Wiki Writer";
+            isDirty = false;
         }
 
         //Selects all from a grid
@@ -298,7 +304,43 @@ namespace Dx2WikiWriter
             DBMigrator.Migrate(LoadedPath, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>());
         }
 
-        #endregion
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isDirty)
+            {
+                var button = MessageBox.Show("You have unsaved changes do you really wish to close?", "Unsaved Changes!", MessageBoxButtons.YesNoCancel);
 
+                if (button != DialogResult.Yes)
+                    e.Cancel = true;
+            }
+        }
+
+        private void Grid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            bool isChanging = false;
+
+            if (sender == demonGrid)            
+                if (beginValue != demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
+                    isChanging = true;            
+            else if (sender == skillGrid)
+                if (beginValue != skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
+                    isChanging = true;
+
+            if (isChanging)
+            {
+                isDirty = true;
+                Text = "Dx2 Wiki Writer - You have unsaved changes.";
+            }
+        }
+
+        private void Grid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (sender == demonGrid)            
+                beginValue = demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();            
+            else if (sender == skillGrid)
+                beginValue = skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+        }
+
+        #endregion
     }
 }

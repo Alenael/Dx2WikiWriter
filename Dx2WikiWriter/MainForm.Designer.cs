@@ -53,12 +53,12 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.migratorBtn = new System.Windows.Forms.Button();
             this.loginBtn = new System.Windows.Forms.Button();
             this.retryWikiLoginBtn = new System.Windows.Forms.Button();
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.migratorBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -106,6 +106,8 @@
             this.demonGrid.Name = "demonGrid";
             this.demonGrid.Size = new System.Drawing.Size(1343, 525);
             this.demonGrid.TabIndex = 4;
+            this.demonGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
+            this.demonGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
             // allContextMenu
             // 
@@ -149,6 +151,8 @@
             this.skillGrid.Name = "skillGrid";
             this.skillGrid.Size = new System.Drawing.Size(1343, 525);
             this.skillGrid.TabIndex = 5;
+            this.skillGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
+            this.skillGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
             // logTab
             // 
@@ -325,6 +329,17 @@
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
             // 
+            // migratorBtn
+            // 
+            this.migratorBtn.Location = new System.Drawing.Point(977, 62);
+            this.migratorBtn.Name = "migratorBtn";
+            this.migratorBtn.Size = new System.Drawing.Size(75, 42);
+            this.migratorBtn.TabIndex = 19;
+            this.migratorBtn.Text = "Migrator";
+            this.migratorBtn.UseVisualStyleBackColor = true;
+            this.migratorBtn.Visible = false;
+            this.migratorBtn.Click += new System.EventHandler(this.migratorBtn_Click);
+            // 
             // loginBtn
             // 
             this.loginBtn.Location = new System.Drawing.Point(1071, 6);
@@ -381,17 +396,6 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // migratorBtn
-            // 
-            this.migratorBtn.Location = new System.Drawing.Point(977, 62);
-            this.migratorBtn.Name = "migratorBtn";
-            this.migratorBtn.Size = new System.Drawing.Size(75, 42);
-            this.migratorBtn.TabIndex = 19;
-            this.migratorBtn.Text = "Migrator";
-            this.migratorBtn.UseVisualStyleBackColor = true;
-            this.migratorBtn.Visible = false;
-            this.migratorBtn.Click += new System.EventHandler(this.migratorBtn_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,6 +405,7 @@
             this.Controls.Add(this.topPanel);
             this.Name = "MainForm";
             this.Text = "Dx2 Wiki Writer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabPages.ResumeLayout(false);
             this.demonTab.ResumeLayout(false);
