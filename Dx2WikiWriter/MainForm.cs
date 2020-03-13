@@ -203,7 +203,7 @@ namespace Dx2WikiWriter
 
             skillState = new List<string>();
             foreach (var s in skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
-                skillState.Add((string)s.Cells[0].Value);
+                skillState.Add((string)s.Cells[1].Value);
         }
 
         private void restoreExportState()
@@ -211,13 +211,13 @@ namespace Dx2WikiWriter
             foreach(var dgr in demonGrid.Rows.Cast<DataGridViewRow>().ToList())            
                 foreach(var demon in demonState)                
                     if (dgr.Cells[0].Value != null && demon != null)                    
-                        if ((string)dgr.Cells[0].Value == demon)                        
+                        if ((string)dgr.Cells[1].Value == demon)                        
                             dgr.Cells["Export"].Value = true;
 
             foreach (var dgr in skillGrid.Rows.Cast<DataGridViewRow>().ToList())
                 foreach (var skill in skillState)
                     if (dgr.Cells[0].Value != null && skill != null)
-                        if ((string)dgr.Cells[0].Value == skill)
+                        if ((string)dgr.Cells[1].Value == skill)
                             dgr.Cells["Export"].Value = true;
         }
 
@@ -335,10 +335,17 @@ namespace Dx2WikiWriter
 
         private void Grid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (sender == demonGrid)            
-                beginValue = demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();            
-            else if (sender == skillGrid)
-                beginValue = skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            try
+            {
+                if (sender == demonGrid)
+                    beginValue = demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                else if (sender == skillGrid)
+                    beginValue = skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            }
+            catch
+            {
+
+            }
         }
 
         #endregion
