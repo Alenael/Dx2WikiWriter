@@ -8,7 +8,7 @@ Steps to Use:
 
 Logging Into Wiki Via App for Auto Upload
 1. Open included Dx2WikiWriter.exe.config file and change the value of the key username to your Wiki's Username
-2. Create new environment variable called password with the value of your password for the Wiki.
+2. Create new environment variable called dx2WikiPassword with the value of your password for the Wiki.
 3. Open Dx2 Wiki Writer and Click Logger. You should see a message that you have been logged in (Could take just a moment to appear) and the bottom at top right turns to 'Upload to Wiki'. If it says 'Retry' login failed and you must have incorrect username/password.
 
 
