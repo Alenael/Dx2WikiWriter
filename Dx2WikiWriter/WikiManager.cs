@@ -126,29 +126,40 @@ namespace Dx2WikiWriter
                 if (page.Content.Trim() != content.Replace("\r", "").Trim())
                 {
                     bool repeat = true;
+                    var count = 0;
                     while (repeat)
                     {
-                        try
+                        count++;
+                        if (count >= 5)
                         {
-                            page.Content = content;
-                            bool worked = await page.UpdateContentAsync("Updated by " + ConfigurationManager.AppSettings["username"] + ". This was done by a bot.", false, true, AutoWatchBehavior.Default).ConfigureAwait(false);
-
-                            if (worked)
-                            {
-                                Callback.AppendTextBox("Updated: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
-                                File.Delete(fileName);
-                                Callback.AppendTextBox("File Removed: " + fileName + "\n");
-                            }
-                            else
-                            {
-                                Callback.AppendTextBox("Could not upload: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
-                            }
+                            Callback.AppendTextBox("Can't update demon. Skipping: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
                             repeat = false;
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Callback.AppendTextBox(e.Message + "\n" + e.StackTrace + "\n");
-                            Callback.AppendTextBox("Retrying.. <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + ">\n");
+                            try
+                            {
+                                page.Content = content;
+                                bool worked = await page.UpdateContentAsync("Updated by " + ConfigurationManager.AppSettings["username"] + ". This was done by a bot.", false, true, AutoWatchBehavior.Default).ConfigureAwait(false);
+
+                                if (worked)
+                                {
+                                    Callback.AppendTextBox("Updated: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                                    File.Delete(fileName);
+                                    Callback.AppendTextBox("File Removed: " + fileName + "\n");
+                                }
+                                else
+                                {
+                                    Callback.AppendTextBox("Could not upload: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                                }
+
+                                repeat = false;
+                            }
+                            catch (Exception e)
+                            {
+                                Callback.AppendTextBox(e.Message + "\n" + e.StackTrace + "\n");
+                                Callback.AppendTextBox("Retrying.. <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + ">\n");
+                            }
                         }
                     }
                 }
