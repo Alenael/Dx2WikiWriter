@@ -31,6 +31,26 @@ namespace Dx2WikiWriter
 
         #region Methods
 
+        public void AppendTextBox(string value)
+        {
+            if(InvokeRequired)
+            {
+                this.BeginInvoke(new Action<string>(AppendTextBox), new object[] {value});
+                return;
+            }
+            logRTB.Text += value;
+        }
+
+        public void SetTextBox(string value)
+        {
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new Action<string>(SetTextBox), new object[] { value });
+                return;
+            }
+            logRTB.Text = value;
+        }
+
         //Adds a Check Box column to the first slot of a datagridview
         private void AddCheckBox(DataGridView dgv)
         {
@@ -73,7 +93,7 @@ namespace Dx2WikiWriter
                     AddCheckBox(demonGrid);
                     demonGrid.Sort(demonGrid.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
                     demonGrid.Columns[0].Frozen = true;
-                    ClearDirectory(Path.Combine(LoadedPath, "DemonData"));
+                    //ClearDirectory(Path.Combine(LoadedPath, "DemonData"));
                 }
                 else
                 {
@@ -89,7 +109,7 @@ namespace Dx2WikiWriter
                     AddCheckBox(skillGrid);
                     skillGrid.Sort(skillGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
                     skillGrid.Columns[1].Frozen = true;
-                    ClearDirectory(Path.Combine(LoadedPath, "SkillData"));
+                    //ClearDirectory(Path.Combine(LoadedPath, "SkillData"));
                 }
                 else
                 {
@@ -269,13 +289,13 @@ namespace Dx2WikiWriter
         //On Form Load
         private void MainForm_Load(object sender, EventArgs e)
         {
-            WikiManager = new WikiManager(uploadToWikiBtn, logRTB, retryWikiLoginBtn);
+            WikiManager = new WikiManager(uploadToWikiBtn, this, retryWikiLoginBtn);
         }
 
         //Create new instance of our Wiki Object
         private void retryWikiLoginBtn_Click(object sender, EventArgs e)
         {
-            WikiManager = new WikiManager(uploadToWikiBtn, logRTB, retryWikiLoginBtn);
+            WikiManager = new WikiManager(uploadToWikiBtn, this, retryWikiLoginBtn);
             retryWikiLoginBtn.Visible = false;
         }
 
@@ -319,12 +339,14 @@ namespace Dx2WikiWriter
         {
             bool isChanging = false;
 
-            if (sender == demonGrid)            
-                if (beginValue != demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
-                    isChanging = true;            
+            if (sender == demonGrid)
+                if (demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                    if (beginValue != demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
+                        isChanging = true;            
             else if (sender == skillGrid)
-                if (beginValue != skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
-                    isChanging = true;
+                if (skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                    if (beginValue != skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString())
+                        isChanging = true;
 
             if (isChanging)
             {
@@ -338,9 +360,11 @@ namespace Dx2WikiWriter
             try
             {
                 if (sender == demonGrid)
-                    beginValue = demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    if (demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                        beginValue = demonGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 else if (sender == skillGrid)
-                    beginValue = skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    if (skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                        beginValue = skillGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
             }
             catch
             {

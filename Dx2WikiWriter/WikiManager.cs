@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace Dx2WikiWriter
 {
@@ -17,14 +18,14 @@ namespace Dx2WikiWriter
 
         private WikiSite Site;
         private bool Connected;
-        private System.Windows.Forms.RichTextBox Callback;
+        private MainForm Callback;
 
         #endregion
 
         #region Constructor
 
         //Entry way to class
-        public WikiManager(Button uploadToWikiBtn, RichTextBox logRTB, Button retryWikiLoginBtn)
+        public WikiManager(Button uploadToWikiBtn, MainForm logRTB, Button retryWikiLoginBtn)
         {
             Callback = logRTB;
             Connect(uploadToWikiBtn, retryWikiLoginBtn);
@@ -37,23 +38,22 @@ namespace Dx2WikiWriter
         //Creates our initial connection and login to the Wiki
         private async void Connect(Button uploadToWikiBtn, Button retryWikiLoginBtn)
         {
-            Callback.Text = "Attempting to Login to Wiki..\n";
+            Callback.SetTextBox("Attempting to Login to Wiki..\n");
 
             try
             {
-                var client = new WikiClient() { ClientUserAgent = "Dx2WikiWriter/1.0" };
+                var client = new WikiClient() { ClientUserAgent = "Dx2WikiWriter/1.0", MaxRetries = 5, Timeout = new TimeSpan(0, 5, 0), RetryDelay = new TimeSpan(0, 0, 10), };
                 Site = new WikiSite(client, await WikiSite.SearchApiEndpointAsync(client, "dx2wiki.com"));
                 await Site.Initialization;
 
-                await Site.LoginAsync(ConfigurationManager.AppSettings["username"], Environment.GetEnvironmentVariable("dx2WikiPassword", EnvironmentVariableTarget.User));
-                Connected = true;
+                await Site.LoginAsync(ConfigurationManager.AppSettings["username"], Environment.GetEnvironmentVariable("dx2WikiPassword", EnvironmentVariableTarget.User));                Connected = true;
                 uploadToWikiBtn.Visible = true;
-                Callback.AppendText( "Succesfully Logged Into Wiki!\n");
+                Callback.AppendTextBox("Succesfully Logged Into Wiki!\n");
                 retryWikiLoginBtn.Visible = false;
             }
             catch(Exception e)
             {
-                Callback.AppendText("Login Failed. " + e.Message + "\n");
+                Callback.AppendTextBox("Login Failed. " + e.Message + "\n");
                 retryWikiLoginBtn.Visible = true;
             }
         }
@@ -61,20 +61,35 @@ namespace Dx2WikiWriter
         //Uploads all files in our directories
         public async Task UploadAllFilesAsync(string rootPath, IEnumerable<DataGridViewRow> demons)
         {
-            Callback.AppendText("Started Uploading Files\n");
+            Callback.AppendTextBox("Started Uploading Files\n");
 
-            if (Directory.Exists(rootPath))
+            try
             {
-                if (Directory.Exists(rootPath + "/SkillData"))
-                    foreach (var file in new DirectoryInfo(rootPath + "/SkillData").GetFiles())
-                        await UploadFile(file.FullName, demons);
 
-                if (Directory.Exists(rootPath + "/DemonData"))
-                    foreach (var file in new DirectoryInfo(rootPath + "/DemonData").GetFiles())
-                        await UploadFile(file.FullName, null);                
+                if (Directory.Exists(rootPath))
+                {
+                    if (Directory.Exists(rootPath + "/SkillData"))
+                        foreach (var file in new DirectoryInfo(rootPath + "/SkillData").GetFiles())
+                        {
+                            await UploadFile(file.FullName, demons);
+                            await Task.Delay(10000);
+                        }
+
+                    if (Directory.Exists(rootPath + "/DemonData"))
+                        foreach (var file in new DirectoryInfo(rootPath + "/DemonData").GetFiles())
+                        {
+                            await UploadFile(file.FullName, null);
+                            await Task.Delay(10000);
+                        }
+                }
+
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message + " " + e.StackTrace);
             }
 
-            Callback.AppendText("Completed Uploading Files\n");
+            Callback.AppendTextBox("Completed Uploading Files\n");
         }
 
         //Uploads a file to the Wiki
@@ -102,22 +117,47 @@ namespace Dx2WikiWriter
                     }
                 }
 
-                Callback.AppendText("Processing.. " + pageName + "\n");
+                Callback.AppendTextBox("Processing.. " + pageName + "\n");
 
                 var page = new WikiPage(Site, pageName);
-                await page.RefreshAsync(PageQueryOptions.FetchContent);
+                await page.RefreshAsync(PageQueryOptions.FetchContent).ConfigureAwait(false);
 
                 var content = File.ReadAllText(fileName);
-                if (page.Content != content.Replace("\r", ""))
+                if (page.Content.Trim() != content.Replace("\r", "").Trim())
                 {
-                    page.Content = content;
-                    await page.UpdateContentAsync("Updated by " + ConfigurationManager.AppSettings["username"] + ". This was done by a bot.", false, true);                    
-                    Callback.AppendText("Updated: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
-                    Callback.AppendText("File Removed: " + fileName + "\n");
-                    File.Delete(fileName);
+                    bool repeat = true;
+                    while (repeat)
+                    {
+                        try
+                        {
+                            page.Content = content;
+                            bool worked = await page.UpdateContentAsync("Updated by " + ConfigurationManager.AppSettings["username"] + ". This was done by a bot.", false, true, AutoWatchBehavior.Default).ConfigureAwait(false);
+
+                            if (worked)
+                            {
+                                Callback.AppendTextBox("Updated: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                                File.Delete(fileName);
+                                Callback.AppendTextBox("File Removed: " + fileName + "\n");
+                            }
+                            else
+                            {
+                                Callback.AppendTextBox("Could not upload: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                            }
+                            repeat = false;
+                        }
+                        catch (Exception e)
+                        {
+                            Callback.AppendTextBox(e.Message + "\n" + e.StackTrace + "\n");
+                            Callback.AppendTextBox("Retrying.. <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + ">\n");
+                        }
+                    }
                 }
                 else
-                    Callback.AppendText("No Change Required: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                {
+                    Callback.AppendTextBox("No Change Required: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                    File.Delete(fileName);
+                    Callback.AppendTextBox("File Removed: " + fileName + "\n");
+                }
             }
         }
 
