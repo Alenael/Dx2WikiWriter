@@ -35,20 +35,29 @@ namespace Dx2WikiWriter
         {
             if(InvokeRequired)
             {
+                value = GetTime() + value;
                 this.BeginInvoke(new Action<string>(AppendTextBox), new object[] {value});
                 return;
             }
+            value = GetTime() + value;
             logRTB.Text += value;
         }
 
         public void SetTextBox(string value)
         {
+            value = GetTime() + value;
             if (InvokeRequired)
             {
                 this.BeginInvoke(new Action<string>(SetTextBox), new object[] { value });
                 return;
             }
             logRTB.Text = value;
+        }
+
+        public string GetTime()
+        {
+            var dateTime = DateTime.Now;
+            return $"[{dateTime.ToString("MM-dd-yy hh:mm:ss")}] ";
         }
 
         //Adds a Check Box column to the first slot of a datagridview

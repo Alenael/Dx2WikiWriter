@@ -123,7 +123,7 @@ namespace Dx2WikiWriter
                 await page.RefreshAsync(PageQueryOptions.FetchContent).ConfigureAwait(false);
 
                 var content = File.ReadAllText(fileName);
-                if (page.Content.Trim() != content.Replace("\r", "").Trim())
+                if (page.Content == null || page.Content.Trim() != content.Replace("\r", "").Trim())
                 {
                     bool repeat = true;
                     var count = 0;
