@@ -72,14 +72,14 @@ namespace Dx2WikiWriter
                         foreach (var file in new DirectoryInfo(rootPath + "/SkillData").GetFiles())
                         {
                             await UploadFile(file.FullName, demons);
-                            await Task.Delay(10000);
+                            await Task.Delay(2000);
                         }
 
                     if (Directory.Exists(rootPath + "/DemonData"))
                         foreach (var file in new DirectoryInfo(rootPath + "/DemonData").GetFiles())
                         {
                             await UploadFile(file.FullName, null);
-                            await Task.Delay(10000);
+                            await Task.Delay(2000);
                         }
                 }
 
