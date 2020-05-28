@@ -35,7 +35,6 @@ namespace Dx2WikiWriter
         {
             if(InvokeRequired)
             {
-                value = GetTime() + value;
                 this.BeginInvoke(new Action<string>(AppendTextBox), new object[] {value});
                 return;
             }
@@ -45,12 +44,12 @@ namespace Dx2WikiWriter
 
         public void SetTextBox(string value)
         {
-            value = GetTime() + value;
             if (InvokeRequired)
             {
                 this.BeginInvoke(new Action<string>(SetTextBox), new object[] { value });
                 return;
             }
+            value = GetTime() + value;
             logRTB.Text = value;
         }
 
