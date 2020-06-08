@@ -36,6 +36,7 @@ namespace Dx2WikiWriter
                 data += GetSkillDataByElement("dark", "Dark", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("almighty", "Almighty", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("multi", "Multiple", skills, learnedBy, transferableFrom, demons);
+                data += GetSkillDataByElement("fractional", "Fractional", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("ailment", "Status Ailment", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("recovery", "Recovery", skills, learnedBy, transferableFrom, demons);
                 data += GetSkillDataByElement("support", "Support", skills, learnedBy, transferableFrom, demons);
