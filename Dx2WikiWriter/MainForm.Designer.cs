@@ -59,6 +59,8 @@
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
+            this.scrapeAllNews = new System.Windows.Forms.Button();
+            this.scrape5News = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -312,6 +314,8 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.scrape5News);
+            this.topPanel.Controls.Add(this.scrapeAllNews);
             this.topPanel.Controls.Add(this.migratorBtn);
             this.topPanel.Controls.Add(this.loginBtn);
             this.topPanel.Controls.Add(this.retryWikiLoginBtn);
@@ -396,6 +400,26 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
+            // scrapeAllNews
+            // 
+            this.scrapeAllNews.Location = new System.Drawing.Point(1134, 54);
+            this.scrapeAllNews.Name = "scrapeAllNews";
+            this.scrapeAllNews.Size = new System.Drawing.Size(75, 42);
+            this.scrapeAllNews.TabIndex = 20;
+            this.scrapeAllNews.Text = "Scrape ALL Dx2 News";
+            this.scrapeAllNews.UseVisualStyleBackColor = true;
+            this.scrapeAllNews.Click += new System.EventHandler(this.scrapeNews_Click);
+            // 
+            // scrape5News
+            // 
+            this.scrape5News.Location = new System.Drawing.Point(1215, 54);
+            this.scrape5News.Name = "scrape5News";
+            this.scrape5News.Size = new System.Drawing.Size(93, 42);
+            this.scrape5News.TabIndex = 21;
+            this.scrape5News.Text = "Scrape First 5 Pages of Dx2 News";
+            this.scrape5News.UseVisualStyleBackColor = true;
+            this.scrape5News.Click += new System.EventHandler(this.scrape5News_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,6 +479,8 @@
         private System.Windows.Forms.RichTextBox logRTB;
         private System.Windows.Forms.Button loginBtn;
         private System.Windows.Forms.Button migratorBtn;
+        private System.Windows.Forms.Button scrapeAllNews;
+        private System.Windows.Forms.Button scrape5News;
     }
 }
 

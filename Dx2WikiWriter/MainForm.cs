@@ -379,6 +379,15 @@ namespace Dx2WikiWriter
 
             }
         }
+        
+        private void scrapeNews_Click(object sender, EventArgs e)
+        {
+            var newsScrapper = new NewsScrapper(-1);
+        }
+        private void scrape5News_Click(object sender, EventArgs e)
+        {
+            var newsScrapper = new NewsScrapper(5);
+        }
 
         #endregion
     }
