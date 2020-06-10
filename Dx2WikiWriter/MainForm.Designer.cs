@@ -53,14 +53,15 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.scrape5News = new System.Windows.Forms.Button();
+            this.scrapeAllNews = new System.Windows.Forms.Button();
             this.migratorBtn = new System.Windows.Forms.Button();
             this.loginBtn = new System.Windows.Forms.Button();
             this.retryWikiLoginBtn = new System.Windows.Forms.Button();
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.scrapeAllNews = new System.Windows.Forms.Button();
-            this.scrape5News = new System.Windows.Forms.Button();
+            this.scrape1News = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -314,6 +315,7 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.scrape1News);
             this.topPanel.Controls.Add(this.scrape5News);
             this.topPanel.Controls.Add(this.scrapeAllNews);
             this.topPanel.Controls.Add(this.migratorBtn);
@@ -333,11 +335,33 @@
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
             // 
+            // scrape5News
+            // 
+            this.scrape5News.Location = new System.Drawing.Point(1152, 52);
+            this.scrape5News.Name = "scrape5News";
+            this.scrape5News.Size = new System.Drawing.Size(93, 48);
+            this.scrape5News.TabIndex = 21;
+            this.scrape5News.Text = "Scrape First 5 Pages of Dx2 News";
+            this.scrape5News.UseVisualStyleBackColor = true;
+            this.scrape5News.Visible = false;
+            this.scrape5News.Click += new System.EventHandler(this.scrape5News_Click);
+            // 
+            // scrapeAllNews
+            // 
+            this.scrapeAllNews.Location = new System.Drawing.Point(1071, 52);
+            this.scrapeAllNews.Name = "scrapeAllNews";
+            this.scrapeAllNews.Size = new System.Drawing.Size(75, 49);
+            this.scrapeAllNews.TabIndex = 20;
+            this.scrapeAllNews.Text = "Scrape ALL Dx2 News";
+            this.scrapeAllNews.UseVisualStyleBackColor = true;
+            this.scrapeAllNews.Visible = false;
+            this.scrapeAllNews.Click += new System.EventHandler(this.scrapeNews_Click);
+            // 
             // migratorBtn
             // 
-            this.migratorBtn.Location = new System.Drawing.Point(977, 62);
+            this.migratorBtn.Location = new System.Drawing.Point(978, 52);
             this.migratorBtn.Name = "migratorBtn";
-            this.migratorBtn.Size = new System.Drawing.Size(75, 42);
+            this.migratorBtn.Size = new System.Drawing.Size(75, 48);
             this.migratorBtn.TabIndex = 19;
             this.migratorBtn.Text = "Migrator";
             this.migratorBtn.UseVisualStyleBackColor = true;
@@ -400,25 +424,16 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // scrapeAllNews
+            // scrape1News
             // 
-            this.scrapeAllNews.Location = new System.Drawing.Point(1134, 54);
-            this.scrapeAllNews.Name = "scrapeAllNews";
-            this.scrapeAllNews.Size = new System.Drawing.Size(75, 42);
-            this.scrapeAllNews.TabIndex = 20;
-            this.scrapeAllNews.Text = "Scrape ALL Dx2 News";
-            this.scrapeAllNews.UseVisualStyleBackColor = true;
-            this.scrapeAllNews.Click += new System.EventHandler(this.scrapeNews_Click);
-            // 
-            // scrape5News
-            // 
-            this.scrape5News.Location = new System.Drawing.Point(1215, 54);
-            this.scrape5News.Name = "scrape5News";
-            this.scrape5News.Size = new System.Drawing.Size(93, 42);
-            this.scrape5News.TabIndex = 21;
-            this.scrape5News.Text = "Scrape First 5 Pages of Dx2 News";
-            this.scrape5News.UseVisualStyleBackColor = true;
-            this.scrape5News.Click += new System.EventHandler(this.scrape5News_Click);
+            this.scrape1News.Location = new System.Drawing.Point(1251, 52);
+            this.scrape1News.Name = "scrape1News";
+            this.scrape1News.Size = new System.Drawing.Size(93, 48);
+            this.scrape1News.TabIndex = 22;
+            this.scrape1News.Text = "Scrape First Page Only of Dx2 News";
+            this.scrape1News.UseVisualStyleBackColor = true;
+            this.scrape1News.Visible = false;
+            this.scrape1News.Click += new System.EventHandler(this.scrape1News_Click);
             // 
             // MainForm
             // 
@@ -481,6 +496,7 @@
         private System.Windows.Forms.Button migratorBtn;
         private System.Windows.Forms.Button scrapeAllNews;
         private System.Windows.Forms.Button scrape5News;
+        private System.Windows.Forms.Button scrape1News;
     }
 }
 

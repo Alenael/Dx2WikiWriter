@@ -16,9 +16,12 @@ namespace Dx2WikiWriter
         public DBManager DBManager = new DBManager();
         public string LoadedPath;
         public WikiManager WikiManager;
+        public NewsScrapper NewsScrapper;
 
         public bool isDirty = false;
         private string beginValue;
+
+        public DataTable NewsDb;
 
         #endregion
 
@@ -77,10 +80,23 @@ namespace Dx2WikiWriter
                     file.Delete();
         }
 
+        public Dictionary<string, News> LoadNewsDataTable(DataTable dataTable)
+        {
+            var loadedDb = new Dictionary<string, News>();
+
+            foreach(DataRow row in dataTable.Rows)
+            {
+                var news = new News();
+                news.LoadByDataRow(row);
+            }
+
+            return loadedDb;
+        }
+
         #endregion
 
         #region Events
-        
+
         //Load our DB
         private void loadBtn_Click(object sender, EventArgs e)
         {
@@ -101,7 +117,6 @@ namespace Dx2WikiWriter
                     AddCheckBox(demonGrid);
                     demonGrid.Sort(demonGrid.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
                     demonGrid.Columns[0].Frozen = true;
-                    //ClearDirectory(Path.Combine(LoadedPath, "DemonData"));
                 }
                 else
                 {
@@ -117,11 +132,22 @@ namespace Dx2WikiWriter
                     AddCheckBox(skillGrid);
                     skillGrid.Sort(skillGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
                     skillGrid.Columns[1].Frozen = true;
-                    //ClearDirectory(Path.Combine(LoadedPath, "SkillData"));
                 }
                 else
                 {
                     logRTB.AppendText(skillDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
+
+                //Load News
+                var newsDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - News.csv");
+                if (File.Exists(newsDbPath))
+                {
+                    NewsDb = DBManager.LoadDB(newsDbPath);
+                }
+                else
+                {
+                    logRTB.AppendText(newsDbPath + ": Could not find file to open.\n");
                     dbStatus = false;
                 }
 
@@ -134,6 +160,9 @@ namespace Dx2WikiWriter
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
                 exportAllBtn.Visible = true;
+                scrape1News.Visible = true;
+                scrape5News.Visible = true;
+                scrapeAllNews.Visible = true;
                 uploadToWikiBtn.Enabled = dbStatus;
                 
                 #endregion
@@ -208,8 +237,8 @@ namespace Dx2WikiWriter
             clearSearchBtn.PerformClick();
             exportIndividualDemonBtn.PerformClick();
             exportIndividualSkillBtn.PerformClick();
-            exportDemonAllBtn.PerformClick();            
-            exportSkillAllBtn.PerformClick();            
+            exportDemonAllBtn.PerformClick();
+            exportSkillAllBtn.PerformClick();
         }
 
         List<string> demonState;
@@ -298,6 +327,7 @@ namespace Dx2WikiWriter
         private void MainForm_Load(object sender, EventArgs e)
         {
             WikiManager = new WikiManager(uploadToWikiBtn, this, retryWikiLoginBtn);
+            NewsScrapper = new NewsScrapper(this);
         }
 
         //Create new instance of our Wiki Object
@@ -382,13 +412,25 @@ namespace Dx2WikiWriter
         
         private void scrapeNews_Click(object sender, EventArgs e)
         {
-            var newsScrapper = new NewsScrapper(-1);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            NewsScrapper.ScrapePages(-1);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
         private void scrape5News_Click(object sender, EventArgs e)
         {
-            var newsScrapper = new NewsScrapper(5);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            NewsScrapper.ScrapePages(5);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        private void scrape1News_Click(object sender, EventArgs e)
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            NewsScrapper.ScrapePages(1);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         #endregion
+
     }
 }
