@@ -451,18 +451,18 @@ namespace Dx2WikiWriter
                 "|panel1stats= " + Panel1stats + Environment.NewLine +
                 "|panel2stats= " + Panel2stats + Environment.NewLine +
                 "|panel3stats= " + Panel3stats + Environment.NewLine +
-                "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1) + Environment.NewLine +
-                "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2) + Environment.NewLine +
-                "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3) + Environment.NewLine +
-                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC) + Environment.NewLine +
-                "|a_red= " + (AwakenR == "" ? "N/A" : AwakenR) + Environment.NewLine +
-                "|a_yellow= " + (AwakenY == "" ? "N/A" : AwakenY) + Environment.NewLine +
-                "|a_purple= " + (AwakenP == "" ? "N/A" : AwakenP) + Environment.NewLine +
-                "|a_teal= " + (AwakenT == "" ? "N/A" : AwakenT) + Environment.NewLine +
-                "|g_red= " + (GachaR == "" ? "N/A" : GachaR) + Environment.NewLine +
-                "|g_yellow= " + (GachaY == "" ? "N/A" : GachaY) + Environment.NewLine +
-                "|g_purple= " + (GachaP == "" ? "N/A" : GachaP) + Environment.NewLine +
-                "|g_teal= " + (GachaT == "" ? "N/A" : GachaT) + Environment.NewLine +
+                "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|a_clear= " + (AwakenC == "" ? "N/A" : AwakenC.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|a_red= " + (AwakenR == "" ? "N/A" : AwakenR.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|a_yellow= " + (AwakenY == "" ? "N/A" : AwakenY.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|a_purple= " + (AwakenP == "" ? "N/A" : AwakenP.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|a_teal= " + (AwakenT == "" ? "N/A" : AwakenT.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|g_red= " + (GachaR == "" ? "N/A" : GachaR.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|g_yellow= " + (GachaY == "" ? "N/A" : GachaY.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|g_purple= " + (GachaP == "" ? "N/A" : GachaP.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|g_teal= " + (GachaT == "" ? "N/A" : GachaT.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
                 "|awaken1= " + Awaken1 + "|awaken2=" + Awaken2 + "|awaken3=" + Awaken3 + "|awaken4=" + Awaken4 + "|awaken1amnt=" + Awaken1Amount + "|awaken2amnt=" + Awaken2Amount + "|awaken3amnt=" + Awaken3Amount + "|awaken4amnt=" + Awaken4Amount + Environment.NewLine +
                 "|gacha= " + Gacha + Environment.NewLine +
                 "|event= " + Event + Environment.NewLine +
