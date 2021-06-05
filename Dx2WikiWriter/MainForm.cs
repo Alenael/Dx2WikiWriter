@@ -268,13 +268,13 @@ namespace Dx2WikiWriter
             foreach(var dgr in demonGrid.Rows.Cast<DataGridViewRow>().ToList())            
                 foreach(var demon in demonState)                
                     if (dgr.Cells[0].Value != null && demon != null)                    
-                        if ((string)dgr.Cells[1].Value == demon)                        
+                        if ((string)dgr.Cells[0].Value == demon)                        
                             dgr.Cells["Export"].Value = true;
 
             foreach (var dgr in skillGrid.Rows.Cast<DataGridViewRow>().ToList())
                 foreach (var skill in skillState)
                     if (dgr.Cells[0].Value != null && skill != null)
-                        if ((string)dgr.Cells[1].Value == skill)
+                        if ((string)dgr.Cells[0].Value == skill)
                             dgr.Cells["Export"].Value = true;
         }
 
