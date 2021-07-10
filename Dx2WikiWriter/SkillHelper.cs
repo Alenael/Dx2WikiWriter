@@ -91,7 +91,10 @@ namespace Dx2WikiWriter
             GetSkillDataByTarget(ref skillData, "All Party Members", selectedSkills, learnedBy, transferableFrom, demons);
             GetSkillDataByTarget(ref skillData, "Single Enemy", selectedSkills, learnedBy, transferableFrom, demons);            
             GetSkillDataByTarget(ref skillData, "All Enemies", selectedSkills, learnedBy, transferableFrom, demons);
-            GetSkillDataByTarget(ref skillData, "Random Enemies", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "All Enemies/Party Members", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Random Enemies", selectedSkills, learnedBy, transferableFrom, demons);            
+            GetSkillDataByTarget(ref skillData, "Random Party Member", selectedSkills, learnedBy, transferableFrom, demons);
+            GetSkillDataByTarget(ref skillData, "Random Enemies/Party Members", selectedSkills, learnedBy, transferableFrom, demons);
             GetSkillDataByTarget(ref skillData, "Self", selectedSkills, learnedBy, transferableFrom, demons);
             GetSkillDataByTarget(ref skillData, "Universal", selectedSkills, learnedBy, transferableFrom, demons);            
 
