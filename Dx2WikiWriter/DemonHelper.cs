@@ -121,10 +121,12 @@ namespace Dx2WikiWriter
                 Panel1completion = FixSkillsNamedAsDemons(row.Cells["Panel 1"].Value is DBNull ? "" : (string)row.Cells["Panel 1"].Value, demons),
                 Panel2completion = FixSkillsNamedAsDemons(row.Cells["Panel 2"].Value is DBNull ? "" : (string)row.Cells["Panel 2"].Value, demons),
                 Panel3completion = FixSkillsNamedAsDemons(row.Cells["Panel 3"].Value is DBNull ? "" : (string)row.Cells["Panel 3"].Value, demons),
+                Panel4completion = FixSkillsNamedAsDemons(row.Cells["Panel 4"].Value is DBNull ? "" : (string)row.Cells["Panel 4"].Value, demons),
 
                 Panel1stats = FixSkillsNamedAsDemons(row.Cells["Panel 1 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 1 Stats"].Value, demons),
                 Panel2stats = FixSkillsNamedAsDemons(row.Cells["Panel 2 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 2 Stats"].Value, demons),
                 Panel3stats = FixSkillsNamedAsDemons(row.Cells["Panel 3 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 3 Stats"].Value, demons),
+                Panel4stats = FixSkillsNamedAsDemons(row.Cells["Panel 4 Stats"].Value is DBNull ? "" : (string)row.Cells["Panel 4 Stats"].Value, demons),
 
                 Gacha = row.Cells["Gacha"].Value is DBNull ? false : (string)row.Cells["Gacha"].Value == "1",
                 Event = row.Cells["Event"].Value is DBNull ? false : (string)row.Cells["Event"].Value == "1",
@@ -345,6 +347,8 @@ namespace Dx2WikiWriter
         public string Panel2stats;
         public string Panel3completion;
         public string Panel3stats;
+        public string Panel4completion;
+        public string Panel4stats;
 
         public bool Gacha;
         public bool Event;
@@ -372,8 +376,8 @@ namespace Dx2WikiWriter
                      "|phys= " + Phys + "|fire= " + Fire + "|ice= " + Ice + "|elec= " + Elec + "" +
                      "|force= " + Force + "|light= " + Light + "|dark= " + Dark +
                      "|patk= " + PAtk + "|pdef= " + PDef + "|matk= " + MAtk + "|mdef= " + MDef + 
-                     "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion +
-                     "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats +                     
+                     "|panel1= " + Panel1completion + "|panel2= " + Panel2completion + "|panel3= " + Panel3completion + Panel4completion +
+                     "|panel1stats= " + Panel1stats + "|panel2stats= " + Panel2stats + "|panel3stats= " + Panel3stats + "|panel4stats= " + Panel4stats +
                      "}}\r\n" +
                      "|- style=\"vertical-align:middle;\"";
         }
@@ -448,9 +452,11 @@ namespace Dx2WikiWriter
                 "|panel1= " + Panel1completion + Environment.NewLine +
                 "|panel2= " + Panel2completion + Environment.NewLine +
                 "|panel3= " + Panel3completion + Environment.NewLine +
+                "|panel4= " + Panel4completion + Environment.NewLine +
                 "|panel1stats= " + Panel1stats + Environment.NewLine +
                 "|panel2stats= " + Panel2stats + Environment.NewLine +
                 "|panel3stats= " + Panel3stats + Environment.NewLine +
+                "|panel4stats= " + Panel4stats + Environment.NewLine +
                 "|transfer_skill= " + (Skill1 == "" ? "N/A" : Skill1.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
                 "|innate_skill1= " + (Skill2 == "" ? "N/A" : Skill2.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
                 "|innate_skill2= " + (Skill3 == "" ? "N/A" : Skill3.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
