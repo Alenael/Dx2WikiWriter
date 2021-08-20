@@ -199,7 +199,10 @@ namespace Dx2WikiWriter
                 for (var i = 0; i < selectedDemons.Count(); i++)
                 {
                     var demon = LoadDemon(selectedDemons.ToList()[i], selectedDemons);
-                    
+
+                    if (demon.Name == null)
+                        continue;
+
                     var r = new Rank() { Name = demon.Name };
 
                     var sortedDemons = selectedDemons.OrderByDescending(c => Convert.ToInt32(c.Cells["6★ Strength"].Value)).ToList();

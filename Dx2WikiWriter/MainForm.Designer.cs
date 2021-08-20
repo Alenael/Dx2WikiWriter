@@ -53,6 +53,7 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.scrape1News = new System.Windows.Forms.Button();
             this.scrape5News = new System.Windows.Forms.Button();
             this.scrapeAllNews = new System.Windows.Forms.Button();
             this.migratorBtn = new System.Windows.Forms.Button();
@@ -61,7 +62,12 @@
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.scrape1News = new System.Windows.Forms.Button();
+            this.swordTab = new System.Windows.Forms.TabPage();
+            this.shieldTab = new System.Windows.Forms.TabPage();
+            this.swordGrid = new System.Windows.Forms.DataGridView();
+            this.shieldGrid = new System.Windows.Forms.DataGridView();
+            this.armSkillTab = new System.Windows.Forms.TabPage();
+            this.ArmSkillsGrid = new System.Windows.Forms.DataGridView();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -74,12 +80,21 @@
             this.liberatorGroupBox.SuspendLayout();
             this.topPanel.SuspendLayout();
             this.searchGroupBox.SuspendLayout();
+            this.swordTab.SuspendLayout();
+            this.shieldTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.swordGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldGrid)).BeginInit();
+            this.armSkillTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ArmSkillsGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPages
             // 
             this.tabPages.Controls.Add(this.demonTab);
             this.tabPages.Controls.Add(this.skillTab);
+            this.tabPages.Controls.Add(this.swordTab);
+            this.tabPages.Controls.Add(this.shieldTab);
+            this.tabPages.Controls.Add(this.armSkillTab);
             this.tabPages.Controls.Add(this.logTab);
             this.tabPages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabPages.Location = new System.Drawing.Point(0, 107);
@@ -335,6 +350,17 @@
             this.topPanel.Size = new System.Drawing.Size(1357, 107);
             this.topPanel.TabIndex = 6;
             // 
+            // scrape1News
+            // 
+            this.scrape1News.Location = new System.Drawing.Point(1251, 52);
+            this.scrape1News.Name = "scrape1News";
+            this.scrape1News.Size = new System.Drawing.Size(93, 48);
+            this.scrape1News.TabIndex = 22;
+            this.scrape1News.Text = "Scrape First Page Only of Dx2 News";
+            this.scrape1News.UseVisualStyleBackColor = true;
+            this.scrape1News.Visible = false;
+            this.scrape1News.Click += new System.EventHandler(this.scrape1News_Click);
+            // 
             // scrape5News
             // 
             this.scrape5News.Location = new System.Drawing.Point(1152, 52);
@@ -424,16 +450,67 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // scrape1News
+            // swordTab
             // 
-            this.scrape1News.Location = new System.Drawing.Point(1251, 52);
-            this.scrape1News.Name = "scrape1News";
-            this.scrape1News.Size = new System.Drawing.Size(93, 48);
-            this.scrape1News.TabIndex = 22;
-            this.scrape1News.Text = "Scrape First Page Only of Dx2 News";
-            this.scrape1News.UseVisualStyleBackColor = true;
-            this.scrape1News.Visible = false;
-            this.scrape1News.Click += new System.EventHandler(this.scrape1News_Click);
+            this.swordTab.Controls.Add(this.swordGrid);
+            this.swordTab.Location = new System.Drawing.Point(4, 22);
+            this.swordTab.Name = "swordTab";
+            this.swordTab.Padding = new System.Windows.Forms.Padding(3);
+            this.swordTab.Size = new System.Drawing.Size(1349, 531);
+            this.swordTab.TabIndex = 3;
+            this.swordTab.Text = "Swords";
+            this.swordTab.UseVisualStyleBackColor = true;
+            // 
+            // shieldTab
+            // 
+            this.shieldTab.Controls.Add(this.shieldGrid);
+            this.shieldTab.Location = new System.Drawing.Point(4, 22);
+            this.shieldTab.Name = "shieldTab";
+            this.shieldTab.Padding = new System.Windows.Forms.Padding(3);
+            this.shieldTab.Size = new System.Drawing.Size(1349, 531);
+            this.shieldTab.TabIndex = 4;
+            this.shieldTab.Text = "Shields";
+            this.shieldTab.UseVisualStyleBackColor = true;
+            // 
+            // swordGrid
+            // 
+            this.swordGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.swordGrid.ContextMenuStrip = this.allContextMenu;
+            this.swordGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swordGrid.Location = new System.Drawing.Point(3, 3);
+            this.swordGrid.Name = "swordGrid";
+            this.swordGrid.Size = new System.Drawing.Size(1343, 525);
+            this.swordGrid.TabIndex = 5;
+            // 
+            // shieldGrid
+            // 
+            this.shieldGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldGrid.ContextMenuStrip = this.allContextMenu;
+            this.shieldGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shieldGrid.Location = new System.Drawing.Point(3, 3);
+            this.shieldGrid.Name = "shieldGrid";
+            this.shieldGrid.Size = new System.Drawing.Size(1343, 525);
+            this.shieldGrid.TabIndex = 5;
+            // 
+            // armSkillTab
+            // 
+            this.armSkillTab.Controls.Add(this.ArmSkillsGrid);
+            this.armSkillTab.Location = new System.Drawing.Point(4, 22);
+            this.armSkillTab.Name = "armSkillTab";
+            this.armSkillTab.Size = new System.Drawing.Size(1349, 531);
+            this.armSkillTab.TabIndex = 5;
+            this.armSkillTab.Text = "Arm Skills";
+            this.armSkillTab.UseVisualStyleBackColor = true;
+            // 
+            // ArmSkillsGrid
+            // 
+            this.ArmSkillsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ArmSkillsGrid.ContextMenuStrip = this.allContextMenu;
+            this.ArmSkillsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ArmSkillsGrid.Location = new System.Drawing.Point(0, 0);
+            this.ArmSkillsGrid.Name = "ArmSkillsGrid";
+            this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 531);
+            this.ArmSkillsGrid.TabIndex = 6;
             // 
             // MainForm
             // 
@@ -459,6 +536,12 @@
             this.topPanel.ResumeLayout(false);
             this.searchGroupBox.ResumeLayout(false);
             this.searchGroupBox.PerformLayout();
+            this.swordTab.ResumeLayout(false);
+            this.shieldTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.swordGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldGrid)).EndInit();
+            this.armSkillTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ArmSkillsGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -497,6 +580,12 @@
         private System.Windows.Forms.Button scrapeAllNews;
         private System.Windows.Forms.Button scrape5News;
         private System.Windows.Forms.Button scrape1News;
+        private System.Windows.Forms.TabPage swordTab;
+        private System.Windows.Forms.DataGridView swordGrid;
+        private System.Windows.Forms.TabPage shieldTab;
+        private System.Windows.Forms.DataGridView shieldGrid;
+        private System.Windows.Forms.TabPage armSkillTab;
+        private System.Windows.Forms.DataGridView ArmSkillsGrid;
     }
 }
 
