@@ -37,6 +37,12 @@
             this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skillTab = new System.Windows.Forms.TabPage();
             this.skillGrid = new System.Windows.Forms.DataGridView();
+            this.swordTab = new System.Windows.Forms.TabPage();
+            this.swordGrid = new System.Windows.Forms.DataGridView();
+            this.shieldTab = new System.Windows.Forms.TabPage();
+            this.shieldGrid = new System.Windows.Forms.DataGridView();
+            this.armSkillTab = new System.Windows.Forms.TabPage();
+            this.ArmSkillsGrid = new System.Windows.Forms.DataGridView();
             this.logTab = new System.Windows.Forms.TabPage();
             this.logRTB = new System.Windows.Forms.RichTextBox();
             this.loadBtn = new System.Windows.Forms.Button();
@@ -46,9 +52,9 @@
             this.skillGroupBox = new System.Windows.Forms.GroupBox();
             this.exportIndividualSkillBtn = new System.Windows.Forms.Button();
             this.exportSkillAllBtn = new System.Windows.Forms.Button();
-            this.liberatorGroupBox = new System.Windows.Forms.GroupBox();
-            this.exportAllLiberatorsBtn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.swordGroupBox = new System.Windows.Forms.GroupBox();
+            this.exportAllSwordsBtn = new System.Windows.Forms.Button();
+            this.exportIndividualSwordsBtn = new System.Windows.Forms.Button();
             this.saveAllBtn = new System.Windows.Forms.Button();
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
@@ -62,30 +68,33 @@
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.swordTab = new System.Windows.Forms.TabPage();
-            this.shieldTab = new System.Windows.Forms.TabPage();
-            this.swordGrid = new System.Windows.Forms.DataGridView();
-            this.shieldGrid = new System.Windows.Forms.DataGridView();
-            this.armSkillTab = new System.Windows.Forms.TabPage();
-            this.ArmSkillsGrid = new System.Windows.Forms.DataGridView();
+            this.shieldGroupBox = new System.Windows.Forms.GroupBox();
+            this.exportAllShieldsBtn = new System.Windows.Forms.Button();
+            this.exportIndividualShieldsBtn = new System.Windows.Forms.Button();
+            this.armSkillGroup = new System.Windows.Forms.GroupBox();
+            this.exportAllArmSkillsBtn = new System.Windows.Forms.Button();
+            this.exportIndividualArmSkillsBtn = new System.Windows.Forms.Button();
+            this.selectAllBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
             this.allContextMenu.SuspendLayout();
             this.skillTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).BeginInit();
-            this.logTab.SuspendLayout();
-            this.demonGroupBox.SuspendLayout();
-            this.skillGroupBox.SuspendLayout();
-            this.liberatorGroupBox.SuspendLayout();
-            this.topPanel.SuspendLayout();
-            this.searchGroupBox.SuspendLayout();
             this.swordTab.SuspendLayout();
-            this.shieldTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.swordGrid)).BeginInit();
+            this.shieldTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shieldGrid)).BeginInit();
             this.armSkillTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ArmSkillsGrid)).BeginInit();
+            this.logTab.SuspendLayout();
+            this.demonGroupBox.SuspendLayout();
+            this.skillGroupBox.SuspendLayout();
+            this.swordGroupBox.SuspendLayout();
+            this.topPanel.SuspendLayout();
+            this.searchGroupBox.SuspendLayout();
+            this.shieldGroupBox.SuspendLayout();
+            this.armSkillGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPages
@@ -97,10 +106,10 @@
             this.tabPages.Controls.Add(this.armSkillTab);
             this.tabPages.Controls.Add(this.logTab);
             this.tabPages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabPages.Location = new System.Drawing.Point(0, 107);
+            this.tabPages.Location = new System.Drawing.Point(0, 136);
             this.tabPages.Name = "tabPages";
             this.tabPages.SelectedIndex = 0;
-            this.tabPages.Size = new System.Drawing.Size(1357, 557);
+            this.tabPages.Size = new System.Drawing.Size(1357, 528);
             this.tabPages.TabIndex = 7;
             this.tabPages.SelectedIndexChanged += new System.EventHandler(this.clearSearchBtn_Click);
             // 
@@ -110,7 +119,7 @@
             this.demonTab.Location = new System.Drawing.Point(4, 22);
             this.demonTab.Name = "demonTab";
             this.demonTab.Padding = new System.Windows.Forms.Padding(3);
-            this.demonTab.Size = new System.Drawing.Size(1349, 531);
+            this.demonTab.Size = new System.Drawing.Size(1349, 502);
             this.demonTab.TabIndex = 0;
             this.demonTab.Text = "Demons";
             this.demonTab.UseVisualStyleBackColor = true;
@@ -122,7 +131,7 @@
             this.demonGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.demonGrid.Location = new System.Drawing.Point(3, 3);
             this.demonGrid.Name = "demonGrid";
-            this.demonGrid.Size = new System.Drawing.Size(1343, 525);
+            this.demonGrid.Size = new System.Drawing.Size(1343, 496);
             this.demonGrid.TabIndex = 4;
             this.demonGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
             this.demonGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
@@ -172,6 +181,68 @@
             this.skillGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
             this.skillGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
+            // swordTab
+            // 
+            this.swordTab.Controls.Add(this.swordGrid);
+            this.swordTab.Location = new System.Drawing.Point(4, 22);
+            this.swordTab.Name = "swordTab";
+            this.swordTab.Padding = new System.Windows.Forms.Padding(3);
+            this.swordTab.Size = new System.Drawing.Size(1349, 531);
+            this.swordTab.TabIndex = 3;
+            this.swordTab.Text = "Swords";
+            this.swordTab.UseVisualStyleBackColor = true;
+            // 
+            // swordGrid
+            // 
+            this.swordGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.swordGrid.ContextMenuStrip = this.allContextMenu;
+            this.swordGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.swordGrid.Location = new System.Drawing.Point(3, 3);
+            this.swordGrid.Name = "swordGrid";
+            this.swordGrid.Size = new System.Drawing.Size(1343, 525);
+            this.swordGrid.TabIndex = 5;
+            // 
+            // shieldTab
+            // 
+            this.shieldTab.Controls.Add(this.shieldGrid);
+            this.shieldTab.Location = new System.Drawing.Point(4, 22);
+            this.shieldTab.Name = "shieldTab";
+            this.shieldTab.Padding = new System.Windows.Forms.Padding(3);
+            this.shieldTab.Size = new System.Drawing.Size(1349, 531);
+            this.shieldTab.TabIndex = 4;
+            this.shieldTab.Text = "Shields";
+            this.shieldTab.UseVisualStyleBackColor = true;
+            // 
+            // shieldGrid
+            // 
+            this.shieldGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shieldGrid.ContextMenuStrip = this.allContextMenu;
+            this.shieldGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shieldGrid.Location = new System.Drawing.Point(3, 3);
+            this.shieldGrid.Name = "shieldGrid";
+            this.shieldGrid.Size = new System.Drawing.Size(1343, 525);
+            this.shieldGrid.TabIndex = 5;
+            // 
+            // armSkillTab
+            // 
+            this.armSkillTab.Controls.Add(this.ArmSkillsGrid);
+            this.armSkillTab.Location = new System.Drawing.Point(4, 22);
+            this.armSkillTab.Name = "armSkillTab";
+            this.armSkillTab.Size = new System.Drawing.Size(1349, 531);
+            this.armSkillTab.TabIndex = 5;
+            this.armSkillTab.Text = "Arm Skills";
+            this.armSkillTab.UseVisualStyleBackColor = true;
+            // 
+            // ArmSkillsGrid
+            // 
+            this.ArmSkillsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ArmSkillsGrid.ContextMenuStrip = this.allContextMenu;
+            this.ArmSkillsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ArmSkillsGrid.Location = new System.Drawing.Point(0, 0);
+            this.ArmSkillsGrid.Name = "ArmSkillsGrid";
+            this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 531);
+            this.ArmSkillsGrid.TabIndex = 6;
+            // 
             // logTab
             // 
             this.logTab.Controls.Add(this.logRTB);
@@ -209,7 +280,7 @@
             // 
             this.demonGroupBox.Controls.Add(this.exportIndividualDemonBtn);
             this.demonGroupBox.Controls.Add(this.exportDemonAllBtn);
-            this.demonGroupBox.Location = new System.Drawing.Point(255, 12);
+            this.demonGroupBox.Location = new System.Drawing.Point(255, 7);
             this.demonGroupBox.Name = "demonGroupBox";
             this.demonGroupBox.Size = new System.Drawing.Size(345, 42);
             this.demonGroupBox.TabIndex = 6;
@@ -241,7 +312,7 @@
             // 
             this.skillGroupBox.Controls.Add(this.exportIndividualSkillBtn);
             this.skillGroupBox.Controls.Add(this.exportSkillAllBtn);
-            this.skillGroupBox.Location = new System.Drawing.Point(606, 12);
+            this.skillGroupBox.Location = new System.Drawing.Point(606, 6);
             this.skillGroupBox.Name = "skillGroupBox";
             this.skillGroupBox.Size = new System.Drawing.Size(345, 42);
             this.skillGroupBox.TabIndex = 7;
@@ -269,35 +340,35 @@
             this.exportSkillAllBtn.UseVisualStyleBackColor = true;
             this.exportSkillAllBtn.Click += new System.EventHandler(this.exportIndividualSkillBtn_Click);
             // 
-            // liberatorGroupBox
+            // swordGroupBox
             // 
-            this.liberatorGroupBox.Controls.Add(this.exportAllLiberatorsBtn);
-            this.liberatorGroupBox.Controls.Add(this.button2);
-            this.liberatorGroupBox.Location = new System.Drawing.Point(255, 60);
-            this.liberatorGroupBox.Name = "liberatorGroupBox";
-            this.liberatorGroupBox.Size = new System.Drawing.Size(345, 42);
-            this.liberatorGroupBox.TabIndex = 8;
-            this.liberatorGroupBox.TabStop = false;
-            this.liberatorGroupBox.Text = "Liberator Export";
-            this.liberatorGroupBox.Visible = false;
+            this.swordGroupBox.Controls.Add(this.exportAllSwordsBtn);
+            this.swordGroupBox.Controls.Add(this.exportIndividualSwordsBtn);
+            this.swordGroupBox.Location = new System.Drawing.Point(255, 46);
+            this.swordGroupBox.Name = "swordGroupBox";
+            this.swordGroupBox.Size = new System.Drawing.Size(345, 42);
+            this.swordGroupBox.TabIndex = 8;
+            this.swordGroupBox.TabStop = false;
+            this.swordGroupBox.Text = "Swords Export";
+            this.swordGroupBox.Visible = false;
             // 
-            // exportAllLiberatorsBtn
+            // exportAllSwordsBtn
             // 
-            this.exportAllLiberatorsBtn.Location = new System.Drawing.Point(6, 13);
-            this.exportAllLiberatorsBtn.Name = "exportAllLiberatorsBtn";
-            this.exportAllLiberatorsBtn.Size = new System.Drawing.Size(148, 23);
-            this.exportAllLiberatorsBtn.TabIndex = 5;
-            this.exportAllLiberatorsBtn.Text = "Export All Liberators";
-            this.exportAllLiberatorsBtn.UseVisualStyleBackColor = true;
+            this.exportAllSwordsBtn.Location = new System.Drawing.Point(6, 13);
+            this.exportAllSwordsBtn.Name = "exportAllSwordsBtn";
+            this.exportAllSwordsBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportAllSwordsBtn.TabIndex = 5;
+            this.exportAllSwordsBtn.Text = "Export All Swords";
+            this.exportAllSwordsBtn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // exportIndividualSwordsBtn
             // 
-            this.button2.Location = new System.Drawing.Point(160, 13);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(179, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Export Checked Liberators Individually";
-            this.button2.UseVisualStyleBackColor = true;
+            this.exportIndividualSwordsBtn.Location = new System.Drawing.Point(160, 13);
+            this.exportIndividualSwordsBtn.Name = "exportIndividualSwordsBtn";
+            this.exportIndividualSwordsBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportIndividualSwordsBtn.TabIndex = 4;
+            this.exportIndividualSwordsBtn.Text = "Export Checked Swords Individually";
+            this.exportIndividualSwordsBtn.UseVisualStyleBackColor = true;
             // 
             // saveAllBtn
             // 
@@ -314,13 +385,13 @@
             // 
             this.searchBoxTxt.Location = new System.Drawing.Point(6, 16);
             this.searchBoxTxt.Name = "searchBoxTxt";
-            this.searchBoxTxt.Size = new System.Drawing.Size(157, 20);
+            this.searchBoxTxt.Size = new System.Drawing.Size(275, 20);
             this.searchBoxTxt.TabIndex = 10;
             this.searchBoxTxt.TextChanged += new System.EventHandler(this.searchBoxTxt_TextChanged);
             // 
             // clearSearchBtn
             // 
-            this.clearSearchBtn.Location = new System.Drawing.Point(169, 14);
+            this.clearSearchBtn.Location = new System.Drawing.Point(287, 14);
             this.clearSearchBtn.Name = "clearSearchBtn";
             this.clearSearchBtn.Size = new System.Drawing.Size(52, 23);
             this.clearSearchBtn.TabIndex = 12;
@@ -330,6 +401,10 @@
             // 
             // topPanel
             // 
+            this.topPanel.Controls.Add(this.selectAllBtn);
+            this.topPanel.Controls.Add(this.armSkillGroup);
+            this.topPanel.Controls.Add(this.shieldGroupBox);
+            this.topPanel.Controls.Add(this.swordGroupBox);
             this.topPanel.Controls.Add(this.scrape1News);
             this.topPanel.Controls.Add(this.scrape5News);
             this.topPanel.Controls.Add(this.scrapeAllNews);
@@ -340,19 +415,18 @@
             this.topPanel.Controls.Add(this.exportAllBtn);
             this.topPanel.Controls.Add(this.searchGroupBox);
             this.topPanel.Controls.Add(this.saveAllBtn);
-            this.topPanel.Controls.Add(this.liberatorGroupBox);
             this.topPanel.Controls.Add(this.skillGroupBox);
             this.topPanel.Controls.Add(this.demonGroupBox);
             this.topPanel.Controls.Add(this.loadBtn);
             this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.topPanel.Location = new System.Drawing.Point(0, 0);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(1357, 107);
+            this.topPanel.Size = new System.Drawing.Size(1357, 136);
             this.topPanel.TabIndex = 6;
             // 
             // scrape1News
             // 
-            this.scrape1News.Location = new System.Drawing.Point(1251, 52);
+            this.scrape1News.Location = new System.Drawing.Point(1252, 82);
             this.scrape1News.Name = "scrape1News";
             this.scrape1News.Size = new System.Drawing.Size(93, 48);
             this.scrape1News.TabIndex = 22;
@@ -363,7 +437,7 @@
             // 
             // scrape5News
             // 
-            this.scrape5News.Location = new System.Drawing.Point(1152, 52);
+            this.scrape5News.Location = new System.Drawing.Point(1153, 82);
             this.scrape5News.Name = "scrape5News";
             this.scrape5News.Size = new System.Drawing.Size(93, 48);
             this.scrape5News.TabIndex = 21;
@@ -374,7 +448,7 @@
             // 
             // scrapeAllNews
             // 
-            this.scrapeAllNews.Location = new System.Drawing.Point(1071, 52);
+            this.scrapeAllNews.Location = new System.Drawing.Point(1072, 82);
             this.scrapeAllNews.Name = "scrapeAllNews";
             this.scrapeAllNews.Size = new System.Drawing.Size(75, 49);
             this.scrapeAllNews.TabIndex = 20;
@@ -385,7 +459,7 @@
             // 
             // migratorBtn
             // 
-            this.migratorBtn.Location = new System.Drawing.Point(978, 52);
+            this.migratorBtn.Location = new System.Drawing.Point(979, 82);
             this.migratorBtn.Name = "migratorBtn";
             this.migratorBtn.Size = new System.Drawing.Size(75, 48);
             this.migratorBtn.TabIndex = 19;
@@ -396,7 +470,7 @@
             // 
             // loginBtn
             // 
-            this.loginBtn.Location = new System.Drawing.Point(1071, 6);
+            this.loginBtn.Location = new System.Drawing.Point(1108, 12);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(75, 42);
             this.loginBtn.TabIndex = 18;
@@ -406,7 +480,7 @@
             // 
             // retryWikiLoginBtn
             // 
-            this.retryWikiLoginBtn.Location = new System.Drawing.Point(1233, 6);
+            this.retryWikiLoginBtn.Location = new System.Drawing.Point(1270, 12);
             this.retryWikiLoginBtn.Name = "retryWikiLoginBtn";
             this.retryWikiLoginBtn.Size = new System.Drawing.Size(75, 42);
             this.retryWikiLoginBtn.TabIndex = 17;
@@ -418,7 +492,7 @@
             // uploadToWikiBtn
             // 
             this.uploadToWikiBtn.Enabled = false;
-            this.uploadToWikiBtn.Location = new System.Drawing.Point(1152, 6);
+            this.uploadToWikiBtn.Location = new System.Drawing.Point(1189, 12);
             this.uploadToWikiBtn.Name = "uploadToWikiBtn";
             this.uploadToWikiBtn.Size = new System.Drawing.Size(75, 42);
             this.uploadToWikiBtn.TabIndex = 15;
@@ -442,75 +516,84 @@
             // 
             this.searchGroupBox.Controls.Add(this.clearSearchBtn);
             this.searchGroupBox.Controls.Add(this.searchBoxTxt);
-            this.searchGroupBox.Location = new System.Drawing.Point(12, 60);
+            this.searchGroupBox.Location = new System.Drawing.Point(12, 82);
             this.searchGroupBox.Name = "searchGroupBox";
-            this.searchGroupBox.Size = new System.Drawing.Size(228, 45);
+            this.searchGroupBox.Size = new System.Drawing.Size(345, 45);
             this.searchGroupBox.TabIndex = 13;
             this.searchGroupBox.TabStop = false;
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // swordTab
+            // shieldGroupBox
             // 
-            this.swordTab.Controls.Add(this.swordGrid);
-            this.swordTab.Location = new System.Drawing.Point(4, 22);
-            this.swordTab.Name = "swordTab";
-            this.swordTab.Padding = new System.Windows.Forms.Padding(3);
-            this.swordTab.Size = new System.Drawing.Size(1349, 531);
-            this.swordTab.TabIndex = 3;
-            this.swordTab.Text = "Swords";
-            this.swordTab.UseVisualStyleBackColor = true;
+            this.shieldGroupBox.Controls.Add(this.exportAllShieldsBtn);
+            this.shieldGroupBox.Controls.Add(this.exportIndividualShieldsBtn);
+            this.shieldGroupBox.Location = new System.Drawing.Point(606, 45);
+            this.shieldGroupBox.Name = "shieldGroupBox";
+            this.shieldGroupBox.Size = new System.Drawing.Size(345, 42);
+            this.shieldGroupBox.TabIndex = 9;
+            this.shieldGroupBox.TabStop = false;
+            this.shieldGroupBox.Text = "Shields Export";
+            this.shieldGroupBox.Visible = false;
             // 
-            // shieldTab
+            // exportAllShieldsBtn
             // 
-            this.shieldTab.Controls.Add(this.shieldGrid);
-            this.shieldTab.Location = new System.Drawing.Point(4, 22);
-            this.shieldTab.Name = "shieldTab";
-            this.shieldTab.Padding = new System.Windows.Forms.Padding(3);
-            this.shieldTab.Size = new System.Drawing.Size(1349, 531);
-            this.shieldTab.TabIndex = 4;
-            this.shieldTab.Text = "Shields";
-            this.shieldTab.UseVisualStyleBackColor = true;
+            this.exportAllShieldsBtn.Location = new System.Drawing.Point(6, 13);
+            this.exportAllShieldsBtn.Name = "exportAllShieldsBtn";
+            this.exportAllShieldsBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportAllShieldsBtn.TabIndex = 5;
+            this.exportAllShieldsBtn.Text = "Export All Shields";
+            this.exportAllShieldsBtn.UseVisualStyleBackColor = true;
             // 
-            // swordGrid
+            // exportIndividualShieldsBtn
             // 
-            this.swordGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.swordGrid.ContextMenuStrip = this.allContextMenu;
-            this.swordGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.swordGrid.Location = new System.Drawing.Point(3, 3);
-            this.swordGrid.Name = "swordGrid";
-            this.swordGrid.Size = new System.Drawing.Size(1343, 525);
-            this.swordGrid.TabIndex = 5;
+            this.exportIndividualShieldsBtn.Location = new System.Drawing.Point(160, 13);
+            this.exportIndividualShieldsBtn.Name = "exportIndividualShieldsBtn";
+            this.exportIndividualShieldsBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportIndividualShieldsBtn.TabIndex = 4;
+            this.exportIndividualShieldsBtn.Text = "Export Checked Shields Individually";
+            this.exportIndividualShieldsBtn.UseVisualStyleBackColor = true;
             // 
-            // shieldGrid
+            // armSkillGroup
             // 
-            this.shieldGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.shieldGrid.ContextMenuStrip = this.allContextMenu;
-            this.shieldGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.shieldGrid.Location = new System.Drawing.Point(3, 3);
-            this.shieldGrid.Name = "shieldGrid";
-            this.shieldGrid.Size = new System.Drawing.Size(1343, 525);
-            this.shieldGrid.TabIndex = 5;
+            this.armSkillGroup.Controls.Add(this.exportAllArmSkillsBtn);
+            this.armSkillGroup.Controls.Add(this.exportIndividualArmSkillsBtn);
+            this.armSkillGroup.Location = new System.Drawing.Point(606, 88);
+            this.armSkillGroup.Name = "armSkillGroup";
+            this.armSkillGroup.Size = new System.Drawing.Size(345, 42);
+            this.armSkillGroup.TabIndex = 10;
+            this.armSkillGroup.TabStop = false;
+            this.armSkillGroup.Text = "Arm Skills Export";
+            this.armSkillGroup.Visible = false;
             // 
-            // armSkillTab
+            // exportAllArmSkillsBtn
             // 
-            this.armSkillTab.Controls.Add(this.ArmSkillsGrid);
-            this.armSkillTab.Location = new System.Drawing.Point(4, 22);
-            this.armSkillTab.Name = "armSkillTab";
-            this.armSkillTab.Size = new System.Drawing.Size(1349, 531);
-            this.armSkillTab.TabIndex = 5;
-            this.armSkillTab.Text = "Arm Skills";
-            this.armSkillTab.UseVisualStyleBackColor = true;
+            this.exportAllArmSkillsBtn.Location = new System.Drawing.Point(6, 13);
+            this.exportAllArmSkillsBtn.Name = "exportAllArmSkillsBtn";
+            this.exportAllArmSkillsBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportAllArmSkillsBtn.TabIndex = 5;
+            this.exportAllArmSkillsBtn.Text = "Export All Arm Skills";
+            this.exportAllArmSkillsBtn.UseVisualStyleBackColor = true;
             // 
-            // ArmSkillsGrid
+            // exportIndividualArmSkillsBtn
             // 
-            this.ArmSkillsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ArmSkillsGrid.ContextMenuStrip = this.allContextMenu;
-            this.ArmSkillsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ArmSkillsGrid.Location = new System.Drawing.Point(0, 0);
-            this.ArmSkillsGrid.Name = "ArmSkillsGrid";
-            this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 531);
-            this.ArmSkillsGrid.TabIndex = 6;
+            this.exportIndividualArmSkillsBtn.Location = new System.Drawing.Point(160, 13);
+            this.exportIndividualArmSkillsBtn.Name = "exportIndividualArmSkillsBtn";
+            this.exportIndividualArmSkillsBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportIndividualArmSkillsBtn.TabIndex = 4;
+            this.exportIndividualArmSkillsBtn.Text = "Export Checked Arm Skills Individually";
+            this.exportIndividualArmSkillsBtn.UseVisualStyleBackColor = true;
+            // 
+            // selectAllBtn
+            // 
+            this.selectAllBtn.Location = new System.Drawing.Point(12, 58);
+            this.selectAllBtn.Name = "selectAllBtn";
+            this.selectAllBtn.Size = new System.Drawing.Size(237, 23);
+            this.selectAllBtn.TabIndex = 23;
+            this.selectAllBtn.Text = "Select All";
+            this.selectAllBtn.UseVisualStyleBackColor = true;
+            this.selectAllBtn.Visible = false;
+            this.selectAllBtn.Click += new System.EventHandler(this.selectAllGrids_Click);
             // 
             // MainForm
             // 
@@ -529,19 +612,21 @@
             this.allContextMenu.ResumeLayout(false);
             this.skillTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.skillGrid)).EndInit();
-            this.logTab.ResumeLayout(false);
-            this.demonGroupBox.ResumeLayout(false);
-            this.skillGroupBox.ResumeLayout(false);
-            this.liberatorGroupBox.ResumeLayout(false);
-            this.topPanel.ResumeLayout(false);
-            this.searchGroupBox.ResumeLayout(false);
-            this.searchGroupBox.PerformLayout();
             this.swordTab.ResumeLayout(false);
-            this.shieldTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.swordGrid)).EndInit();
+            this.shieldTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.shieldGrid)).EndInit();
             this.armSkillTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ArmSkillsGrid)).EndInit();
+            this.logTab.ResumeLayout(false);
+            this.demonGroupBox.ResumeLayout(false);
+            this.skillGroupBox.ResumeLayout(false);
+            this.swordGroupBox.ResumeLayout(false);
+            this.topPanel.ResumeLayout(false);
+            this.searchGroupBox.ResumeLayout(false);
+            this.searchGroupBox.PerformLayout();
+            this.shieldGroupBox.ResumeLayout(false);
+            this.armSkillGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -562,9 +647,9 @@
         private System.Windows.Forms.GroupBox skillGroupBox;
         private System.Windows.Forms.Button exportIndividualSkillBtn;
         private System.Windows.Forms.Button exportSkillAllBtn;
-        private System.Windows.Forms.GroupBox liberatorGroupBox;
-        private System.Windows.Forms.Button exportAllLiberatorsBtn;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.GroupBox swordGroupBox;
+        private System.Windows.Forms.Button exportAllSwordsBtn;
+        private System.Windows.Forms.Button exportIndividualSwordsBtn;
         private System.Windows.Forms.Button saveAllBtn;
         private System.Windows.Forms.TextBox searchBoxTxt;
         private System.Windows.Forms.Button clearSearchBtn;
@@ -586,6 +671,13 @@
         private System.Windows.Forms.DataGridView shieldGrid;
         private System.Windows.Forms.TabPage armSkillTab;
         private System.Windows.Forms.DataGridView ArmSkillsGrid;
+        private System.Windows.Forms.GroupBox shieldGroupBox;
+        private System.Windows.Forms.Button exportAllShieldsBtn;
+        private System.Windows.Forms.Button exportIndividualShieldsBtn;
+        private System.Windows.Forms.GroupBox armSkillGroup;
+        private System.Windows.Forms.Button exportAllArmSkillsBtn;
+        private System.Windows.Forms.Button exportIndividualArmSkillsBtn;
+        private System.Windows.Forms.Button selectAllBtn;
     }
 }
 

@@ -481,6 +481,8 @@ namespace Dx2WikiWriter
                 "|fusionlink= " + fusionLink + Environment.NewLine +
                 "|}}\r\n" +
                 "<section begin=gachaFlags/>{{#ifeq:{{PAGENAME}}| Tier List |{{GachaFlag|" + flagInfo + "}}|}}<section end=gachaFlags/>\r\n" +
+                "{{:{{PAGENAME}}/Sword}}\r\n" +
+                "{{:{{PAGENAME}}/Shield}}\r\n" +
                 "{{:{{PAGENAME}}/Builds}}\r\n" +
                 "{{:{{PAGENAME}}/Lore}}\r\n" +
                 "[[Category: Demons]]\r\n" +

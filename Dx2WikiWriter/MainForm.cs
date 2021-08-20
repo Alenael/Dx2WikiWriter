@@ -139,6 +139,51 @@ namespace Dx2WikiWriter
                     dbStatus = false;
                 }
 
+                //Load Swords
+                var swordDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Swords.csv");
+                if (File.Exists(swordDbPath))
+                {
+                    swordGrid.DataSource = DBManager.LoadDB(swordDbPath);
+                    AddCheckBox(swordGrid);
+                    swordGrid.Sort(swordGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
+                    swordGrid.Columns[1].Frozen = true;
+                }
+                else
+                {
+                    logRTB.AppendText(swordDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
+
+                //Load Shields
+                var shieldDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Shields.csv");
+                if (File.Exists(shieldDbPath))
+                {
+                    shieldGrid.DataSource = DBManager.LoadDB(shieldDbPath);
+                    AddCheckBox(shieldGrid);
+                    shieldGrid.Sort(shieldGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
+                    shieldGrid.Columns[1].Frozen = true;
+                }
+                else
+                {
+                    logRTB.AppendText(shieldDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
+
+                //Load Shields
+                var ArmSkillDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Armaments Skills.csv");
+                if (File.Exists(ArmSkillDbPath))
+                {
+                    ArmSkillsGrid.DataSource = DBManager.LoadDB(ArmSkillDbPath);
+                    AddCheckBox(ArmSkillsGrid);
+                    ArmSkillsGrid.Sort(ArmSkillsGrid.Columns[1], System.ComponentModel.ListSortDirection.Ascending);
+                    ArmSkillsGrid.Columns[1].Frozen = true;
+                }
+                else
+                {
+                    logRTB.AppendText(ArmSkillDbPath + ": Could not find file to open.\n");
+                    dbStatus = false;
+                }
+
                 //Load News
                 var newsDbPath = Path.Combine(LoadedPath, "SMT Dx2 Database - News.csv");
                 if (File.Exists(newsDbPath))
@@ -156,6 +201,10 @@ namespace Dx2WikiWriter
                 demonGroupBox.Visible = true;
                 skillGroupBox.Visible = true;
                 searchGroupBox.Visible = true;
+                swordGroupBox.Visible = true;
+                shieldGroupBox.Visible = true;
+                armSkillGroup.Visible = true;
+                selectAllBtn.Visible = true;
                 migratorBtn.Visible = true;
                 loadBtn.Enabled = false;
                 saveAllBtn.Visible = true;
@@ -176,6 +225,12 @@ namespace Dx2WikiWriter
                 DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
             if (skillGrid.DataSource != null)
                 DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
+            if (swordGrid.DataSource != null)
+                DBManager.SaveDB(swordGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Swords.csv"));
+            if (shieldGrid.DataSource != null)
+                DBManager.SaveDB(shieldGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Shields.csv"));
+            if (ArmSkillsGrid.DataSource != null)
+                DBManager.SaveDB(ArmSkillsGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Armaments Skills.csv"));
 
             Text = "Dx2 Wiki Writer";
             isDirty = false;
@@ -197,6 +252,30 @@ namespace Dx2WikiWriter
                 if (menuItem.Owner is ContextMenuStrip owner)
                     foreach (DataGridViewRow row in (owner.SourceControl as DataGridView).Rows)
                         row.Cells["Export"].Value = false;
+        }
+        private void selectAllGrids_Click(object sender, EventArgs e)
+        {
+
+            tabPages.SelectedTab = skillTab;
+            foreach (DataGridViewRow row in skillGrid.Rows)
+                row.Cells["Export"].Value = true;
+
+            tabPages.SelectedTab = shieldTab;
+            foreach (DataGridViewRow row in shieldGrid.Rows)
+                row.Cells["Export"].Value = true;
+
+            tabPages.SelectedTab = swordTab;
+            foreach (DataGridViewRow row in swordGrid.Rows)
+                row.Cells["Export"].Value = true;
+
+            tabPages.SelectedTab = armSkillTab;
+            foreach (DataGridViewRow row in ArmSkillsGrid.Rows)
+                row.Cells["Export"].Value = true;
+
+            tabPages.SelectedTab = demonTab;
+
+            foreach (DataGridViewRow row in demonGrid.Rows)
+                row.Cells["Export"].Value = true;
         }
 
         //Exports all Demons
@@ -268,13 +347,13 @@ namespace Dx2WikiWriter
             foreach(var dgr in demonGrid.Rows.Cast<DataGridViewRow>().ToList())            
                 foreach(var demon in demonState)                
                     if (dgr.Cells[0].Value != null && demon != null)                    
-                        if ((string)dgr.Cells[0].Value == demon)                        
+                        if ((string)dgr.Cells[1].Value == demon)                        
                             dgr.Cells["Export"].Value = true;
 
             foreach (var dgr in skillGrid.Rows.Cast<DataGridViewRow>().ToList())
                 foreach (var skill in skillState)
                     if (dgr.Cells[0].Value != null && skill != null)
-                        if ((string)dgr.Cells[0].Value == skill)
+                        if ((string)dgr.Cells[1].Value == skill)
                             dgr.Cells["Export"].Value = true;
         }
 
@@ -431,6 +510,5 @@ namespace Dx2WikiWriter
         }
 
         #endregion
-
     }
 }

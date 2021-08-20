@@ -256,6 +256,7 @@ namespace Dx2WikiWriter
             {
                 Name = name,
                 Element = row.Cells["Element"].Value is DBNull ? "" : (string)row.Cells["Element"].Value,
+                UseLimit = row.Cells["UseLimit"].Value is DBNull ? "" : (string)row.Cells["UseLimit"].Value,
                 Cost = row.Cells["Cost"].Value is DBNull ? "" : (string)row.Cells["Cost"].Value,
                 Description = row.Cells["Description"].Value is DBNull ? "" : (string)row.Cells["Description"].Value,
                 Target = row.Cells["Target"].Value is DBNull ? "" : (string)row.Cells["Target"].Value,
@@ -293,6 +294,7 @@ namespace Dx2WikiWriter
     {
         public string Name;
         public string Element;
+        public string UseLimit;
         public string Cost;
         public string Description;
         public string Target;
@@ -347,6 +349,7 @@ namespace Dx2WikiWriter
                     "|skill=" + Name.Replace("[", "(").Replace("]", ")") + Environment.NewLine +
                     "|type=" + Element + Environment.NewLine +
                     "|cost=" + Cost.Replace(" MP", "") + Environment.NewLine +
+                    "|uselimit=" + UseLimit + Environment.NewLine +
                     "|sp=" + sp + Environment.NewLine +
                     "|target=" + Target + Environment.NewLine +
                     "|description=" + "<nowiki>" + description + "</nowiki>" + Environment.NewLine +
@@ -354,12 +357,7 @@ namespace Dx2WikiWriter
                     "|icon=" + "{{{icon}}}" + Environment.NewLine +
                     "}}" + Environment.NewLine + Environment.NewLine +
                     "{{ " +
-                    "#ifeq: {{{icon}}} " +
-                    "| yes " +
-                    "| " +
-                    "| " +
-                    "{{:" + Name.Replace("[", "(").Replace("]", ")") + "/Demons}}" +
-                    "}}";
+                    "#ifeq: {{{icon}}} | yes | | {{:" + Name.Replace("[", "(").Replace("]", ")") + "/Demons}}}}";        
         }
 
         //Converts a string array into a string
