@@ -51,7 +51,7 @@ namespace Dx2WikiWriter
                 data = "{| class=\"wikitable sortable\" style=\"text - align:center; width: 100 %;\"" + Environment.NewLine +
                             "|-" +
                             Environment.NewLine +
-                            "! Name !!Sword Name !!Talent and Effect !!Skills !!Atk Stat !!Attribute !!Accuracy !!Crtical !!Panel 1 !!Panel 2 !!Panel 3" + Environment.NewLine +
+                            "! Name !!Sword Name !!Talent and Effect !!Skills !!Atk Stat !!Attribute Increase !!Accuracy !!Crtical !!Panel 1 !!Panel 2 !!Panel 3" + Environment.NewLine +
                             "|- style = \"vertical-align:middle;\"" + Environment.NewLine +
                             data + "}";
 
