@@ -121,7 +121,7 @@ namespace Dx2WikiWriter
             {
                 //Generate our Page Name
                 var pageName = Path.GetFileNameWithoutExtension(fileName);
-                pageName = pageName.Replace("-Demons", "/Demons").Replace("[", "(").Replace("]", ")");
+                pageName = pageName.Replace("-Demons", "/Demons").Replace("[", "(").Replace("]", ")").Replace("-Sword","/Sword");
                  
                 //If we are a skill check if demon shares our name
                 if (demons != null)
@@ -153,7 +153,7 @@ namespace Dx2WikiWriter
                         count++;
                         if (count >= 5)
                         {
-                            Callback.AppendTextBox("Can't update demon. Skipping: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
+                            Callback.AppendTextBox("Can't update page. Skipping: <https://dx2wiki.com/index.php/" + Uri.EscapeUriString(pageName) + "> \n");
                             repeat = false;
                         }
                         else

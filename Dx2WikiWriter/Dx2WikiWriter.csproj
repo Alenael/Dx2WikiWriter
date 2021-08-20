@@ -164,6 +164,8 @@
   <ItemGroup>
     <Compile Include="DBManager.cs" />
     <Compile Include="DBMigrator.cs" />
+    <Compile Include="ArmSkillsHelper.cs" />
+    <Compile Include="ShieldHelper.cs" />
     <Compile Include="SwordHelper.cs" />
     <Compile Include="DemonHelper.cs" />
     <Compile Include="MainForm.cs">

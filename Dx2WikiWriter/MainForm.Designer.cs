@@ -201,6 +201,8 @@
             this.swordGrid.Name = "swordGrid";
             this.swordGrid.Size = new System.Drawing.Size(1343, 496);
             this.swordGrid.TabIndex = 5;
+            this.swordGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
+            this.swordGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
             // shieldTab
             // 
@@ -222,6 +224,8 @@
             this.shieldGrid.Name = "shieldGrid";
             this.shieldGrid.Size = new System.Drawing.Size(1343, 496);
             this.shieldGrid.TabIndex = 5;
+            this.shieldGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
+            this.shieldGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
             // armSkillTab
             // 
@@ -242,6 +246,8 @@
             this.ArmSkillsGrid.Name = "ArmSkillsGrid";
             this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 502);
             this.ArmSkillsGrid.TabIndex = 6;
+            this.ArmSkillsGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
+            this.ArmSkillsGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
             // 
             // logTab
             // 

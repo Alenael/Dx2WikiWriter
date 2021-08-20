@@ -314,16 +314,14 @@ namespace Dx2WikiWriter
         //Exports all Swords
         private void exportSwordAllBtn_Click(object sender, EventArgs e)
         {
-            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
-            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            SwordHelper.ExportSwords(swordGrid.Rows.Cast<DataGridViewRow>(), swordGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Swords
         private void exportIndividualSwordBtn_Click(object sender, EventArgs e)
         {
             var selectedSwords = swordGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
-
-            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            SwordHelper.ExportSwords(selectedSwords, swordGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
         //Exports all Shields
@@ -370,7 +368,6 @@ namespace Dx2WikiWriter
             exportAllSwordsBtn.PerformClick();
             exportAllShieldsBtn.PerformClick();
             exportAllArmSkillsBtn.PerformClick();
-
         }
 
         List<string> demonState;
