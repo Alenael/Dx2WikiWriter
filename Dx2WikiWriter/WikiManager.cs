@@ -81,6 +81,27 @@ namespace Dx2WikiWriter
                             await UploadFile(file.FullName, null);
                             await Task.Delay(2000);
                         }
+
+                    if (Directory.Exists(rootPath + "/SwordData"))
+                        foreach (var file in new DirectoryInfo(rootPath + "/SwordData").GetFiles())
+                        {
+                            await UploadFile(file.FullName, null);
+                            await Task.Delay(2000);
+                        }
+
+                    if (Directory.Exists(rootPath + "/ShieldData"))
+                        foreach (var file in new DirectoryInfo(rootPath + "/ShieldData").GetFiles())
+                        {
+                            await UploadFile(file.FullName, null);
+                            await Task.Delay(2000);
+                        }
+
+                    if (Directory.Exists(rootPath + "/ArmSkillsData"))
+                        foreach (var file in new DirectoryInfo(rootPath + "/ArmSkillsData").GetFiles())
+                        {
+                            await UploadFile(file.FullName, null);
+                            await Task.Delay(2000);
+                        }
                 }
 
             }

@@ -253,6 +253,7 @@ namespace Dx2WikiWriter
                     foreach (DataGridViewRow row in (owner.SourceControl as DataGridView).Rows)
                         row.Cells["Export"].Value = false;
         }
+
         private void selectAllGrids_Click(object sender, EventArgs e)
         {
 
@@ -310,18 +311,73 @@ namespace Dx2WikiWriter
             SkillHelper.ExportSkills(selectedSkills, demonGrid.Rows.Cast<DataGridViewRow>(), skillGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
+        //Exports all Swords
+        private void exportSwordAllBtn_Click(object sender, EventArgs e)
+        {
+            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+        }
+
+        //Exports Selected Swords
+        private void exportIndividualSwordBtn_Click(object sender, EventArgs e)
+        {
+            var selectedSwords = swordGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
+
+            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+        }
+
+        //Exports all Shields
+        private void exportShieldAllBtn_Click(object sender, EventArgs e)
+        {
+            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+        }
+
+        //Exports Selected Swords
+        private void exportIndividualShieldBtn_Click(object sender, EventArgs e)
+        {
+            var selectedShields = shieldGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
+
+            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+        }
+
+        //Exports all Arm Skills
+        private void exportArmSkillsAllBtn_Click(object sender, EventArgs e)
+        {
+            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
+            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+        }
+
+        //Exports Selected Arm Skills
+        private void exportIndividualArmSkillsBtn_Click(object sender, EventArgs e)
+        {
+            var selectedArmSkills = ArmSkillsGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
+
+            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+        }
+
         //Exports Everything
         private void exportAllBtn_Click(object sender, EventArgs e)
         {
             clearSearchBtn.PerformClick();
             exportIndividualDemonBtn.PerformClick();
             exportIndividualSkillBtn.PerformClick();
+            exportIndividualSwordsBtn.PerformClick();
+            exportIndividualShieldsBtn.PerformClick();
+            exportIndividualArmSkillsBtn.PerformClick();
             exportDemonAllBtn.PerformClick();
             exportSkillAllBtn.PerformClick();
+            exportAllSwordsBtn.PerformClick();
+            exportAllShieldsBtn.PerformClick();
+            exportAllArmSkillsBtn.PerformClick();
+
         }
 
         List<string> demonState;
         List<string> skillState;
+        List<string> shieldState;
+        List<string> swordState;
+        List<string> armSkillState;
 
         private List<Rank> getRanks()
         {
@@ -340,6 +396,18 @@ namespace Dx2WikiWriter
             skillState = new List<string>();
             foreach (var s in skillGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
                 skillState.Add((string)s.Cells[1].Value);
+
+            shieldState = new List<string>();
+            foreach (var s in shieldGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
+                shieldState.Add((string)s.Cells[1].Value);
+
+            swordState = new List<string>();
+            foreach (var s in swordGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
+                swordState.Add((string)s.Cells[1].Value);
+
+            armSkillState = new List<string>();
+            foreach (var s in ArmSkillsGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true && r.Cells[0].Value != null).ToList())
+                armSkillState.Add((string)s.Cells[1].Value);
         }
 
         private void restoreExportState()
@@ -354,6 +422,24 @@ namespace Dx2WikiWriter
                 foreach (var skill in skillState)
                     if (dgr.Cells[0].Value != null && skill != null)
                         if ((string)dgr.Cells[1].Value == skill)
+                            dgr.Cells["Export"].Value = true;
+
+            foreach (var dgr in swordGrid.Rows.Cast<DataGridViewRow>().ToList())
+                foreach (var sword in swordState)
+                    if (dgr.Cells[0].Value != null && sword != null)
+                        if ((string)dgr.Cells[1].Value == sword)
+                            dgr.Cells["Export"].Value = true;
+
+            foreach (var dgr in shieldGrid.Rows.Cast<DataGridViewRow>().ToList())
+                foreach (var shield in shieldState)
+                    if (dgr.Cells[0].Value != null && shield != null)
+                        if ((string)dgr.Cells[1].Value == shield)
+                            dgr.Cells["Export"].Value = true;
+
+            foreach (var dgr in ArmSkillsGrid.Rows.Cast<DataGridViewRow>().ToList())
+                foreach (var armSkill in armSkillState)
+                    if (dgr.Cells[0].Value != null && armSkill != null)
+                        if ((string)dgr.Cells[1].Value == armSkill)
                             dgr.Cells["Export"].Value = true;
         }
 
@@ -378,6 +464,30 @@ namespace Dx2WikiWriter
                     else
                         (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
                     break;
+                case 2:
+                    if (string.IsNullOrEmpty(searchBoxTxt.Text))
+                        (swordGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+                    else if (searchBoxTxt.Text.StartsWith(".."))
+                        (swordGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
+                    else
+                        (swordGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+                    break;
+                case 3:
+                    if (string.IsNullOrEmpty(searchBoxTxt.Text))
+                        (shieldGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+                    else if (searchBoxTxt.Text.StartsWith(".."))
+                        (shieldGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
+                    else
+                        (shieldGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+                    break;
+                case 4:
+                    if (string.IsNullOrEmpty(searchBoxTxt.Text))
+                        (ArmSkillsGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+                    else if (searchBoxTxt.Text.StartsWith(".."))
+                        (ArmSkillsGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '%{0}%'", searchBoxTxt.Text.Replace("..", ""));
+                    else
+                        (ArmSkillsGrid.DataSource as DataTable).DefaultView.RowFilter = string.Format("Name LIKE '{0}%'", searchBoxTxt.Text);
+                    break;
             }            
         }
 
@@ -390,6 +500,12 @@ namespace Dx2WikiWriter
                 (demonGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
             if (skillGrid.DataSource != null)
                 (skillGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            if (swordGrid.DataSource != null)
+                (swordGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            if (shieldGrid.DataSource != null)
+                (shieldGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            if (ArmSkillsGrid.DataSource != null)
+                (ArmSkillsGrid.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
             demonGrid.Refresh();
             searchBoxTxt.TextChanged += searchBoxTxt_TextChanged;
         }

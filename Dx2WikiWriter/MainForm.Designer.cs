@@ -59,6 +59,13 @@
             this.searchBoxTxt = new System.Windows.Forms.TextBox();
             this.clearSearchBtn = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.selectAllBtn = new System.Windows.Forms.Button();
+            this.armSkillGroup = new System.Windows.Forms.GroupBox();
+            this.exportAllArmSkillsBtn = new System.Windows.Forms.Button();
+            this.exportIndividualArmSkillsBtn = new System.Windows.Forms.Button();
+            this.shieldGroupBox = new System.Windows.Forms.GroupBox();
+            this.exportAllShieldsBtn = new System.Windows.Forms.Button();
+            this.exportIndividualShieldsBtn = new System.Windows.Forms.Button();
             this.scrape1News = new System.Windows.Forms.Button();
             this.scrape5News = new System.Windows.Forms.Button();
             this.scrapeAllNews = new System.Windows.Forms.Button();
@@ -68,13 +75,6 @@
             this.uploadToWikiBtn = new System.Windows.Forms.Button();
             this.exportAllBtn = new System.Windows.Forms.Button();
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
-            this.shieldGroupBox = new System.Windows.Forms.GroupBox();
-            this.exportAllShieldsBtn = new System.Windows.Forms.Button();
-            this.exportIndividualShieldsBtn = new System.Windows.Forms.Button();
-            this.armSkillGroup = new System.Windows.Forms.GroupBox();
-            this.exportAllArmSkillsBtn = new System.Windows.Forms.Button();
-            this.exportIndividualArmSkillsBtn = new System.Windows.Forms.Button();
-            this.selectAllBtn = new System.Windows.Forms.Button();
             this.tabPages.SuspendLayout();
             this.demonTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.demonGrid)).BeginInit();
@@ -92,9 +92,9 @@
             this.skillGroupBox.SuspendLayout();
             this.swordGroupBox.SuspendLayout();
             this.topPanel.SuspendLayout();
-            this.searchGroupBox.SuspendLayout();
-            this.shieldGroupBox.SuspendLayout();
             this.armSkillGroup.SuspendLayout();
+            this.shieldGroupBox.SuspendLayout();
+            this.searchGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPages
@@ -164,7 +164,7 @@
             this.skillTab.Location = new System.Drawing.Point(4, 22);
             this.skillTab.Name = "skillTab";
             this.skillTab.Padding = new System.Windows.Forms.Padding(3);
-            this.skillTab.Size = new System.Drawing.Size(1349, 531);
+            this.skillTab.Size = new System.Drawing.Size(1349, 502);
             this.skillTab.TabIndex = 1;
             this.skillTab.Text = "Skills";
             this.skillTab.UseVisualStyleBackColor = true;
@@ -176,7 +176,7 @@
             this.skillGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skillGrid.Location = new System.Drawing.Point(3, 3);
             this.skillGrid.Name = "skillGrid";
-            this.skillGrid.Size = new System.Drawing.Size(1343, 525);
+            this.skillGrid.Size = new System.Drawing.Size(1343, 496);
             this.skillGrid.TabIndex = 5;
             this.skillGrid.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Grid_CellBeginEdit);
             this.skillGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_CellEndEdit);
@@ -187,7 +187,7 @@
             this.swordTab.Location = new System.Drawing.Point(4, 22);
             this.swordTab.Name = "swordTab";
             this.swordTab.Padding = new System.Windows.Forms.Padding(3);
-            this.swordTab.Size = new System.Drawing.Size(1349, 531);
+            this.swordTab.Size = new System.Drawing.Size(1349, 502);
             this.swordTab.TabIndex = 3;
             this.swordTab.Text = "Swords";
             this.swordTab.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@
             this.swordGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.swordGrid.Location = new System.Drawing.Point(3, 3);
             this.swordGrid.Name = "swordGrid";
-            this.swordGrid.Size = new System.Drawing.Size(1343, 525);
+            this.swordGrid.Size = new System.Drawing.Size(1343, 496);
             this.swordGrid.TabIndex = 5;
             // 
             // shieldTab
@@ -208,7 +208,7 @@
             this.shieldTab.Location = new System.Drawing.Point(4, 22);
             this.shieldTab.Name = "shieldTab";
             this.shieldTab.Padding = new System.Windows.Forms.Padding(3);
-            this.shieldTab.Size = new System.Drawing.Size(1349, 531);
+            this.shieldTab.Size = new System.Drawing.Size(1349, 502);
             this.shieldTab.TabIndex = 4;
             this.shieldTab.Text = "Shields";
             this.shieldTab.UseVisualStyleBackColor = true;
@@ -220,7 +220,7 @@
             this.shieldGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.shieldGrid.Location = new System.Drawing.Point(3, 3);
             this.shieldGrid.Name = "shieldGrid";
-            this.shieldGrid.Size = new System.Drawing.Size(1343, 525);
+            this.shieldGrid.Size = new System.Drawing.Size(1343, 496);
             this.shieldGrid.TabIndex = 5;
             // 
             // armSkillTab
@@ -228,7 +228,7 @@
             this.armSkillTab.Controls.Add(this.ArmSkillsGrid);
             this.armSkillTab.Location = new System.Drawing.Point(4, 22);
             this.armSkillTab.Name = "armSkillTab";
-            this.armSkillTab.Size = new System.Drawing.Size(1349, 531);
+            this.armSkillTab.Size = new System.Drawing.Size(1349, 502);
             this.armSkillTab.TabIndex = 5;
             this.armSkillTab.Text = "Arm Skills";
             this.armSkillTab.UseVisualStyleBackColor = true;
@@ -240,7 +240,7 @@
             this.ArmSkillsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ArmSkillsGrid.Location = new System.Drawing.Point(0, 0);
             this.ArmSkillsGrid.Name = "ArmSkillsGrid";
-            this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 531);
+            this.ArmSkillsGrid.Size = new System.Drawing.Size(1349, 502);
             this.ArmSkillsGrid.TabIndex = 6;
             // 
             // logTab
@@ -249,7 +249,7 @@
             this.logTab.Location = new System.Drawing.Point(4, 22);
             this.logTab.Name = "logTab";
             this.logTab.Padding = new System.Windows.Forms.Padding(3);
-            this.logTab.Size = new System.Drawing.Size(1349, 531);
+            this.logTab.Size = new System.Drawing.Size(1349, 502);
             this.logTab.TabIndex = 2;
             this.logTab.Text = "Logger";
             this.logTab.UseVisualStyleBackColor = true;
@@ -260,7 +260,7 @@
             this.logRTB.Location = new System.Drawing.Point(3, 3);
             this.logRTB.Name = "logRTB";
             this.logRTB.ReadOnly = true;
-            this.logRTB.Size = new System.Drawing.Size(1343, 525);
+            this.logRTB.Size = new System.Drawing.Size(1343, 496);
             this.logRTB.TabIndex = 0;
             this.logRTB.Text = "";
             this.logRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.logRTB_LinkClicked);
@@ -324,7 +324,7 @@
             // 
             this.exportIndividualSkillBtn.Location = new System.Drawing.Point(6, 13);
             this.exportIndividualSkillBtn.Name = "exportIndividualSkillBtn";
-            this.exportIndividualSkillBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportIndividualSkillBtn.Size = new System.Drawing.Size(126, 23);
             this.exportIndividualSkillBtn.TabIndex = 5;
             this.exportIndividualSkillBtn.Text = "Export All Skills";
             this.exportIndividualSkillBtn.UseVisualStyleBackColor = true;
@@ -332,9 +332,9 @@
             // 
             // exportSkillAllBtn
             // 
-            this.exportSkillAllBtn.Location = new System.Drawing.Point(160, 13);
+            this.exportSkillAllBtn.Location = new System.Drawing.Point(138, 13);
             this.exportSkillAllBtn.Name = "exportSkillAllBtn";
-            this.exportSkillAllBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportSkillAllBtn.Size = new System.Drawing.Size(201, 23);
             this.exportSkillAllBtn.TabIndex = 4;
             this.exportSkillAllBtn.Text = "Export Checked Skills Individually";
             this.exportSkillAllBtn.UseVisualStyleBackColor = true;
@@ -356,19 +356,21 @@
             // 
             this.exportAllSwordsBtn.Location = new System.Drawing.Point(6, 13);
             this.exportAllSwordsBtn.Name = "exportAllSwordsBtn";
-            this.exportAllSwordsBtn.Size = new System.Drawing.Size(148, 23);
+            this.exportAllSwordsBtn.Size = new System.Drawing.Size(126, 23);
             this.exportAllSwordsBtn.TabIndex = 5;
             this.exportAllSwordsBtn.Text = "Export All Swords";
             this.exportAllSwordsBtn.UseVisualStyleBackColor = true;
+            this.exportAllSwordsBtn.Click += new System.EventHandler(this.exportSwordAllBtn_Click);
             // 
             // exportIndividualSwordsBtn
             // 
-            this.exportIndividualSwordsBtn.Location = new System.Drawing.Point(160, 13);
+            this.exportIndividualSwordsBtn.Location = new System.Drawing.Point(138, 13);
             this.exportIndividualSwordsBtn.Name = "exportIndividualSwordsBtn";
-            this.exportIndividualSwordsBtn.Size = new System.Drawing.Size(179, 23);
+            this.exportIndividualSwordsBtn.Size = new System.Drawing.Size(201, 23);
             this.exportIndividualSwordsBtn.TabIndex = 4;
             this.exportIndividualSwordsBtn.Text = "Export Checked Swords Individually";
             this.exportIndividualSwordsBtn.UseVisualStyleBackColor = true;
+            this.exportIndividualSwordsBtn.Click += new System.EventHandler(this.exportIndividualSwordBtn_Click);
             // 
             // saveAllBtn
             // 
@@ -423,6 +425,81 @@
             this.topPanel.Name = "topPanel";
             this.topPanel.Size = new System.Drawing.Size(1357, 136);
             this.topPanel.TabIndex = 6;
+            // 
+            // selectAllBtn
+            // 
+            this.selectAllBtn.Location = new System.Drawing.Point(12, 58);
+            this.selectAllBtn.Name = "selectAllBtn";
+            this.selectAllBtn.Size = new System.Drawing.Size(237, 23);
+            this.selectAllBtn.TabIndex = 23;
+            this.selectAllBtn.Text = "Select All";
+            this.selectAllBtn.UseVisualStyleBackColor = true;
+            this.selectAllBtn.Visible = false;
+            this.selectAllBtn.Click += new System.EventHandler(this.selectAllGrids_Click);
+            // 
+            // armSkillGroup
+            // 
+            this.armSkillGroup.Controls.Add(this.exportAllArmSkillsBtn);
+            this.armSkillGroup.Controls.Add(this.exportIndividualArmSkillsBtn);
+            this.armSkillGroup.Location = new System.Drawing.Point(606, 88);
+            this.armSkillGroup.Name = "armSkillGroup";
+            this.armSkillGroup.Size = new System.Drawing.Size(345, 42);
+            this.armSkillGroup.TabIndex = 10;
+            this.armSkillGroup.TabStop = false;
+            this.armSkillGroup.Text = "Arm Skills Export";
+            this.armSkillGroup.Visible = false;
+            // 
+            // exportAllArmSkillsBtn
+            // 
+            this.exportAllArmSkillsBtn.Location = new System.Drawing.Point(6, 13);
+            this.exportAllArmSkillsBtn.Name = "exportAllArmSkillsBtn";
+            this.exportAllArmSkillsBtn.Size = new System.Drawing.Size(126, 23);
+            this.exportAllArmSkillsBtn.TabIndex = 5;
+            this.exportAllArmSkillsBtn.Text = "Export All Arm Skills";
+            this.exportAllArmSkillsBtn.UseVisualStyleBackColor = true;
+            this.exportAllArmSkillsBtn.Click += new System.EventHandler(this.exportArmSkillsAllBtn_Click);
+            // 
+            // exportIndividualArmSkillsBtn
+            // 
+            this.exportIndividualArmSkillsBtn.Location = new System.Drawing.Point(138, 13);
+            this.exportIndividualArmSkillsBtn.Name = "exportIndividualArmSkillsBtn";
+            this.exportIndividualArmSkillsBtn.Size = new System.Drawing.Size(201, 23);
+            this.exportIndividualArmSkillsBtn.TabIndex = 4;
+            this.exportIndividualArmSkillsBtn.Text = "Export Checked Arm Skills Individually";
+            this.exportIndividualArmSkillsBtn.UseVisualStyleBackColor = true;
+            this.exportIndividualArmSkillsBtn.Click += new System.EventHandler(this.exportIndividualArmSkillsBtn_Click);
+            // 
+            // shieldGroupBox
+            // 
+            this.shieldGroupBox.Controls.Add(this.exportAllShieldsBtn);
+            this.shieldGroupBox.Controls.Add(this.exportIndividualShieldsBtn);
+            this.shieldGroupBox.Location = new System.Drawing.Point(606, 45);
+            this.shieldGroupBox.Name = "shieldGroupBox";
+            this.shieldGroupBox.Size = new System.Drawing.Size(345, 42);
+            this.shieldGroupBox.TabIndex = 9;
+            this.shieldGroupBox.TabStop = false;
+            this.shieldGroupBox.Text = "Shields Export";
+            this.shieldGroupBox.Visible = false;
+            // 
+            // exportAllShieldsBtn
+            // 
+            this.exportAllShieldsBtn.Location = new System.Drawing.Point(6, 13);
+            this.exportAllShieldsBtn.Name = "exportAllShieldsBtn";
+            this.exportAllShieldsBtn.Size = new System.Drawing.Size(126, 23);
+            this.exportAllShieldsBtn.TabIndex = 5;
+            this.exportAllShieldsBtn.Text = "Export All Shields";
+            this.exportAllShieldsBtn.UseVisualStyleBackColor = true;
+            this.exportAllShieldsBtn.Click += new System.EventHandler(this.exportShieldAllBtn_Click);
+            // 
+            // exportIndividualShieldsBtn
+            // 
+            this.exportIndividualShieldsBtn.Location = new System.Drawing.Point(138, 13);
+            this.exportIndividualShieldsBtn.Name = "exportIndividualShieldsBtn";
+            this.exportIndividualShieldsBtn.Size = new System.Drawing.Size(201, 23);
+            this.exportIndividualShieldsBtn.TabIndex = 4;
+            this.exportIndividualShieldsBtn.Text = "Export Checked Shields Individually";
+            this.exportIndividualShieldsBtn.UseVisualStyleBackColor = true;
+            this.exportIndividualShieldsBtn.Click += new System.EventHandler(this.exportIndividualShieldBtn_Click);
             // 
             // scrape1News
             // 
@@ -524,77 +601,6 @@
             this.searchGroupBox.Text = "Search";
             this.searchGroupBox.Visible = false;
             // 
-            // shieldGroupBox
-            // 
-            this.shieldGroupBox.Controls.Add(this.exportAllShieldsBtn);
-            this.shieldGroupBox.Controls.Add(this.exportIndividualShieldsBtn);
-            this.shieldGroupBox.Location = new System.Drawing.Point(606, 45);
-            this.shieldGroupBox.Name = "shieldGroupBox";
-            this.shieldGroupBox.Size = new System.Drawing.Size(345, 42);
-            this.shieldGroupBox.TabIndex = 9;
-            this.shieldGroupBox.TabStop = false;
-            this.shieldGroupBox.Text = "Shields Export";
-            this.shieldGroupBox.Visible = false;
-            // 
-            // exportAllShieldsBtn
-            // 
-            this.exportAllShieldsBtn.Location = new System.Drawing.Point(6, 13);
-            this.exportAllShieldsBtn.Name = "exportAllShieldsBtn";
-            this.exportAllShieldsBtn.Size = new System.Drawing.Size(148, 23);
-            this.exportAllShieldsBtn.TabIndex = 5;
-            this.exportAllShieldsBtn.Text = "Export All Shields";
-            this.exportAllShieldsBtn.UseVisualStyleBackColor = true;
-            // 
-            // exportIndividualShieldsBtn
-            // 
-            this.exportIndividualShieldsBtn.Location = new System.Drawing.Point(160, 13);
-            this.exportIndividualShieldsBtn.Name = "exportIndividualShieldsBtn";
-            this.exportIndividualShieldsBtn.Size = new System.Drawing.Size(179, 23);
-            this.exportIndividualShieldsBtn.TabIndex = 4;
-            this.exportIndividualShieldsBtn.Text = "Export Checked Shields Individually";
-            this.exportIndividualShieldsBtn.UseVisualStyleBackColor = true;
-            // 
-            // armSkillGroup
-            // 
-            this.armSkillGroup.Controls.Add(this.exportAllArmSkillsBtn);
-            this.armSkillGroup.Controls.Add(this.exportIndividualArmSkillsBtn);
-            this.armSkillGroup.Location = new System.Drawing.Point(606, 88);
-            this.armSkillGroup.Name = "armSkillGroup";
-            this.armSkillGroup.Size = new System.Drawing.Size(345, 42);
-            this.armSkillGroup.TabIndex = 10;
-            this.armSkillGroup.TabStop = false;
-            this.armSkillGroup.Text = "Arm Skills Export";
-            this.armSkillGroup.Visible = false;
-            // 
-            // exportAllArmSkillsBtn
-            // 
-            this.exportAllArmSkillsBtn.Location = new System.Drawing.Point(6, 13);
-            this.exportAllArmSkillsBtn.Name = "exportAllArmSkillsBtn";
-            this.exportAllArmSkillsBtn.Size = new System.Drawing.Size(148, 23);
-            this.exportAllArmSkillsBtn.TabIndex = 5;
-            this.exportAllArmSkillsBtn.Text = "Export All Arm Skills";
-            this.exportAllArmSkillsBtn.UseVisualStyleBackColor = true;
-            // 
-            // exportIndividualArmSkillsBtn
-            // 
-            this.exportIndividualArmSkillsBtn.Location = new System.Drawing.Point(160, 13);
-            this.exportIndividualArmSkillsBtn.Name = "exportIndividualArmSkillsBtn";
-            this.exportIndividualArmSkillsBtn.Size = new System.Drawing.Size(179, 23);
-            this.exportIndividualArmSkillsBtn.TabIndex = 4;
-            this.exportIndividualArmSkillsBtn.Text = "Export Checked Arm Skills Individually";
-            this.exportIndividualArmSkillsBtn.UseVisualStyleBackColor = true;
-            // 
-            // selectAllBtn
-            // 
-            this.selectAllBtn.Location = new System.Drawing.Point(12, 58);
-            this.selectAllBtn.Name = "selectAllBtn";
-            this.selectAllBtn.Size = new System.Drawing.Size(237, 23);
-            this.selectAllBtn.TabIndex = 23;
-            this.selectAllBtn.Text = "Select All";
-            this.selectAllBtn.UseVisualStyleBackColor = true;
-            this.selectAllBtn.Visible = false;
-            this.selectAllBtn.Click += new System.EventHandler(this.selectAllGrids_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,10 +629,10 @@
             this.skillGroupBox.ResumeLayout(false);
             this.swordGroupBox.ResumeLayout(false);
             this.topPanel.ResumeLayout(false);
+            this.armSkillGroup.ResumeLayout(false);
+            this.shieldGroupBox.ResumeLayout(false);
             this.searchGroupBox.ResumeLayout(false);
             this.searchGroupBox.PerformLayout();
-            this.shieldGroupBox.ResumeLayout(false);
-            this.armSkillGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
