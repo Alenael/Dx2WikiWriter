@@ -203,9 +203,9 @@ namespace Dx2WikiWriter
                 "|elementreduction=" + Attribute + Environment.NewLine +
                 "|def=" + PDef + Environment.NewLine +
                 "|magdef=" + MDef + Environment.NewLine +
-                "|innate_skill1=" + Skill1 + Environment.NewLine +
-                "|innate_skill2=" + Skill2 + Environment.NewLine +
-                "|armament_awaken=" + AwakenSkill + Environment.NewLine +
+                "|innate_skill1=" + (Skill1 == "" ? "N/A" : Skill1.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|innate_skill2=" + (Skill2 == "" ? "N/A" : Skill2.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
+                "|armament_awaken=" + (AwakenSkill == "" ? "N/A" : AwakenSkill.Replace("[", "(").Replace("]", ")")) + Environment.NewLine +
                 "|panel1=" + Panel1 + Environment.NewLine +
                 "|panel2=" + Panel2 + Environment.NewLine +
                 "|panel3=" + Panel3 + Environment.NewLine +
