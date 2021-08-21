@@ -125,7 +125,7 @@ namespace Dx2WikiWriter
             if (AwakenSkill != "")
                 mySkills = mySkills + "[[" + AwakenSkill + "]]";
 
-            return "|{{ListSword|sword=" + DemonName + "|swordname=" + SwordName + "|talent=" + Talent + ": " + Effect + "|skills=" + mySkills +
+            return "|{{ListSword|sword=" + DemonName + "|swordname=[[" + DemonName + "/Sword|" + SwordName + "]]|talent=" + Talent + ": " + Effect + "|skills=" + mySkills +
                    "|attack=" + AtkStat + "|attribute=" + Attribute + "|accuracy=" + Accuracy + "|critical=" + Critical +
                    "|panel1= <nowiki>" + Panel1 + "</nowiki>|panel2= <nowiki>" + Panel2 + "</nowiki>|panel3= <nowiki>" + Panel3 +
                    "</nowiki>}}\r\n" +
@@ -136,7 +136,7 @@ namespace Dx2WikiWriter
         public string CreateWikiStringIndividual()
         {
             return "{{DemonSword" + Environment.NewLine +
-            "|swordname= [[" + SwordName + "]]" + Environment.NewLine +
+            "|swordname=" + SwordName + Environment.NewLine +
             "|talentname=" + Talent + Environment.NewLine +
             "|talenteffect=" + Effect + Environment.NewLine +
             "|pmincrease="+ AtkStat + Environment.NewLine +
