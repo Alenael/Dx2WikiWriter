@@ -136,23 +136,23 @@ namespace Dx2WikiWriter
         public string CreateWikiStringIndividual()
         {
             return "{{DemonSword" + Environment.NewLine +
-            "|swordname=" + SwordName + Environment.NewLine +
-            "|talentname=" + Talent + Environment.NewLine +
-            "|talenteffect=" + Effect + Environment.NewLine +
-            "|pmincrease="+ AtkStat + Environment.NewLine +
-            "|elementincrease=" + Attribute + Environment.NewLine +
-            "|physacc=" + Accuracy + Environment.NewLine +
-            "|critchance=" + Critical + Environment.NewLine +
-            "|innate_skill1=" + Skill1 + Environment.NewLine +
-            "|innate_skill2=" + Skill2 + Environment.NewLine +
-            "|armament_awaken=" + AwakenSkill + Environment.NewLine +
-            "|panel1=" + Panel1 + Environment.NewLine +
-            "|panel2=" + Panel2 + Environment.NewLine +
-            "|panel3=" + Panel3 + Environment.NewLine +
-            "|panel1stats=" + Panel1Stats + Environment.NewLine +
-            "|panel2stats=" + Panel2Stats + Environment.NewLine +
-            "|panel3stats=" + Panel3Stats + Environment.NewLine +
-            "}}";
+                "|swordname=" + SwordName + Environment.NewLine +
+                "|talentname=" + Talent + Environment.NewLine +
+                "|talenteffect=" + Effect + Environment.NewLine +
+                "|pmincrease="+ AtkStat + Environment.NewLine +
+                "|elementincrease=" + Attribute + Environment.NewLine +
+                "|physacc=" + Accuracy + Environment.NewLine +
+                "|critchance=" + Critical + Environment.NewLine +
+                "|innate_skill1=" + Skill1 + Environment.NewLine +
+                "|innate_skill2=" + Skill2 + Environment.NewLine +
+                "|armament_awaken=" + AwakenSkill + Environment.NewLine +
+                "|panel1=" + Panel1 + Environment.NewLine +
+                "|panel2=" + Panel2 + Environment.NewLine +
+                "|panel3=" + Panel3 + Environment.NewLine +
+                "|panel1stats=" + Panel1Stats + Environment.NewLine +
+                "|panel2stats=" + Panel2Stats + Environment.NewLine +
+                "|panel3stats=" + Panel3Stats + Environment.NewLine +
+                "}}";
         }
     }
 

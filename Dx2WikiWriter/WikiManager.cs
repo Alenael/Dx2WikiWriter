@@ -121,7 +121,7 @@ namespace Dx2WikiWriter
             {
                 //Generate our Page Name
                 var pageName = Path.GetFileNameWithoutExtension(fileName);
-                pageName = pageName.Replace("-Demons", "/Demons").Replace("[", "(").Replace("]", ")").Replace("-Sword","/Sword");
+                pageName = pageName.Replace("-Demons", "/Demons").Replace("[", "(").Replace("]", ")").Replace("-Sword","/Sword").Replace("-Shield","/Shield");
                  
                 //If we are a skill check if demon shares our name
                 if (demons != null)

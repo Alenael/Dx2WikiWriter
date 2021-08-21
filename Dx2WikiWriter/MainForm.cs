@@ -327,16 +327,14 @@ namespace Dx2WikiWriter
         //Exports all Shields
         private void exportShieldAllBtn_Click(object sender, EventArgs e)
         {
-            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
-            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            ShieldHelper.ExportShields(shieldGrid.Rows.Cast<DataGridViewRow>(), shieldGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Swords
         private void exportIndividualShieldBtn_Click(object sender, EventArgs e)
         {
             var selectedShields = shieldGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
-
-            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            ShieldHelper.ExportShields(selectedShields, shieldGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
         //Exports all Arm Skills
