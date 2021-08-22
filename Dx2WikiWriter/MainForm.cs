@@ -340,16 +340,14 @@ namespace Dx2WikiWriter
         //Exports all Arm Skills
         private void exportArmSkillsAllBtn_Click(object sender, EventArgs e)
         {
-            //var ranks = DemonHelper.GetRanks(demonGrid.Rows.Cast<DataGridViewRow>());
-            //DemonHelper.ExportDemons(demonGrid.Rows.Cast<DataGridViewRow>(), ranks, demonGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
+            ArmSkillsHelper.ExportArmSkillss(ArmSkillsGrid.Rows.Cast<DataGridViewRow>(), ArmSkillsGrid.Rows.Cast<DataGridViewRow>(), true, LoadedPath);
         }
 
         //Exports Selected Arm Skills
         private void exportIndividualArmSkillsBtn_Click(object sender, EventArgs e)
         {
             var selectedArmSkills = ArmSkillsGrid.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Export"].Value != null && (bool)r.Cells["Export"].Value == true);
-
-            //DemonHelper.ExportDemons(selectedDemons, ranks, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
+            ArmSkillsHelper.ExportArmSkillss(selectedArmSkills, demonGrid.Rows.Cast<DataGridViewRow>(), false, LoadedPath);
         }
 
         //Exports Everything
