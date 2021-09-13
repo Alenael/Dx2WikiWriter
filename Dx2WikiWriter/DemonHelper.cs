@@ -131,8 +131,10 @@ namespace Dx2WikiWriter
                 Gacha = row.Cells["Gacha"].Value is DBNull ? false : (string)row.Cells["Gacha"].Value == "1",
                 Event = row.Cells["Event"].Value is DBNull ? false : (string)row.Cells["Event"].Value == "1",
                 MultiFusion = row.Cells["Multi-Fusion"].Value is DBNull ? false : (string)row.Cells["Multi-Fusion"].Value == "1",
-                BannerRequired = row.Cells["Banner Required"].Value is DBNull ? false : (string)row.Cells["Banner Required"].Value == "1"
-            };
+                BannerRequired = row.Cells["Banner Required"].Value is DBNull ? false : (string)row.Cells["Banner Required"].Value == "1",
+                Negotiation = row.Cells["Negotiation"].Value is DBNull ? false : (string)row.Cells["Negotiation"].Value == "1",
+                Exchangeable = row.Cells["Exchangeable"].Value is DBNull ? false : (string)row.Cells["Exchangeable"].Value == "1"
+        };
         }
 
         //Cheat to allow Linq in struct
@@ -357,7 +359,8 @@ namespace Dx2WikiWriter
         public bool Event;
         public bool MultiFusion;
         public bool BannerRequired;
-
+        public bool Negotiation;
+        public bool Exchangeable;
         public void SetAetherCosts(string[][] aether)
         {
             Awaken1 = aether[0][0];
@@ -401,7 +404,12 @@ namespace Dx2WikiWriter
                 extraCats += "[[Category: Multi-Fusion Demons]]\r\n";
             if (BannerRequired)
                 extraCats += "[[Category: Time Limited Demons]]\r\n";
-            if (MultiFusion || (!Gacha && !Event))
+
+            if (Negotiation)
+                extraCats += "[[Category: Negotiation Demons]]\r\n";
+            else if (Exchangeable)
+                extraCats += "[[Category: Exchangable Demons]]\r\n";
+            else if (MultiFusion || (!Gacha && !Event))
                 extraCats += "[[Category: Fusible Demons]]\r\n";
 
             //Generate Fusion and Fission URL
@@ -418,6 +426,8 @@ namespace Dx2WikiWriter
             flagInfo += "multi-fusion=" + MultiFusion.ToString() + "|";
             flagInfo += "event=" + Event.ToString() + "|";
             flagInfo += "banner=" + BannerRequired.ToString() + "|";
+            flagInfo += "negotiation=" + Negotiation.ToString() + "|";
+            flagInfo += "exchangeable=" + Exchangeable.ToString() + "|";
             flagInfo += "fusible=" + (MultiFusion || (!Gacha && !Event)).ToString() + "|";
             flagInfo += "fissionLink=" + fissionLink;
 
@@ -477,6 +487,8 @@ namespace Dx2WikiWriter
                 "|event= " + Event + Environment.NewLine +
                 "|multifusion= " + MultiFusion + Environment.NewLine +
                 "|bannerrequired= " + BannerRequired + Environment.NewLine +
+                "|negotiation= " + Negotiation + Environment.NewLine +
+                "|exchangeable= " + Exchangeable + Environment.NewLine +
                 "|fissionlink= " + fissionLink + Environment.NewLine +
                 "|fusionlink= " + fusionLink + Environment.NewLine +
                 "|}}\r\n" +
