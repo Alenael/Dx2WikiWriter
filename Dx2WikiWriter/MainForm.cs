@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using System.Text;
+using ChoETL;
+using System.Globalization;
 
 namespace Dx2WikiWriter
 {
@@ -222,9 +225,17 @@ namespace Dx2WikiWriter
         private void saveAllBtn_Click(object sender, EventArgs e)
         {
             if (demonGrid.DataSource != null)
-                DBManager.SaveDB(demonGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv"));
+            {
+                var demonPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Demons.csv");
+                DBManager.SaveDB(demonGrid.DataSource as DataTable, demonPath);
+                WriteCSVToJson(demonPath, Path.Combine(LoadedPath, "Demons.json"));
+            }
             if (skillGrid.DataSource != null)
-                DBManager.SaveDB(skillGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv"));
+            {
+                var skillPath = Path.Combine(LoadedPath, "SMT Dx2 Database - Skills.csv");
+                DBManager.SaveDB(skillGrid.DataSource as DataTable, skillPath);
+                WriteCSVToJson(skillPath, Path.Combine(LoadedPath, "Skills.json"));
+            }
             if (swordGrid.DataSource != null)
                 DBManager.SaveDB(swordGrid.DataSource as DataTable, Path.Combine(LoadedPath, "SMT Dx2 Database - Swords.csv"));
             if (shieldGrid.DataSource != null)
@@ -234,6 +245,21 @@ namespace Dx2WikiWriter
 
             Text = "Dx2 Wiki Writer";
             isDirty = false;
+        }
+
+        //Loads a CSV up and converts/outputs it to a Json file
+        private void WriteCSVToJson(string path, string outputName)
+        {
+            var csv = File.ReadAllText(path);
+
+            StringBuilder json = new StringBuilder();
+            using (var p = ChoCSVReader.LoadText(csv).WithFirstLineHeader().ThrowAndStopOnMissingField(false).QuoteAllFields(true).IgnoreFieldValueMode(ChoIgnoreFieldValueMode.None))
+            {
+                using (var w = new ChoJSONWriter(json))
+                    w.Write(p);
+            }
+
+            File.WriteAllText(outputName, json.ToString(), Encoding.UTF8);
         }
 
         //Selects all from a grid
