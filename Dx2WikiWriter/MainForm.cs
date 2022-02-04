@@ -253,12 +253,12 @@ namespace Dx2WikiWriter
             var csv = File.ReadAllText(path);
 
             StringBuilder json = new StringBuilder();
-            using (var p = ChoCSVReader.LoadText(csv).WithFirstLineHeader().ThrowAndStopOnMissingField(false).QuoteAllFields(true).IgnoreFieldValueMode(ChoIgnoreFieldValueMode.None))
+            using (var p = ChoCSVReader.LoadText(csv).WithFirstLineHeader(false).ThrowAndStopOnMissingField(false).QuoteAllFields(true).IgnoreFieldValueMode(ChoIgnoreFieldValueMode.None))
             {
                 using (var w = new ChoJSONWriter(json))
-                    w.Write(p);
+                    w.Write(p);                
             }
-
+            
             File.WriteAllText(outputName, json.ToString(), Encoding.UTF8);
         }
 

@@ -133,8 +133,10 @@ namespace Dx2WikiWriter
                 MultiFusion = row.Cells["Multi-Fusion"].Value is DBNull ? false : (string)row.Cells["Multi-Fusion"].Value == "1",
                 BannerRequired = row.Cells["Banner Required"].Value is DBNull ? false : (string)row.Cells["Banner Required"].Value == "1",
                 Negotiation = row.Cells["Negotiation"].Value is DBNull ? false : (string)row.Cells["Negotiation"].Value == "1",
-                Exchangeable = row.Cells["Exchangeable"].Value is DBNull ? false : (string)row.Cells["Exchangeable"].Value == "1"
-        };
+                Exchangeable = row.Cells["Exchangeable"].Value is DBNull ? false : (string)row.Cells["Exchangeable"].Value == "1",
+
+                Class = row.Cells["Class"].Value is DBNull ? "" : (string)row.Cells["Class"].Value
+            };
         }
 
         //Cheat to allow Linq in struct
@@ -361,6 +363,9 @@ namespace Dx2WikiWriter
         public bool BannerRequired;
         public bool Negotiation;
         public bool Exchangeable;
+
+        public string Class;
+
         public void SetAetherCosts(string[][] aether)
         {
             Awaken1 = aether[0][0];
@@ -489,6 +494,7 @@ namespace Dx2WikiWriter
                 "|bannerrequired= " + BannerRequired + Environment.NewLine +
                 "|negotiation= " + Negotiation + Environment.NewLine +
                 "|exchangeable= " + Exchangeable + Environment.NewLine +
+                "|class= " + Class + Environment.NewLine +
                 "|fissionlink= " + fissionLink + Environment.NewLine +
                 "|fusionlink= " + fusionLink + Environment.NewLine +
                 "|}}\r\n" +
